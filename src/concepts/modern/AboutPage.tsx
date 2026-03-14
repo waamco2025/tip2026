@@ -1,0 +1,188 @@
+import Link from "next/link";
+
+const milestones = [
+  { year: "2008", title: "The Origin of Thayer", desc: "Founded by Chris Hemmeter" },
+  { year: "2012", title: "First Thayer Fund", desc: "Chris Hemmeter teams up with Lee Pillsbury to launch first Thayer Fund" },
+  { year: "2018", title: "First Institutional Fund", desc: "Chris Hemmeter, Jeff Jackson, and Tyler Carrico launch first Institutional Thayer Fund" },
+  { year: "2022", title: "Second Institutional Fund", desc: "Launch of second Institutional Thayer Fund" },
+  { year: "2022", title: "First Derive Fund", desc: "Launch of first Derive Fund" },
+];
+
+const partners = [
+  { name: "Chris Hemmeter", title: "Managing Partner", bio: "Chris Hemmeter co-founded Thayer Ventures, a venture capital platform investing in technology companies in the travel and mobility space." },
+  { name: "Tyler Carrico", title: "Managing Partner", bio: "Tyler Carrico co-founded Derive Ventures in 2021 and currently serves as a Managing Partner. Prior to Derive, Tyler spent 4 years as an investment professional at Thayer Ventures." },
+  { name: "Mike Scott", title: "Managing Partner", bio: "Mike Scott co-founded Derive Ventures in 2021 and currently serves as a Managing Partner. Prior to co-founding Derive, Mike spent over 3 years as a private equity investment professional at KSL Capital Partners." },
+];
+
+const team = [
+  { name: "Lee Pillsbury", title: "Co-Founder and Partner", bio: "After graduating from Cornell School of Hotel Administration, Lee spent 19 years at Marriott, rising to become an Executive Vice President and head of Lodging Strategy." },
+  { name: "Mark Farrell", title: "Venture Partner", bio: "Mark co-founded Thayer Ventures in 2009 and was involved in all aspects of the firm growth as a Managing Director." },
+  { name: "Jeff Jackson", title: "Venture Partner", bio: "Jeff has spent the bulk of his career in executive roles within the transportation and distribution space, including 14 years at American Airlines." },
+  { name: "David Brem", title: "Venture Partner", bio: "David Brem currently serves as a Venture Partner at Thayer Investment Partners. Prior to TIP, David earned his MBA from the University of Michigan and worked at an early-stage venture firm focused on transportation and logistics." },
+  { name: "Cara Whitehill", title: "Venture Partner", bio: "As a long-time operating exec, startup advisor, investor and road warrior, Cara is actively involved in numerous corners of the travel tech industry, expanding partnership and business development initiatives." },
+  { name: "Chelsea Salamone", title: "Vice President", bio: "Chelsea brings over a decade of expertise in the hospitality industry. Before joining TIP, she spent over 5 years at Standard International, aiding in the global expansion of the Standard and Bunkhouse hotels." },
+];
+
+function ModernNav({ active }: { active: string }) {
+  return (
+    <nav className="flex items-center justify-between bg-[#0D2818] h-20 px-14">
+      <Link href="/"><img src="/logotype.svg" alt="Thayer" className="h-12" /></Link>
+      <div className="flex items-center gap-10">
+        {[{ l: "About", h: "/about" }, { l: "Portfolio", h: "/portfolio" }, { l: "Insights", h: "/news" }, { l: "Investor Relations", h: "/investor-relations" }].map((item) => (
+          <Link key={item.l} href={item.h} className={`text-sm ${item.l === active ? "text-white font-medium" : "text-white/80 font-normal"} hover:text-white transition-colors`}>{item.l}</Link>
+        ))}
+      </div>
+    </nav>
+  );
+}
+
+function ModernFooter() {
+  return (
+    <footer className="bg-[#0D2818] px-14 py-12 flex flex-col gap-8 border-t border-[#1A3A25]">
+      <div className="flex justify-between items-start">
+        <div className="flex flex-col gap-3">
+          <img src="/logotype.svg" alt="Thayer" className="h-14" />
+          <span className="text-white/50 text-[13px] whitespace-pre-line">{"Pioneering travel technology\nventure capital since 2008."}</span>
+        </div>
+        <div className="flex gap-20">
+          <div className="flex flex-col gap-3">
+            {["About", "Portfolio", "Insights", "Investor Relations"].map((l) => (
+              <Link key={l} href={`/${l === "Insights" ? "news" : l === "Investor Relations" ? "investor-relations" : l.toLowerCase()}`} className="text-white/50 text-[13px] hover:text-white/80">{l}</Link>
+            ))}
+          </div>
+          <div className="flex flex-col gap-3 w-[280px]">
+            <span className="text-white text-xs font-semibold">Subscribe</span>
+            <span className="text-white/50 text-[13px] leading-[1.5]">Get insights and updates from our team.</span>
+            <div className="flex h-10">
+              <input className="flex-1 bg-[#0D2818] border border-[#1A3A25] px-3.5 text-white text-sm" placeholder="Email address" />
+              <button className="bg-[#C9A962] px-5 text-[#0D2818] text-xs font-semibold">Subscribe</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="flex justify-between items-center pt-4 border-t border-[#1A3A25]">
+        <span className="text-white/30 text-[11px]">© 2026 Thayer Investment Partners. All rights reserved.</span>
+        <span className="text-white/30 text-[11px]">Privacy Policy  ·  Terms of Use  ·  Disclosures</span>
+      </div>
+    </footer>
+  );
+}
+
+export { ModernNav, ModernFooter };
+
+export default function ModernAbout() {
+  return (
+    <div className="min-h-screen flex flex-col bg-white">
+      <ModernNav active="About" />
+
+      {/* Split Hero */}
+      <section className="flex h-[560px]">
+        <div className="flex flex-col justify-center gap-6 bg-[#0D2818] px-14 py-20 w-[660px]">
+          <span className="text-[#C9A962] font-semibold text-xs tracking-[2px]">ABOUT</span>
+          <h1 className="font-playfair text-[48px] italic text-white leading-[1.2] max-w-[520px]">We partner with visionaries to build the future of global travel</h1>
+          <p className="text-[#8A9B8F] text-[15px] leading-relaxed max-w-[480px]">Since 2008, Thayer Investment Partners has been at the forefront of travel technology venture capital.</p>
+        </div>
+        <div className="flex-1 bg-cover bg-center" style={{ backgroundImage: "url('/images/modern-about-hero.png')" }} />
+      </section>
+
+      {/* Mission */}
+      <section className="flex gap-20 bg-white px-14 py-20">
+        <div className="flex flex-col gap-4 w-[280px] shrink-0">
+          <span className="text-[#C9A962] font-semibold text-xs tracking-[2px]">OUR MISSION</span>
+          <div className="w-[60px] h-0.5 bg-[#C9A962]" />
+        </div>
+        <div className="flex flex-col gap-6">
+          <p className="text-[#333] text-base leading-[1.7]">Thayer Investment Partners is the largest asset manager investing at the intersection of travel and technology. We partner with some of the most influential innovators and entrepreneurs in the Built World.</p>
+          <p className="text-[#666] text-base leading-[1.7]">Our investor network consists of over 150 corporate partners across more than 20 countries and every major asset class in travel — from hospitality and aviation to ground transportation and travel services.</p>
+          <h3 className="font-playfair text-[28px] italic text-[#1A2E23]">Travel Technology</h3>
+          <p className="text-[#666] text-base leading-[1.7]">Together, we are catalyzing the digital transformation of the world&apos;s largest industry, backing breakthrough technologies that make global travel more efficient, sustainable, and resilient.</p>
+        </div>
+      </section>
+
+      {/* Stats */}
+      <section className="flex bg-white px-14 py-16 border-y border-[#E5E5E5]">
+        {[{ val: "110+", label: "Portfolio Companies" }, { val: "20+", label: "Countries" }, { val: "150+", label: "Corporate Partners" }].map((s, i) => (
+          <div key={i} className={`flex-1 flex flex-col items-center gap-2 px-5 ${i === 1 ? "border-x border-[#E5E5E5]" : ""}`}>
+            <span className="font-playfair text-[56px] italic text-[#1A2E23]">{s.val}</span>
+            <span className="text-[#666] text-sm">{s.label}</span>
+          </div>
+        ))}
+      </section>
+
+      {/* Photo Break */}
+      <section className="relative h-[400px] overflow-hidden">
+        <div className="absolute inset-0 bg-[#1A2E23]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#1A2E23]/[0.88] via-[#1A2E23]/25 to-[#1A2E23]/[0.88]" />
+        <div className="relative z-10 flex flex-col items-center justify-center h-full gap-4">
+          <div className="w-[60px] h-0.5 bg-[#00D776]" />
+          <h2 className="font-playfair text-[32px] italic text-white leading-[1.3] text-center max-w-[700px]">Shaping groundbreaking talent for the world&apos;s largest and most dynamic industry</h2>
+        </div>
+      </section>
+
+      {/* Approach */}
+      <section className="bg-white px-14 py-20 flex flex-col items-center gap-12">
+        <span className="text-[#C9A962] font-semibold text-xs tracking-[2px]">OUR APPROACH</span>
+        <h2 className="font-playfair text-[40px] italic text-[#1A2E23] text-center leading-[1.2] max-w-[700px]">Making travel more efficient and resilient</h2>
+        <p className="text-[#666] text-base text-center leading-[1.7] max-w-[800px]">We believe that the convergence of travel and technology represents one of the most significant investment opportunities of our generation.</p>
+        <div className="flex gap-6 w-full">
+          {[{ t: "Strategic Capital", d: "We provide growth equity and venture capital to companies transforming the travel industry through technology." },
+            { t: "Industry Network", d: "Our network of 150+ corporate partners gives portfolio companies unparalleled access to distribution and strategic opportunities." },
+            { t: "Global Reach", d: "With investments spanning 20+ countries, we bring a truly global perspective to travel technology innovation." }].map((c, i) => (
+            <div key={i} className="flex-1 flex flex-col gap-4 p-7 border border-[#E5E5E5]">
+              <h3 className="font-playfair text-[22px] italic text-[#1A2E23]">{c.t}</h3>
+              <p className="text-[#666] text-sm leading-relaxed">{c.d}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Timeline */}
+      <section className="bg-white px-14 py-20 flex flex-col items-center gap-10 border-y border-[#E5E5E5]">
+        <div className="flex flex-col items-center gap-3">
+          <span className="text-[#C9A962] font-semibold text-xs tracking-[2px]">OUR JOURNEY</span>
+          <h2 className="font-playfair text-4xl italic text-[#1A2E23] text-center">A History of Innovation in Travel</h2>
+        </div>
+        <div className="flex flex-col w-[700px]">
+          {milestones.map((m, i) => (
+            <div key={i} className="flex gap-6">
+              <div className="flex flex-col items-center w-3">
+                <div className="w-3 h-3 rounded-full bg-[#00D776] shrink-0" />
+                {i < milestones.length - 1 && <div className="w-0.5 flex-1 bg-[#E5E5E5]" />}
+              </div>
+              <div className={`flex flex-col gap-1.5 ${i < milestones.length - 1 ? "pb-8" : ""}`}>
+                <span className="text-[#00D776] text-[13px] font-semibold">{m.year}</span>
+                <h3 className="font-playfair text-[22px] text-[#1A2E23]">{m.title}</h3>
+                <p className="text-[#666] text-[15px] leading-relaxed">{m.desc}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Team */}
+      <section className="bg-white px-14 py-20 flex flex-col items-center gap-12">
+        <div className="flex flex-col items-center gap-2">
+          <span className="text-[#C9A962] font-semibold text-xs tracking-[2px]">LEADERSHIP</span>
+          <h2 className="font-playfair text-4xl italic text-[#1A2E23]">Our Team</h2>
+        </div>
+        {[partners, team.slice(0, 3), team.slice(3)].map((row, ri) => (
+          <div key={ri} className="flex gap-6 w-full">
+            {row.map((p, i) => (
+              <div key={i} className="flex-1 flex flex-col bg-white border border-[#E5E5E5]">
+                <div className="h-60 bg-[#E0E0E0]" />
+                <div className="flex flex-col gap-1.5 p-5">
+                  <h3 className="font-playfair text-base text-[#1A2E23]">{p.name}</h3>
+                  <span className="text-[#00D776] text-xs font-semibold">{p.title}</span>
+                  <p className="text-[#666] text-[13px] leading-[1.5] line-clamp-4 mt-1">{p.bio}</p>
+                  <span className="text-[#00D776] text-[13px] font-medium mt-1 cursor-pointer hover:underline">Read more +</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        ))}
+      </section>
+
+      <ModernFooter />
+    </div>
+  );
+}

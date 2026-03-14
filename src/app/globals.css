@@ -1,26 +1,33 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@theme {
+  --font-manrope: "Manrope", sans-serif;
+  --font-playfair: "Playfair Display", serif;
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-thayer-bg: #111B1C;
+  --color-thayer-border: #2D3E3F;
+  --color-thayer-gold: #00D776;
+  --color-thayer-gold-dim: #03B764;
+  --color-thayer-navy: #141F20;
+  --color-thayer-navy-light: #202F30;
+  --color-thayer-surface: #192526;
+  --color-thayer-surface-2: #202F30;
+  --color-thayer-text: #F0F5F2;
+  --color-thayer-text-muted: #4A5C58;
+  --color-thayer-text-secondary: #7A8F8A;
+  --color-thayer-badge-bg: #0D3D2E;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-manrope);
+  background-color: var(--color-thayer-bg);
+  color: var(--color-thayer-text);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  text-wrap: balance;
+}
+
+p, span, a {
+  text-wrap: pretty;
 }
