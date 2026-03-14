@@ -22,22 +22,22 @@ export default function ModernPortfolio() {
       <ModernNav active="Portfolio" />
 
       {/* Split Hero */}
-      <section className="flex h-[560px]">
-        <div className="flex flex-col justify-center gap-6 bg-[#0D2818] px-14 py-20 w-[660px]">
+      <section className="flex flex-col md:flex-row h-auto md:h-[560px]">
+        <div className="flex flex-col justify-center gap-6 bg-[#0D2818] px-6 md:px-14 py-12 md:py-20 w-full md:w-[660px] min-h-[400px] md:min-h-0">
           <span className="text-[#C9A962] font-semibold text-xs tracking-[2px]">PORTFOLIO</span>
-          <h1 className="font-playfair text-[48px] italic text-white leading-[1.2] max-w-[570px]">We back visionary companies that are changing the way we travel.</h1>
+          <h1 className="font-playfair text-[32px] md:text-[48px] italic text-white leading-[1.2] max-w-[570px]">We back visionary companies that are changing the way we travel.</h1>
           <p className="text-white/60 text-[15px] leading-relaxed max-w-[480px]">Our portfolio spans hospitality, aviation, ground transportation, and travel services across 20+ countries.</p>
         </div>
-        <div className="flex-1 bg-cover bg-center" style={{ backgroundImage: "url('/images/modern-portfolio-hero.png')" }} />
+        <div className="h-[300px] md:h-auto flex-1 bg-cover bg-center" style={{ backgroundImage: "url('/images/modern-portfolio-hero.png')" }} />
       </section>
 
       {/* Intro + Grid */}
-      <section className="bg-white px-14 pt-16 pb-4 flex flex-col gap-12">
+      <section className="bg-white px-6 md:px-14 pt-16 pb-4 flex flex-col gap-12">
         <p className="text-[#333] text-base leading-[1.7] max-w-[750px]">
           Thayer invests in category-leading companies redefining global travel. We focus on opportunities at the intersection of Travel, Technology, and Services — including best-in-class enterprise software, scalable operating businesses, and technology-enabled platforms.
         </p>
         {/* Filter Tabs */}
-        <div className="flex border-b border-[#E5E5E5]">
+        <div className="flex flex-wrap border-b border-[#E5E5E5]">
           {filters.map((f) => (
             <button
               key={f}
@@ -55,9 +55,9 @@ export default function ModernPortfolio() {
         {/* Grid */}
         <div className="flex flex-col">
           {[0, 1, 2, 3].map((row) => (
-            <div key={row} className="flex">
+            <div key={row} className="grid grid-cols-1 md:grid-cols-4">
               {companyNames.slice(row * 4, row * 4 + 4).map((name, i) => (
-                <div key={i} className={`flex-1 flex flex-col items-center justify-center gap-3 h-40 border-b border-[#E5E5E5] ${i < 3 ? "border-r" : ""}`}>
+                <div key={i} className={`flex flex-col items-center justify-center gap-3 h-40 border-b border-[#E5E5E5] ${i < 3 ? "md:border-r" : ""}`}>
                   <LogoPlaceholder />
                   <span className="text-[#1A2E23] text-sm font-medium">{name}</span>
                 </div>
@@ -68,7 +68,7 @@ export default function ModernPortfolio() {
       </section>
 
       {/* Disclaimer */}
-      <section className="px-14 py-12 border-t border-[#E5E5E5]">
+      <section className="px-6 md:px-14 py-12 border-t border-[#E5E5E5]">
         <p className="text-[#999] text-xs leading-relaxed max-w-[750px]">
           The portfolio companies described above may not be representative of all investments in funds managed by Thayer Investment Partners. A complete list of investments is available upon request.
         </p>

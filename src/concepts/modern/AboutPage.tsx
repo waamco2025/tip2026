@@ -1,4 +1,8 @@
+"use client";
+
+import { useState } from "react";
 import Link from "next/link";
+import { Menu, X } from "lucide-react";
 
 const milestones = [
   { year: "2008", title: "The Origin of Thayer", desc: "Founded by Chris Hemmeter" },
@@ -24,33 +28,45 @@ const team = [
 ];
 
 function ModernNav({ active }: { active: string }) {
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const links = [{ l: "About", h: "/about" }, { l: "Portfolio", h: "/portfolio" }, { l: "Insights", h: "/news" }, { l: "Investor Relations", h: "/investor-relations" }];
   return (
-    <nav className="flex items-center justify-between bg-[#0D2818] h-20 px-14">
+    <nav className="relative flex items-center justify-between bg-[#0D2818] h-20 px-6 md:px-14">
       <Link href="/"><img src="/logotype.svg" alt="Thayer" className="h-12" /></Link>
-      <div className="flex items-center gap-10">
-        {[{ l: "About", h: "/about" }, { l: "Portfolio", h: "/portfolio" }, { l: "Insights", h: "/news" }, { l: "Investor Relations", h: "/investor-relations" }].map((item) => (
+      <div className="hidden md:flex items-center gap-10">
+        {links.map((item) => (
           <Link key={item.l} href={item.h} className={`text-sm ${item.l === active ? "text-white font-medium" : "text-white/80 font-normal"} hover:text-white transition-colors`}>{item.l}</Link>
         ))}
       </div>
+      <button className="md:hidden text-white" onClick={() => setMobileOpen(!mobileOpen)}>
+        {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+      </button>
+      {mobileOpen && (
+        <div className="absolute top-20 left-0 right-0 bg-[#0D2818] border-t border-[#1A3A25] flex flex-col z-50 md:hidden">
+          {links.map((item) => (
+            <Link key={item.l} href={item.h} onClick={() => setMobileOpen(false)} className={`px-6 py-4 text-sm border-b border-[#1A3A25] ${item.l === active ? "text-white font-medium" : "text-white/80 font-normal"}`}>{item.l}</Link>
+          ))}
+        </div>
+      )}
     </nav>
   );
 }
 
 function ModernFooter() {
   return (
-    <footer className="bg-[#0D2818] px-14 py-12 flex flex-col gap-8 border-t border-[#1A3A25]">
-      <div className="flex justify-between items-start">
+    <footer className="bg-[#0D2818] px-6 md:px-14 py-12 flex flex-col gap-8 border-t border-[#1A3A25]">
+      <div className="flex flex-col md:flex-row justify-between items-start gap-8 md:gap-0">
         <div className="flex flex-col gap-3">
           <img src="/logotype.svg" alt="Thayer" className="h-14" />
           <span className="text-white/50 text-[13px] whitespace-pre-line">{"Pioneering travel technology\nventure capital since 2008."}</span>
         </div>
-        <div className="flex gap-20">
+        <div className="flex flex-col md:flex-row gap-8 md:gap-20">
           <div className="flex flex-col gap-3">
             {["About", "Portfolio", "Insights", "Investor Relations"].map((l) => (
               <Link key={l} href={`/${l === "Insights" ? "news" : l === "Investor Relations" ? "investor-relations" : l.toLowerCase()}`} className="text-white/50 text-[13px] hover:text-white/80">{l}</Link>
             ))}
           </div>
-          <div className="flex flex-col gap-3 w-[280px]">
+          <div className="flex flex-col gap-3 w-full md:w-[280px]">
             <span className="text-white text-xs font-semibold">Subscribe</span>
             <span className="text-white/50 text-[13px] leading-[1.5]">Get insights and updates from our team.</span>
             <div className="flex h-10">
@@ -60,7 +76,7 @@ function ModernFooter() {
           </div>
         </div>
       </div>
-      <div className="flex justify-between items-center pt-4 border-t border-[#1A3A25]">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-2 md:gap-0 pt-4 border-t border-[#1A3A25]">
         <span className="text-white/30 text-[11px]">© 2026 Thayer Investment Partners. All rights reserved.</span>
         <span className="text-white/30 text-[11px]">Privacy Policy  ·  Terms of Use  ·  Disclosures</span>
       </div>
@@ -76,18 +92,18 @@ export default function ModernAbout() {
       <ModernNav active="About" />
 
       {/* Split Hero */}
-      <section className="flex h-[560px]">
-        <div className="flex flex-col justify-center gap-6 bg-[#0D2818] px-14 py-20 w-[660px]">
+      <section className="flex flex-col md:flex-row h-auto md:h-[560px]">
+        <div className="flex flex-col justify-center gap-6 bg-[#0D2818] px-6 md:px-14 py-12 md:py-20 w-full md:w-[660px] min-h-[400px] md:min-h-0">
           <span className="text-[#C9A962] font-semibold text-xs tracking-[2px]">ABOUT</span>
-          <h1 className="font-playfair text-[48px] italic text-white leading-[1.2] max-w-[520px]">We partner with visionaries to build the future of global travel</h1>
+          <h1 className="font-playfair text-[32px] md:text-[48px] italic text-white leading-[1.2] max-w-[520px]">We partner with visionaries to build the future of global travel</h1>
           <p className="text-[#8A9B8F] text-[15px] leading-relaxed max-w-[480px]">Since 2008, Thayer Investment Partners has been at the forefront of travel technology venture capital.</p>
         </div>
-        <div className="flex-1 bg-cover bg-center" style={{ backgroundImage: "url('/images/modern-about-hero.png')" }} />
+        <div className="h-[300px] md:h-auto flex-1 bg-cover bg-center" style={{ backgroundImage: "url('/images/modern-about-hero.png')" }} />
       </section>
 
       {/* Mission */}
-      <section className="flex gap-20 bg-white px-14 py-20">
-        <div className="flex flex-col gap-4 w-[280px] shrink-0">
+      <section className="flex flex-col md:flex-row gap-8 md:gap-20 bg-white px-6 md:px-14 py-12 md:py-20">
+        <div className="flex flex-col gap-4 shrink-0">
           <span className="text-[#C9A962] font-semibold text-xs tracking-[2px]">OUR MISSION</span>
           <div className="w-[60px] h-0.5 bg-[#C9A962]" />
         </div>
@@ -100,10 +116,10 @@ export default function ModernAbout() {
       </section>
 
       {/* Stats */}
-      <section className="flex bg-white px-14 py-16 border-y border-[#E5E5E5]">
+      <section className="flex flex-col md:flex-row bg-white px-6 md:px-14 py-12 md:py-16 border-y border-[#E5E5E5] gap-8 md:gap-0">
         {[{ val: "110+", label: "Portfolio Companies" }, { val: "20+", label: "Countries" }, { val: "150+", label: "Corporate Partners" }].map((s, i) => (
-          <div key={i} className={`flex-1 flex flex-col items-center gap-2 px-5 ${i === 1 ? "border-x border-[#E5E5E5]" : ""}`}>
-            <span className="font-playfair text-[56px] italic text-[#1A2E23]">{s.val}</span>
+          <div key={i} className={`flex-1 flex flex-col items-center gap-2 px-5 ${i === 1 ? "md:border-x border-[#E5E5E5]" : ""}`}>
+            <span className="font-playfair text-[36px] md:text-[56px] italic text-[#1A2E23]">{s.val}</span>
             <span className="text-[#666] text-sm">{s.label}</span>
           </div>
         ))}
@@ -113,18 +129,18 @@ export default function ModernAbout() {
       <section className="relative h-[400px] overflow-hidden">
         <div className="absolute inset-0 bg-[#1A2E23]" />
         <div className="absolute inset-0 bg-gradient-to-b from-[#1A2E23]/[0.88] via-[#1A2E23]/25 to-[#1A2E23]/[0.88]" />
-        <div className="relative z-10 flex flex-col items-center justify-center h-full gap-4">
+        <div className="relative z-10 flex flex-col items-center justify-center h-full gap-4 px-6 md:px-14">
           <div className="w-[60px] h-0.5 bg-[#00D776]" />
-          <h2 className="font-playfair text-[32px] italic text-white leading-[1.3] text-center max-w-[700px]">Shaping groundbreaking talent for the world&apos;s largest and most dynamic industry</h2>
+          <h2 className="font-playfair text-[24px] md:text-[32px] italic text-white leading-[1.3] text-center max-w-[700px]">Shaping groundbreaking talent for the world&apos;s largest and most dynamic industry</h2>
         </div>
       </section>
 
       {/* Approach */}
-      <section className="bg-white px-14 py-20 flex flex-col items-center gap-12">
+      <section className="bg-white px-6 md:px-14 py-12 md:py-20 flex flex-col items-center gap-12">
         <span className="text-[#C9A962] font-semibold text-xs tracking-[2px]">OUR APPROACH</span>
         <h2 className="font-playfair text-[40px] italic text-[#1A2E23] text-center leading-[1.2] max-w-[700px]">Making travel more efficient and resilient</h2>
         <p className="text-[#666] text-base text-center leading-[1.7] max-w-[800px]">We believe that the convergence of travel and technology represents one of the most significant investment opportunities of our generation.</p>
-        <div className="flex gap-6 w-full">
+        <div className="flex flex-col md:flex-row gap-6 w-full">
           {[{ t: "Strategic Capital", d: "We provide growth equity and venture capital to companies transforming the travel industry through technology." },
             { t: "Industry Network", d: "Our network of 150+ corporate partners gives portfolio companies unparalleled access to distribution and strategic opportunities." },
             { t: "Global Reach", d: "With investments spanning 20+ countries, we bring a truly global perspective to travel technology innovation." }].map((c, i) => (
@@ -137,12 +153,12 @@ export default function ModernAbout() {
       </section>
 
       {/* Timeline */}
-      <section className="bg-white px-14 py-20 flex flex-col items-center gap-10 border-y border-[#E5E5E5]">
+      <section className="bg-white px-6 md:px-14 py-12 md:py-20 flex flex-col items-center gap-10 border-y border-[#E5E5E5]">
         <div className="flex flex-col items-center gap-3">
           <span className="text-[#C9A962] font-semibold text-xs tracking-[2px]">OUR JOURNEY</span>
-          <h2 className="font-playfair text-4xl italic text-[#1A2E23] text-center">A History of Innovation in Travel</h2>
+          <h2 className="font-playfair text-2xl md:text-4xl italic text-[#1A2E23] text-center">A History of Innovation in Travel</h2>
         </div>
-        <div className="flex flex-col w-[700px]">
+        <div className="flex flex-col w-full md:w-[700px]">
           {milestones.map((m, i) => (
             <div key={i} className="flex gap-6">
               <div className="flex flex-col items-center w-3">
@@ -160,13 +176,13 @@ export default function ModernAbout() {
       </section>
 
       {/* Team */}
-      <section className="bg-white px-14 py-20 flex flex-col items-center gap-12">
+      <section className="bg-white px-6 md:px-14 py-12 md:py-20 flex flex-col items-center gap-12">
         <div className="flex flex-col items-center gap-2">
           <span className="text-[#C9A962] font-semibold text-xs tracking-[2px]">LEADERSHIP</span>
-          <h2 className="font-playfair text-4xl italic text-[#1A2E23]">Our Team</h2>
+          <h2 className="font-playfair text-2xl md:text-4xl italic text-[#1A2E23]">Our Team</h2>
         </div>
         {[partners, team.slice(0, 3), team.slice(3)].map((row, ri) => (
-          <div key={ri} className="flex gap-6 w-full">
+          <div key={ri} className="flex flex-col md:flex-row gap-6 w-full">
             {row.map((p, i) => (
               <div key={i} className="flex-1 flex flex-col bg-white border border-[#E5E5E5]">
                 <div className="h-60 bg-[#E0E0E0]" />

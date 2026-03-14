@@ -15,22 +15,22 @@ export default function ModernInvestorRelations() {
       <ModernNav active="Investor Relations" />
 
       {/* Split Hero */}
-      <section className="flex h-[560px]">
-        <div className="w-[660px] shrink-0 flex flex-col justify-center gap-6 bg-[#0D2818] px-14 py-20">
+      <section className="flex flex-col md:flex-row h-auto md:h-[560px]">
+        <div className="w-full md:w-[660px] shrink-0 flex flex-col justify-center gap-6 bg-[#0D2818] px-6 md:px-14 py-12 md:py-20 min-h-[400px] md:min-h-0">
           <span className="text-[#C9A962] font-semibold text-xs tracking-[2px]">INVESTOR RELATIONS</span>
-          <h1 className="font-playfair text-[44px] text-white leading-[1.15] max-w-[460px]">Access documents, filings, and real-time market data.</h1>
+          <h1 className="font-playfair text-[28px] md:text-[44px] text-white leading-[1.15] max-w-[460px]">Access documents, filings, and real-time market data.</h1>
           <p className="text-white/65 text-base leading-relaxed max-w-[420px]">Important information for current and prospective investors in Thayer Investment Partners.</p>
         </div>
-        <div className="flex-1 bg-cover bg-center" style={{ backgroundImage: "url('/images/modern-ir-hero.png')" }} />
+        <div className="h-[300px] md:h-auto flex-1 bg-cover bg-center" style={{ backgroundImage: "url('/images/modern-ir-hero.png')" }} />
       </section>
 
       {/* Documents */}
-      <section className="px-14 py-20 flex flex-col gap-12">
+      <section className="px-6 md:px-14 py-12 md:py-20 flex flex-col gap-12">
         <div className="flex flex-col gap-3">
           <h2 className="font-playfair text-[32px] text-[#111]">Documents & Filings</h2>
           <p className="text-[#666] text-base leading-relaxed max-w-[600px]">Access annual reports, SEC filings, and key investor documents for Thayer Investment Partners.</p>
         </div>
-        <div className="flex gap-6">
+        <div className="flex flex-col md:flex-row gap-6">
           {documents.map((doc, i) => (
             <div key={i} className="flex-1 flex flex-col gap-5 p-8 border border-[#E5E5E5]">
               <doc.icon className="w-10 h-10 text-[#0D2818]" />
@@ -45,7 +45,7 @@ export default function ModernInvestorRelations() {
       <div className="h-px bg-[#E5E5E5]" />
 
       {/* Market Data */}
-      <section className="px-14 py-20 flex flex-col gap-12">
+      <section className="px-6 md:px-14 py-12 md:py-20 flex flex-col gap-12">
         <div className="flex flex-col gap-3">
           <h2 className="font-playfair text-[32px] text-[#111]">Market Data</h2>
           <p className="text-[#666] text-base leading-relaxed max-w-[500px]">Real-time NASDAQ performance data for Thayer Investment Partners securities.</p>

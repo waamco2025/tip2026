@@ -82,16 +82,16 @@ export default function StoicHome() {
       <Navigation />
 
       {/* Hero */}
-      <section className="relative flex flex-col items-center justify-center gap-8 py-0 px-14 h-[700px] bg-thayer-bg">
+      <section className="relative flex flex-col items-center justify-center gap-8 py-0 px-6 md:px-14 h-[500px] md:h-[700px] bg-thayer-bg">
         <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1768438194652-651b5a6d9580?w=1080')] bg-cover bg-center opacity-25" />
         <div className="relative z-10 flex flex-col items-center gap-8">
           <span className="text-thayer-gold font-semibold text-xs tracking-[1px]">
             PIONEERS IN TRAVEL TECHNOLOGY VENTURE CAPITAL
           </span>
-          <h1 className="font-playfair text-[64px] leading-[1.15] text-center max-w-[900px]">
+          <h1 className="font-playfair text-[32px] md:text-[64px] leading-[1.15] text-center max-w-[900px]">
             Investing in the Future{"\n"}of Global Travel
           </h1>
-          <p className="text-white text-base leading-relaxed text-center max-w-[700px]">
+          <p className="text-white text-base leading-relaxed text-center max-w-full md:max-w-[700px]">
             We partner with visionary founders building transformative technology
             {"\n"}for the world&apos;s largest and most dynamic industry.
           </p>
@@ -105,16 +105,16 @@ export default function StoicHome() {
       </section>
 
       {/* Testimonials */}
-      <section className="bg-thayer-surface border-y border-thayer-border px-14 py-20 flex flex-col items-center gap-12">
+      <section className="bg-thayer-surface border-y border-thayer-border px-6 md:px-14 py-12 md:py-20 flex flex-col items-center gap-12">
         <div className="flex flex-col items-center gap-3 w-full">
           <span className="text-thayer-gold font-semibold text-xs tracking-[1px]">
             WHAT OUR PARTNERS SAY
           </span>
-          <h2 className="font-playfair text-4xl text-center">
+          <h2 className="font-playfair text-2xl md:text-4xl text-center">
             Trusted by Industry Leaders
           </h2>
         </div>
-        <div className="flex gap-6 w-full">
+        <div className="flex flex-col md:flex-row gap-4 md:gap-6 w-full">
           {testimonials.map((t, i) => (
             <div
               key={i}
@@ -141,7 +141,7 @@ export default function StoicHome() {
       </section>
 
       {/* Parallax Banner 1 */}
-      <section className="relative h-[360px] overflow-hidden">
+      <section className="relative h-[250px] md:h-[360px] overflow-hidden">
         <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1768438194652-651b5a6d9580?w=1080')] bg-cover bg-center" />
         <div className="absolute inset-0 bg-gradient-to-b from-thayer-bg/[0.88] via-thayer-bg/25 to-thayer-bg/[0.88]" />
         <div className="relative z-10 flex flex-col items-center justify-center h-full gap-4">
@@ -153,22 +153,22 @@ export default function StoicHome() {
       </section>
 
       {/* Opportunity */}
-      <section className="bg-thayer-bg px-14 py-20 flex flex-col items-center gap-12">
+      <section className="bg-thayer-bg px-6 md:px-14 py-12 md:py-20 flex flex-col items-center gap-12">
         <span className="text-thayer-gold font-semibold text-xs tracking-[1px]">
           THE OPPORTUNITY
         </span>
-        <h2 className="font-playfair text-[96px]">$15 Trillion</h2>
+        <h2 className="font-playfair text-[48px] md:text-[96px]">$15 Trillion</h2>
         <h3 className="font-playfair text-[28px] text-thayer-text-secondary">
           The Global Travel Industry
         </h3>
-        <p className="text-thayer-text-secondary text-[15px] leading-[1.7] text-center max-w-[800px]">
+        <p className="text-thayer-text-secondary text-[15px] leading-[1.7] text-center max-w-full md:max-w-[800px]">
           Travel and tourism represents one of the world&apos;s largest economic
           sectors, contributing over 10% of global GDP. Technology is
           fundamentally reshaping how people discover, book, experience, and
           share travel — creating unprecedented opportunities for innovation and
           value creation.
         </p>
-        <div className="flex gap-6 justify-center w-full">
+        <div className="flex flex-col md:flex-row gap-4 md:gap-6 justify-center w-full">
           {[
             {
               val: "1.4B",
@@ -182,9 +182,9 @@ export default function StoicHome() {
           ].map((s, i) => (
             <div
               key={i}
-              className="flex flex-col items-center gap-2 border border-thayer-border px-5 py-7 w-60"
+              className="flex flex-col items-center gap-2 border border-thayer-border px-5 py-7 w-full md:w-60"
             >
-              <span className="font-playfair text-4xl text-thayer-gold">
+              <span className="font-playfair text-2xl md:text-4xl text-thayer-gold">
                 {s.val}
               </span>
               <span className="text-thayer-text-secondary text-xs leading-[1.5] text-center whitespace-pre-line">
@@ -196,16 +196,16 @@ export default function StoicHome() {
       </section>
 
       {/* Investment Categories */}
-      <section className="bg-thayer-surface border-y border-thayer-border px-14 py-20 flex flex-col items-center gap-12">
+      <section className="bg-thayer-surface border-y border-thayer-border px-6 md:px-14 py-12 md:py-20 flex flex-col items-center gap-12">
         <span className="text-thayer-gold font-semibold text-xs tracking-[1px]">
           INVESTMENT FOCUS
         </span>
-        <h2 className="font-playfair text-4xl">Our Investment Categories</h2>
-        <div className="flex gap-5 w-full">
+        <h2 className="font-playfair text-2xl md:text-4xl">Our Investment Categories</h2>
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-4 md:gap-5 w-full">
           {categories.map((c, i) => (
             <div
               key={i}
-              className="flex-1 flex flex-col items-center gap-4 p-6 border border-thayer-border"
+              className="flex flex-col items-center gap-4 p-6 border border-thayer-border"
             >
               <c.icon className="w-7 h-7 text-thayer-gold" />
               <h3 className="font-playfair text-base leading-[1.3] text-center whitespace-pre-line">
@@ -220,18 +220,18 @@ export default function StoicHome() {
       </section>
 
       {/* Network */}
-      <section className="bg-thayer-bg px-14 py-20 flex flex-col items-center gap-12">
+      <section className="bg-thayer-bg px-6 md:px-14 py-12 md:py-20 flex flex-col items-center gap-12">
         <span className="text-thayer-gold font-semibold text-xs tracking-[1px]">
           OUR NETWORK
         </span>
-        <h2 className="font-playfair text-4xl">A Powerful Network</h2>
-        <p className="text-thayer-text-secondary text-[15px] leading-relaxed text-center max-w-[700px]">
+        <h2 className="font-playfair text-2xl md:text-4xl">A Powerful Network</h2>
+        <p className="text-thayer-text-secondary text-[15px] leading-relaxed text-center max-w-full md:max-w-[700px]">
           A network of investors, advisors, and portfolio companies serving the
           global travel industry.
         </p>
-        <div className="flex flex-col gap-5 w-[900px]">
+        <div className="flex flex-col gap-5 w-full max-w-[900px]">
           {[0, 1].map((row) => (
-            <div key={row} className="flex gap-5">
+            <div key={row} className="grid grid-cols-2 md:grid-cols-3 gap-5">
               {[0, 1, 2].map((col) => (
                 <div
                   key={col}
@@ -246,12 +246,12 @@ export default function StoicHome() {
       </section>
 
       {/* Parallax Banner 2 */}
-      <section className="relative h-[340px] overflow-hidden">
+      <section className="relative h-[250px] md:h-[340px] overflow-hidden">
         <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1635979238851-6ebe864aa0ec?w=1080')] bg-cover bg-center" />
         <div className="absolute inset-0 bg-gradient-to-b from-thayer-bg/[0.88] via-thayer-bg/20 to-thayer-bg/[0.88]" />
         <div className="relative z-10 flex flex-col items-center justify-center h-full gap-4 backdrop-blur-sm">
           <div className="w-[60px] h-0.5 bg-thayer-gold" />
-          <h2 className="font-playfair text-4xl leading-[1.3] text-center max-w-[700px]">
+          <h2 className="font-playfair text-2xl md:text-4xl leading-[1.3] text-center max-w-full md:max-w-[700px] px-6">
             Connecting Capital to the World&apos;s{"\n"}Greatest Journeys
           </h2>
           <p className="text-thayer-text-secondary text-sm text-center max-w-[600px]">
@@ -261,13 +261,13 @@ export default function StoicHome() {
       </section>
 
       {/* Latest News */}
-      <section className="bg-thayer-surface border-y border-thayer-border px-14 py-20 flex flex-col gap-12">
-        <div className="flex justify-between items-center w-full">
+      <section className="bg-thayer-surface border-y border-thayer-border px-6 md:px-14 py-12 md:py-20 flex flex-col gap-12">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center w-full gap-4">
           <div className="flex flex-col gap-3">
             <span className="text-thayer-gold font-semibold text-xs tracking-[1px]">
               LATEST NEWS
             </span>
-            <h2 className="font-playfair text-4xl">Recent Headlines</h2>
+            <h2 className="font-playfair text-2xl md:text-4xl">Recent Headlines</h2>
           </div>
           <Link
             href="/news"
@@ -280,7 +280,7 @@ export default function StoicHome() {
           {newsItems.map((item, i) => (
             <div
               key={i}
-              className={`flex justify-between py-6 ${
+              className={`flex flex-col md:flex-row justify-between py-6 gap-2 ${
                 i < newsItems.length - 1 ? "border-b border-thayer-border" : ""
               }`}
             >
@@ -290,7 +290,7 @@ export default function StoicHome() {
                   {item.excerpt}
                 </p>
               </div>
-              <span className="text-thayer-text-muted text-xs whitespace-nowrap ml-8">
+              <span className="text-thayer-text-muted text-xs whitespace-nowrap ml-0 md:ml-8">
                 {item.date}
               </span>
             </div>

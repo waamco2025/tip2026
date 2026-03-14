@@ -77,7 +77,7 @@ export function StoicStockWidgets() {
 
   if (!stocks) {
     return (
-      <div className="flex gap-6">
+      <div className="flex flex-col md:flex-row gap-6">
         {[0, 1, 2].map((i) => (
           <div key={i} className="flex-1 h-[280px] bg-thayer-surface border border-thayer-border rounded-sm animate-pulse" />
         ))}
@@ -86,7 +86,7 @@ export function StoicStockWidgets() {
   }
 
   return (
-    <div className="flex gap-6">
+    <div className="flex flex-col md:flex-row gap-6">
       {stocks.map((s) => {
         const up = s.change >= 0;
         return (
@@ -154,7 +154,7 @@ export function ModernStockWidgets() {
 
   if (!stocks) {
     return (
-      <div className="flex gap-6">
+      <div className="flex flex-col md:flex-row gap-6">
         {[0, 1, 2].map((i) => (
           <div key={i} className="flex-1 h-[280px] border border-[#E5E5E5] animate-pulse bg-[#FAFAFA]" />
         ))}
@@ -163,7 +163,7 @@ export function ModernStockWidgets() {
   }
 
   return (
-    <div className="flex gap-6">
+    <div className="flex flex-col md:flex-row gap-6">
       {stocks.map((s) => {
         const up = s.change >= 0;
         return (

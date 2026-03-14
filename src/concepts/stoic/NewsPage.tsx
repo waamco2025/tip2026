@@ -60,9 +60,9 @@ export default function StoicNews() {
       <Navigation />
 
       {/* Header */}
-      <section className="flex flex-col items-center gap-4 px-14 py-20">
-        <h1 className="font-playfair text-[52px]">News & Insights</h1>
-        <p className="text-thayer-text-secondary text-lg leading-[1.5] text-center max-w-[700px]">
+      <section className="flex flex-col items-center gap-4 px-6 md:px-14 py-12 md:py-20">
+        <h1 className="font-playfair text-[32px] md:text-[52px]">News & Insights</h1>
+        <p className="text-thayer-text-secondary text-lg leading-[1.5] text-center max-w-full md:max-w-[700px]">
           The latest from Thayer Investment Partners — announcements, analysis,
           and perspectives on the future of travel and technology.
         </p>
@@ -70,8 +70,8 @@ export default function StoicNews() {
       </section>
 
       {/* Featured Article */}
-      <section className="bg-thayer-surface flex gap-12 px-14 py-10">
-        <div className="w-[640px] h-[400px] shrink-0 bg-thayer-navy-light rounded-sm" />
+      <section className="bg-thayer-surface flex flex-col md:flex-row gap-8 md:gap-12 px-6 md:px-14 py-10">
+        <div className="w-full md:w-[640px] h-[250px] md:h-[400px] shrink-0 bg-thayer-navy-light rounded-sm" />
         <div className="flex flex-col justify-center gap-5">
           <div className="flex items-center gap-3">
             <span className="text-thayer-gold font-semibold text-[11px] tracking-[1px]">
@@ -81,7 +81,7 @@ export default function StoicNews() {
               February 18, 2026
             </span>
           </div>
-          <h2 className="font-playfair text-[32px] leading-[1.3]">
+          <h2 className="font-playfair text-[24px] md:text-[32px] leading-[1.3]">
             Thayer Leads $45M Series B in TravelAI Platform
           </h2>
           <p className="text-thayer-text-secondary text-sm leading-relaxed">
@@ -103,8 +103,8 @@ export default function StoicNews() {
       <div className="h-px bg-thayer-border" />
 
       {/* Article List */}
-      <section className="px-14 py-10 flex flex-col">
-        <h2 className="font-playfair text-[28px] mb-8">Recent Articles</h2>
+      <section className="px-6 md:px-14 py-10 flex flex-col">
+        <h2 className="font-playfair text-[22px] md:text-[28px] mb-8">Recent Articles</h2>
         {articles.map((article, i) => (
           <div
             key={i}

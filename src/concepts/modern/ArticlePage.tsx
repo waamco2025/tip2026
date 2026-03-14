@@ -13,19 +13,19 @@ export default function ModernArticle() {
       <ModernNav active="Insights" />
 
       {/* Article Header */}
-      <section className="bg-[#0D2818] px-14 pt-14 pb-12 flex flex-col gap-5">
+      <section className="bg-[#0D2818] px-6 md:px-14 pt-14 pb-12 flex flex-col gap-5">
         <span className="text-[#C9A962] font-semibold text-[11px] tracking-[2px]">VIDEO</span>
-        <h1 className="font-playfair text-[44px] italic font-semibold text-white leading-[1.15] max-w-[800px]">Thayer Managing Partner Speaks with TravelAI About Their Future Vision</h1>
+        <h1 className="font-playfair text-[28px] md:text-[44px] italic font-semibold text-white leading-[1.15] max-w-[800px]">Thayer Managing Partner Speaks with TravelAI About Their Future Vision</h1>
         <span className="text-white/50 text-[13px]">By Thayer Staff  •  January 17, 2026</span>
       </section>
 
       {/* Hero Image */}
-      <div className="px-14 py-8">
-        <div className="w-full h-[500px] bg-cover bg-center rounded" style={{ backgroundImage: "url('/images/modern-article-hero.png')" }} />
+      <div className="px-6 md:px-14 py-8">
+        <div className="w-full h-[250px] md:h-[500px] bg-cover bg-center rounded" style={{ backgroundImage: "url('/images/modern-article-hero.png')" }} />
       </div>
 
       {/* Article Body */}
-      <section className="flex justify-center px-14">
+      <section className="flex justify-center px-6 md:px-14">
         <div className="max-w-[800px] flex flex-col gap-6 py-8 pb-12">
           {[
             "Chris Hemmeter, Managing Partner of Thayer Investment Partners, sat down with Michael Torres, CEO of TravelAI, last week to discuss the company's ambitious vision for transforming global travel through artificial intelligence.",
@@ -40,9 +40,9 @@ export default function ModernArticle() {
       </section>
 
       {/* Related */}
-      <section className="px-14 py-12 border-t border-[#E5E5E5] flex flex-col gap-8">
+      <section className="px-6 md:px-14 py-12 border-t border-[#E5E5E5] flex flex-col gap-8">
         <span className="text-[#999] font-semibold text-[11px] tracking-[2px]">RELATED CONTENT</span>
-        <div className="flex gap-6">
+        <div className="flex flex-col md:flex-row gap-6">
           {relatedArticles.map((a, i) => (
             <div key={i} className="flex-1 flex flex-col gap-3">
               <div className="h-[200px] bg-cover bg-center" style={{ backgroundImage: `url('${a.img}')` }} />

@@ -86,8 +86,8 @@ export default function StoicAbout() {
       <Navigation />
 
       {/* Hero */}
-      <section className="flex flex-col items-center gap-6 px-14 py-24">
-        <h1 className="font-playfair text-[56px] text-center">Who We Are</h1>
+      <section className="flex flex-col items-center gap-6 px-6 md:px-14 py-16 md:py-24">
+        <h1 className="font-playfair text-[32px] md:text-[56px] text-center">Who We Are</h1>
         <p className="text-thayer-text-secondary text-base leading-[1.7] text-center max-w-[720px]">
           Thayer Investment Partners is a leading investment firm dedicated
           exclusively to advancing the global travel industry. Since our founding
@@ -98,16 +98,16 @@ export default function StoicAbout() {
       </section>
 
       {/* Timeline */}
-      <section className="bg-thayer-surface border-y border-thayer-border px-14 py-20 flex flex-col items-center gap-12">
+      <section className="bg-thayer-surface border-y border-thayer-border px-6 md:px-14 py-12 md:py-20 flex flex-col items-center gap-12">
         <div className="flex flex-col items-center gap-4 w-full">
           <span className="text-thayer-gold font-semibold text-xs tracking-[1px]">
             OUR JOURNEY
           </span>
-          <h2 className="font-playfair text-4xl text-center">
+          <h2 className="font-playfair text-2xl md:text-4xl text-center">
             A History of Innovation in Travel
           </h2>
         </div>
-        <div className="flex flex-col w-[700px]">
+        <div className="flex flex-col w-full max-w-[700px]">
           {milestones.map((m, i) => (
             <div key={i} className="flex gap-6">
               <div className="flex flex-col items-center w-6">
@@ -138,11 +138,11 @@ export default function StoicAbout() {
       <div className="h-px bg-thayer-border" />
 
       {/* Team */}
-      <section className="px-14 py-16 flex flex-col gap-12">
+      <section className="px-6 md:px-14 py-12 md:py-16 flex flex-col gap-12">
         <h2 className="font-playfair text-[22px] text-thayer-gold">Team</h2>
 
         {/* Partners Row */}
-        <div className="flex gap-6">
+        <div className="flex flex-col md:flex-row gap-4 md:gap-6">
           {partners.map((p, i) => (
             <div
               key={i}
@@ -166,7 +166,7 @@ export default function StoicAbout() {
         </div>
 
         {/* Team Rows */}
-        <div className="flex gap-6">
+        <div className="flex flex-col md:flex-row gap-4 md:gap-6">
           {team.slice(0, 3).map((t, i) => (
             <div
               key={i}
@@ -188,7 +188,7 @@ export default function StoicAbout() {
             </div>
           ))}
         </div>
-        <div className="flex gap-6">
+        <div className="flex flex-col md:flex-row gap-4 md:gap-6">
           {team.slice(3).map((t, i) => (
             <div
               key={i}

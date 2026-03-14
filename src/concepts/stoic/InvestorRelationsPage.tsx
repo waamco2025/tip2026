@@ -30,9 +30,9 @@ export default function StoicInvestorRelations() {
       <Navigation />
 
       {/* Header */}
-      <section className="flex flex-col items-center gap-4 px-14 py-20">
-        <h1 className="font-playfair text-[52px]">Investor Relations</h1>
-        <p className="text-thayer-text-secondary text-lg leading-[1.5] text-center max-w-[700px]">
+      <section className="flex flex-col items-center gap-4 px-6 md:px-14 py-12 md:py-20">
+        <h1 className="font-playfair text-[32px] md:text-[52px]">Investor Relations</h1>
+        <p className="text-thayer-text-secondary text-lg leading-[1.5] text-center max-w-full md:max-w-[700px]">
           Access important documents, SEC filings, and real-time market data for
           Thayer Investment Partners.
         </p>
@@ -40,9 +40,9 @@ export default function StoicInvestorRelations() {
       </section>
 
       {/* Documents & Filings */}
-      <section className="px-14 py-14 flex flex-col gap-8">
-        <h2 className="font-playfair text-[28px]">Documents & Filings</h2>
-        <div className="flex gap-6">
+      <section className="px-6 md:px-14 py-10 md:py-14 flex flex-col gap-8">
+        <h2 className="font-playfair text-[22px] md:text-[28px]">Documents & Filings</h2>
+        <div className="flex flex-col md:flex-row gap-4 md:gap-6">
           {documents.map((doc, i) => (
             <div
               key={i}
@@ -62,9 +62,9 @@ export default function StoicInvestorRelations() {
       </section>
 
       {/* Market Data */}
-      <section className="px-14 py-14 border-t border-thayer-border flex flex-col gap-8">
+      <section className="px-6 md:px-14 py-10 md:py-14 border-t border-thayer-border flex flex-col gap-8">
         <div className="flex flex-col gap-2">
-          <h2 className="font-playfair text-[28px]">Market Data</h2>
+          <h2 className="font-playfair text-[22px] md:text-[28px]">Market Data</h2>
           <p className="text-thayer-text-secondary text-sm leading-[1.5]">
             Real-time NASDAQ performance data for Thayer Investment Partners
             securities.

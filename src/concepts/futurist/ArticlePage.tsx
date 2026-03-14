@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import { FuturistNav, FuturistFooter } from "./HomePage";
 
@@ -14,8 +16,8 @@ export default function FuturistArticle() {
       <div className="h-px bg-[#1E293B]" />
 
       {/* Header - two column */}
-      <section className="flex gap-10 px-14 py-14">
-        <div className="flex flex-col justify-center gap-4 w-[480px] shrink-0">
+      <section className="flex flex-col md:flex-row gap-6 md:gap-10 px-6 md:px-14 py-10 md:py-14">
+        <div className="flex flex-col justify-center gap-4 w-full md:w-[480px] shrink-0">
           <span className="text-[#64748B] text-[13px] font-[Inter]">News  &gt;  Article</span>
           <div className="flex items-center gap-3">
             <span className="bg-[#00D776]/15 text-[#00D776] text-[11px] font-semibold tracking-[1.5px] px-2.5 py-1 rounded font-[Inter]">VIDEO</span>
@@ -23,21 +25,21 @@ export default function FuturistArticle() {
           </div>
         </div>
         <div className="flex flex-col justify-center gap-4 flex-1">
-          <h1 className="text-[40px] font-bold text-white leading-[1.2]" style={{ fontFamily: "Space Grotesk" }}>Thayer Managing Partner Speaks with TravelAI About Their Future Vision</h1>
+          <h1 className="text-[28px] md:text-[40px] font-bold text-white leading-[1.2]" style={{ fontFamily: "Space Grotesk" }}>Thayer Managing Partner Speaks with TravelAI About Their Future Vision</h1>
           <p className="text-[#94A3B8] text-base leading-[1.5] font-[Inter]">Chris Hemmeter sits down with TravelAI to discuss how artificial intelligence is reshaping the travel and transportation landscape.</p>
         </div>
       </section>
 
       {/* Hero Image */}
-      <div className="px-14 py-0">
-        <div className="w-full h-[700px] bg-cover bg-center rounded-xl" style={{ backgroundImage: "url('/images/futurist-article-hero.png')" }} />
+      <div className="px-6 md:px-14 py-0">
+        <div className="w-full h-[300px] md:h-[700px] bg-cover bg-center rounded-xl" style={{ backgroundImage: "url('/images/futurist-article-hero.png')" }} />
       </div>
 
       <div className="h-px bg-[#1E293B] mt-8" />
 
       {/* Article body - two column */}
-      <section className="flex gap-10 px-14 py-14">
-        <div className="flex flex-col gap-4 w-[480px] shrink-0">
+      <section className="flex flex-col md:flex-row gap-6 md:gap-10 px-6 md:px-14 py-10 md:py-14">
+        <div className="flex flex-col gap-4 w-full md:w-[480px] shrink-0">
           <span className="text-[#64748B] text-[10px] font-semibold tracking-[2px] font-[Inter]">WRITTEN BY</span>
           <div className="flex items-center gap-4">
             <div className="w-14 h-14 bg-[#1E293B] rounded-full" />
@@ -63,9 +65,9 @@ export default function FuturistArticle() {
       <div className="h-px bg-[#1E293B]" />
 
       {/* Related - two column */}
-      <section className="flex gap-10 px-14 py-14">
-        <div className="flex flex-col gap-3 w-[480px] shrink-0">
-          <h2 className="text-[32px] font-bold text-white leading-[1.2]" style={{ fontFamily: "Space Grotesk" }}>More News & Insights</h2>
+      <section className="flex flex-col md:flex-row gap-6 md:gap-10 px-6 md:px-14 py-10 md:py-14">
+        <div className="flex flex-col gap-3 w-full md:w-[480px] shrink-0">
+          <h2 className="text-[24px] md:text-[32px] font-bold text-white leading-[1.2]" style={{ fontFamily: "Space Grotesk" }}>More News & Insights</h2>
           <p className="text-[#64748B] text-sm font-[Inter]">Continue exploring the latest from Thayer.</p>
         </div>
         <div className="flex flex-col gap-4 flex-1">

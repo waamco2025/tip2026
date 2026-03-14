@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import { FuturistNav, FuturistFooter } from "./HomePage";
 import { TrendingUp, Users, Globe } from "lucide-react";
@@ -28,10 +30,10 @@ export default function FuturistAbout() {
       <FuturistNav active="About" />
 
       {/* Hero - two column */}
-      <section className="flex gap-12 px-12 py-20">
-        <div className="flex flex-col justify-center gap-4 w-[540px] shrink-0">
+      <section className="flex flex-col md:flex-row gap-6 md:gap-12 px-6 md:px-12 py-12 md:py-20">
+        <div className="flex flex-col justify-center gap-4 w-full md:w-[540px] shrink-0">
           <span className="text-[#00D776] font-semibold text-[11px] tracking-[2px] font-[Inter]">ABOUT US</span>
-          <h1 className="text-[56px] font-bold text-white" style={{ fontFamily: "Space Grotesk" }}>Who We Are</h1>
+          <h1 className="text-[32px] md:text-[56px] font-bold text-white" style={{ fontFamily: "Space Grotesk" }}>Who We Are</h1>
         </div>
         <div className="flex items-center flex-1">
           <p className="text-[#94A3B8] text-lg leading-relaxed font-[Inter]">Thayer is a premier venture capital firm focused on travel & transportation technology. Since 2008, we have been partnering with visionary founders building the next generation of companies transforming how the world moves.</p>
@@ -41,13 +43,13 @@ export default function FuturistAbout() {
       <div className="h-px bg-[#1E293B]" />
 
       {/* Photo break */}
-      <div className="relative h-[300px] bg-cover bg-center" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1715091618825-70f04f4cff72?w=1080&q=80')" }}><div className="absolute inset-0 bg-[#00B4D8]/40" /></div>
+      <div className="relative h-[200px] md:h-[300px] bg-cover bg-center" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1715091618825-70f04f4cff72?w=1080&q=80')" }}><div className="absolute inset-0 bg-[#00B4D8]/40" /></div>
 
       {/* Mission - two column */}
-      <section className="flex gap-12 px-12 py-20">
-        <div className="flex flex-col gap-4 w-[540px] shrink-0">
+      <section className="flex flex-col md:flex-row gap-6 md:gap-12 px-6 md:px-12 py-12 md:py-20">
+        <div className="flex flex-col gap-4 w-full md:w-[540px] shrink-0">
           <span className="text-[#00D776] font-semibold text-xs tracking-[3px] font-[Inter]">OUR MISSION</span>
-          <h2 className="text-[40px] font-bold text-white leading-[1.15]" style={{ fontFamily: "Space Grotesk" }}>What Drives Us Forward</h2>
+          <h2 className="text-[28px] md:text-[40px] font-bold text-white leading-[1.15]" style={{ fontFamily: "Space Grotesk" }}>What Drives Us Forward</h2>
           <div className="w-[60px] h-1 bg-[#00D776] rounded-sm" />
         </div>
         <div className="flex flex-col gap-4 flex-1">
@@ -59,10 +61,10 @@ export default function FuturistAbout() {
       </section>
 
       {/* Approach - two column */}
-      <section className="flex gap-12 px-12 py-20">
-        <div className="flex flex-col gap-4 w-[540px] shrink-0">
+      <section className="flex flex-col md:flex-row gap-6 md:gap-12 px-6 md:px-12 py-12 md:py-20">
+        <div className="flex flex-col gap-4 w-full md:w-[540px] shrink-0">
           <span className="text-[#00D776] font-semibold text-xs tracking-[3px] font-[Inter]">OUR APPROACH</span>
-          <h2 className="text-[40px] font-bold text-white leading-[1.15]" style={{ fontFamily: "Space Grotesk" }}>Making travel more efficient and resilient</h2>
+          <h2 className="text-[28px] md:text-[40px] font-bold text-white leading-[1.15]" style={{ fontFamily: "Space Grotesk" }}>Making travel more efficient and resilient</h2>
           <div className="w-[60px] h-1 bg-[#00D776] rounded-sm" />
           <p className="text-[#94A3B8] text-[15px] leading-[1.7] font-[Inter]">We believe that the convergence of travel and technology represents one of the most significant investment opportunities of our generation.</p>
         </div>
@@ -78,10 +80,10 @@ export default function FuturistAbout() {
       </section>
 
       {/* Journey - two column */}
-      <section className="flex gap-12 px-12 py-20">
-        <div className="flex flex-col gap-4 w-[540px] shrink-0">
+      <section className="flex flex-col md:flex-row gap-6 md:gap-12 px-6 md:px-12 py-12 md:py-20">
+        <div className="flex flex-col gap-4 w-full md:w-[540px] shrink-0">
           <span className="text-[#00D776] font-semibold text-[11px] tracking-[2px] font-[Inter]">OUR JOURNEY</span>
-          <h2 className="text-4xl font-bold text-white" style={{ fontFamily: "Space Grotesk" }}>A History of Innovation in Travel</h2>
+          <h2 className="text-2xl md:text-4xl font-bold text-white" style={{ fontFamily: "Space Grotesk" }}>A History of Innovation in Travel</h2>
         </div>
         <div className="flex flex-col gap-3 flex-1">
           {milestones.map((m, i) => (
@@ -96,14 +98,14 @@ export default function FuturistAbout() {
       <div className="h-px bg-[#1E293B]" />
 
       {/* Team - two column */}
-      <section className="flex gap-12 px-12 py-20">
-        <div className="flex flex-col gap-4 w-[540px] shrink-0">
+      <section className="flex flex-col md:flex-row gap-6 md:gap-12 px-6 md:px-12 py-12 md:py-20">
+        <div className="flex flex-col gap-4 w-full md:w-[540px] shrink-0">
           <span className="text-[#00D776] font-semibold text-[11px] tracking-[2px] font-[Inter]">TEAM</span>
-          <h2 className="text-4xl font-bold text-white" style={{ fontFamily: "Space Grotesk" }}>The People Behind Thayer</h2>
+          <h2 className="text-2xl md:text-4xl font-bold text-white" style={{ fontFamily: "Space Grotesk" }}>The People Behind Thayer</h2>
         </div>
         <div className="flex flex-col gap-6 flex-1">
           {team.map((row, ri) => (
-            <div key={ri} className="flex gap-6">
+            <div key={ri} className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
               {row.map((p, i) => (
                 <div key={i} className="flex-1 bg-[#131B2E] border border-[#1E293B] rounded-xl p-4 flex flex-col gap-3">
                   <div className="h-40 bg-[#1E293B] rounded-lg" />

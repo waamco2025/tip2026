@@ -18,10 +18,10 @@ export default function FuturistPortfolio() {
       <FuturistNav active="Portfolio" />
 
       {/* Header - two column */}
-      <section className="flex gap-12 px-12 py-20">
-        <div className="flex flex-col justify-center gap-4 w-[540px] shrink-0">
+      <section className="flex flex-col md:flex-row gap-6 md:gap-12 px-6 md:px-12 py-12 md:py-20">
+        <div className="flex flex-col justify-center gap-4 w-full md:w-[540px] shrink-0">
           <span className="text-[#00D776] font-semibold text-[11px] tracking-[2px] font-[Inter]">INVESTMENTS</span>
-          <h1 className="text-[56px] font-bold text-white" style={{ fontFamily: "Space Grotesk" }}>Our Portfolio</h1>
+          <h1 className="text-[32px] md:text-[56px] font-bold text-white" style={{ fontFamily: "Space Grotesk" }}>Our Portfolio</h1>
         </div>
         <div className="flex items-center flex-1">
           <p className="text-[#94A3B8] text-lg leading-relaxed font-[Inter]">We invest in transformative travel and transportation technology companies. Our portfolio spans hotels, travel advisors, fintech, real estate technology, and transportation — backing founders who are reshaping a $15 trillion global industry.</p>
@@ -31,7 +31,7 @@ export default function FuturistPortfolio() {
       <div className="h-px bg-[#1E293B]" />
 
       {/* Filters */}
-      <div className="flex gap-6 px-12 py-6">
+      <div className="flex flex-wrap gap-3 md:gap-6 px-6 md:px-12 py-6">
         {filters.map((f) => (
           <button
             key={f}
@@ -48,34 +48,32 @@ export default function FuturistPortfolio() {
       </div>
 
       {/* Grid */}
-      <section className="px-12 py-8 flex flex-col gap-6">
-        {[0, 1, 2, 3].map((row) => (
-          <div key={row} className="flex gap-6">
-            {companies.slice(row * 4, row * 4 + 4).map((c, i) => (
-              <div key={i} className="flex-1 bg-[#131B2E] border border-[#1E293B] rounded-xl p-4 flex flex-col gap-3">
-                <div className="h-[140px] bg-[#1E293B] rounded-lg" />
-                <span className="text-white text-sm font-semibold font-[Inter]">{c.name}</span>
-                <span className="text-[#00D776] text-[11px] font-medium tracking-[1px] font-[Inter]">{c.category}</span>
-              </div>
-            ))}
-          </div>
-        ))}
+      <section className="px-6 md:px-12 py-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+          {companies.map((c, i) => (
+            <div key={i} className="bg-[#131B2E] border border-[#1E293B] rounded-xl p-4 flex flex-col gap-3">
+              <div className="h-[140px] bg-[#1E293B] rounded-lg" />
+              <span className="text-white text-sm font-semibold font-[Inter]">{c.name}</span>
+              <span className="text-[#00D776] text-[11px] font-medium tracking-[1px] font-[Inter]">{c.category}</span>
+            </div>
+          ))}
+        </div>
       </section>
 
       {/* Banner */}
-      <div className="relative h-[300px] bg-cover bg-center" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1759961831334-f47eab63c0f4?w=1080&q=80')" }}><div className="absolute inset-0 bg-[#00D776]/25" /></div>
+      <div className="relative h-[200px] md:h-[300px] bg-cover bg-center" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1759961831334-f47eab63c0f4?w=1080&q=80')" }}><div className="absolute inset-0 bg-[#00D776]/25" /></div>
 
       {/* CTA - two column */}
-      <section className="flex gap-12 px-12 py-20">
-        <div className="flex flex-col justify-center gap-4 w-[540px] shrink-0">
+      <section className="flex flex-col md:flex-row gap-6 md:gap-12 px-6 md:px-12 py-12 md:py-20">
+        <div className="flex flex-col justify-center gap-4 w-full md:w-[540px] shrink-0">
           <span className="text-[#00D776] font-semibold text-[11px] tracking-[2px] font-[Inter]">IMPACT</span>
-          <h2 className="text-4xl font-bold text-white" style={{ fontFamily: "Space Grotesk" }}>Building the Future of Travel</h2>
+          <h2 className="text-2xl md:text-4xl font-bold text-white" style={{ fontFamily: "Space Grotesk" }}>Building the Future of Travel</h2>
         </div>
         <div className="flex flex-col gap-8 flex-1">
-          <div className="flex gap-6">
+          <div className="flex flex-col md:flex-row gap-6">
             {[{ val: "110+", label: "Portfolio Companies", color: "#00D776" }, { val: "$15T", label: "Industry Size", color: "#00B4D8" }, { val: "20+", label: "Years Experience", color: "#7C3AED" }].map((s, i) => (
               <div key={i} className="flex-1 bg-[#131B2E] border border-[#1E293B] rounded-xl p-6 flex flex-col items-center gap-2">
-                <span className="text-[40px] font-bold" style={{ fontFamily: "Space Grotesk", color: s.color }}>{s.val}</span>
+                <span className="text-[28px] md:text-[40px] font-bold" style={{ fontFamily: "Space Grotesk", color: s.color }}>{s.val}</span>
                 <span className="text-[#94A3B8] text-xs font-medium font-[Inter]">{s.label}</span>
               </div>
             ))}

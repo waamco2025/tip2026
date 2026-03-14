@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import { FuturistNav, FuturistFooter } from "./HomePage";
 import { ChevronRight } from "lucide-react";
@@ -18,12 +20,12 @@ export default function FuturistNews() {
       <FuturistNav active="News" />
 
       {/* Header */}
-      <section className="flex gap-12 px-14 py-20">
+      <section className="flex gap-6 md:gap-12 px-6 md:px-14 py-12 md:py-20">
         <div className="flex flex-col justify-center gap-4 flex-1">
-          <h1 className="text-[52px] font-bold text-white" style={{ fontFamily: "Space Grotesk" }}>News & Insights</h1>
-          <p className="text-[#94A3B8] text-base leading-[1.5] font-[Inter] max-w-[480px]">The latest announcements, investment updates, and thought leadership from Thayer Investment Partners.</p>
+          <h1 className="text-[32px] md:text-[52px] font-bold text-white" style={{ fontFamily: "Space Grotesk" }}>News & Insights</h1>
+          <p className="text-[#94A3B8] text-base leading-[1.5] font-[Inter] max-w-full md:max-w-[480px]">The latest announcements, investment updates, and thought leadership from Thayer Investment Partners.</p>
         </div>
-        <div className="flex flex-col justify-center items-end gap-2">
+        <div className="hidden md:flex flex-col justify-center items-end gap-2">
           <div className="w-[120px] h-[3px] bg-[#00D776]" />
           <div className="w-[80px] h-[3px] bg-[#00D776]/50" />
           <div className="w-[40px] h-[3px] bg-[#00D776]/25" />
@@ -31,8 +33,8 @@ export default function FuturistNews() {
       </section>
 
       {/* Featured */}
-      <section className="flex gap-8 px-14 py-10">
-        <div className="w-[528px] h-[400px] shrink-0 bg-cover bg-center rounded-xl" style={{ backgroundImage: "url('/images/futurist-article-hero.png')" }} />
+      <section className="flex flex-col md:flex-row gap-6 md:gap-8 px-6 md:px-14 py-10">
+        <div className="w-full md:w-[528px] h-[250px] md:h-[400px] shrink-0 bg-cover bg-center rounded-xl" style={{ backgroundImage: "url('/images/futurist-article-hero.png')" }} />
         <div className="flex flex-col justify-center gap-4 flex-1">
           <div className="flex items-center gap-3">
             <span className="bg-[#00D776]/15 text-[#00D776] text-[11px] font-semibold tracking-[1.5px] px-2.5 py-1 rounded font-[Inter]">VIDEO</span>
@@ -47,16 +49,18 @@ export default function FuturistNews() {
       <div className="h-px bg-[#1E293B]" />
 
       {/* Article list */}
-      <section className="px-14 py-12 flex flex-col">
+      <section className="px-6 md:px-14 py-12 flex flex-col">
         <span className="text-[#64748B] text-[11px] font-semibold tracking-[2px] mb-6 font-[Inter]">ALL ARTICLES</span>
         {articles.map((a, i) => (
-          <div key={i} className={`flex items-center gap-4 py-5 ${i < articles.length - 1 ? "border-b border-[#1E293B]" : ""}`}>
-            <div className="w-[120px]">
+          <div key={i} className={`flex flex-col md:flex-row md:items-center gap-2 md:gap-4 py-5 ${i < articles.length - 1 ? "border-b border-[#1E293B]" : ""}`}>
+            <div className="w-auto md:w-[120px]">
               <span className="text-[10px] font-semibold tracking-[1px] px-2.5 py-1 rounded font-[Inter]" style={{ color: a.tagColor, backgroundColor: a.tagColor + "20" }}>{a.tag}</span>
             </div>
             <span className="text-white text-[15px] font-medium flex-1 font-[Inter]">{a.title}</span>
-            <span className="text-[#64748B] text-[13px] font-[Inter]">{a.date}</span>
-            <ChevronRight className="w-[18px] h-[18px] text-[#64748B]" />
+            <div className="flex items-center gap-2">
+              <span className="text-[#64748B] text-[13px] font-[Inter]">{a.date}</span>
+              <ChevronRight className="w-[18px] h-[18px] text-[#64748B]" />
+            </div>
           </div>
         ))}
       </section>

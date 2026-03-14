@@ -10,8 +10,8 @@ const footerLinks = [
 
 export default function Footer() {
   return (
-    <footer className="bg-thayer-bg border-t border-thayer-border px-14 py-12 flex flex-col gap-8">
-      <div className="flex justify-between items-start">
+    <footer className="bg-thayer-bg border-t border-thayer-border px-6 md:px-14 py-10 md:py-12 flex flex-col gap-6 md:gap-8">
+      <div className="flex flex-col md:flex-row justify-between items-start gap-6">
         <div className="flex flex-col gap-3">
           <span className="text-thayer-gold font-semibold text-[13px] tracking-[2px]">
             THAYER INVESTMENT PARTNERS
@@ -20,7 +20,7 @@ export default function Footer() {
             Pioneers in travel technology venture capital.
           </span>
         </div>
-        <div className="flex items-center gap-8">
+        <div className="flex flex-wrap items-center gap-x-6 gap-y-2 md:gap-8">
           {footerLinks.map((link) => (
             <Link
               key={link.href}
@@ -32,7 +32,7 @@ export default function Footer() {
           ))}
         </div>
       </div>
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-2">
         <span className="text-thayer-text-muted text-[11px]">
           © 2026 Thayer Investment Partners. All rights reserved.
         </span>

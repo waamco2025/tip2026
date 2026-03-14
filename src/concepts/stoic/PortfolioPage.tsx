@@ -41,8 +41,8 @@ export default function StoicPortfolio() {
       <Navigation />
 
       {/* Header */}
-      <section className="flex flex-col items-center gap-4 px-14 py-20">
-        <h1 className="font-playfair text-[52px]">Our Portfolio</h1>
+      <section className="flex flex-col items-center gap-4 px-6 md:px-14 py-12 md:py-20">
+        <h1 className="font-playfair text-[32px] md:text-[52px]">Our Portfolio</h1>
         <p className="text-thayer-text-secondary text-lg text-center">
           Investing in the companies shaping the future of global travel
         </p>
@@ -50,8 +50,8 @@ export default function StoicPortfolio() {
       </section>
 
       {/* Filters */}
-      <div className="flex justify-center px-14 h-16 items-center">
-        <div className="flex gap-2">
+      <div className="flex justify-center px-6 md:px-14 h-auto md:h-16 items-center py-4 md:py-0">
+        <div className="flex flex-wrap justify-center gap-2">
           {filters.map((f) => (
             <button
               key={f}
@@ -69,10 +69,10 @@ export default function StoicPortfolio() {
       </div>
 
       {/* Grid */}
-      <section className="px-14 pt-5 pb-20 flex flex-col gap-6">
+      <section className="px-6 md:px-14 pt-5 pb-12 md:pb-20 flex flex-col gap-4 md:gap-6">
         {Array.from({ length: Math.ceil(filtered.length / 3) }).map(
           (_, rowIdx) => (
-            <div key={rowIdx} className="flex gap-6">
+            <div key={rowIdx} className="flex flex-col md:flex-row gap-4 md:gap-6">
               {filtered.slice(rowIdx * 3, rowIdx * 3 + 3).map((company, i) => (
                 <div
                   key={i}
@@ -96,15 +96,15 @@ export default function StoicPortfolio() {
       </section>
 
       {/* CTA */}
-      <section className="bg-thayer-surface px-14 py-20 flex flex-col items-center gap-6">
-        <h2 className="font-playfair text-4xl text-center">
+      <section className="bg-thayer-surface px-6 md:px-14 py-12 md:py-20 flex flex-col items-center gap-6">
+        <h2 className="font-playfair text-2xl md:text-4xl text-center">
           Building the Future of Travel
         </h2>
         <p className="text-thayer-text-secondary text-base leading-relaxed text-center max-w-[640px]">
           Our portfolio companies are transforming how the world travels, from
           AI-powered booking platforms to sustainable aviation technology.
         </p>
-        <div className="flex gap-20 pt-8">
+        <div className="flex flex-col md:flex-row gap-8 md:gap-20 pt-8">
           {[
             { val: "$2.8B+", label: "Portfolio Value" },
             { val: "12", label: "Active Companies" },

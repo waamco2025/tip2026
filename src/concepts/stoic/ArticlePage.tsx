@@ -44,7 +44,7 @@ export default function StoicArticle() {
       <Navigation />
 
       {/* Article Header */}
-      <section className="px-14 pt-12 flex flex-col gap-4">
+      <section className="px-6 md:px-14 pt-12 flex flex-col gap-4">
         <Link
           href="/news"
           className="text-thayer-gold text-[13px] font-medium hover:underline"
@@ -60,7 +60,7 @@ export default function StoicArticle() {
             {articleContent.category}
           </span>
         </div>
-        <h1 className="font-playfair text-[42px] leading-[1.2]">
+        <h1 className="font-playfair text-[28px] md:text-[42px] leading-[1.2]">
           {articleContent.title}
         </h1>
         <p className="text-thayer-text-secondary text-lg leading-relaxed">
@@ -69,12 +69,12 @@ export default function StoicArticle() {
       </section>
 
       {/* Hero Image */}
-      <div className="px-14 py-8">
-        <div className="w-full h-[500px] bg-thayer-navy-light rounded" />
+      <div className="px-6 md:px-14 py-8">
+        <div className="w-full h-[300px] md:h-[500px] bg-thayer-navy-light rounded" />
       </div>
 
       {/* Article Body */}
-      <section className="flex justify-center px-14">
+      <section className="flex justify-center px-6 md:px-14">
         <div className="max-w-[800px] flex flex-col gap-6 py-12">
           {articleContent.paragraphs.map((p, i) => (
             <p
@@ -88,9 +88,9 @@ export default function StoicArticle() {
       </section>
 
       {/* Related Articles */}
-      <section className="px-14 py-14 border-t border-thayer-border flex flex-col gap-8">
-        <h2 className="font-playfair text-[28px]">More News & Insights</h2>
-        <div className="flex gap-6">
+      <section className="px-6 md:px-14 py-10 md:py-14 border-t border-thayer-border flex flex-col gap-8">
+        <h2 className="font-playfair text-[22px] md:text-[28px]">More News & Insights</h2>
+        <div className="flex flex-col md:flex-row gap-4 md:gap-6">
           {relatedArticles.map((article, i) => (
             <div
               key={i}
