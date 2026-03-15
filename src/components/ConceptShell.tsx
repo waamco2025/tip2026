@@ -6,16 +6,19 @@ export default function ConceptShell({
   stoic,
   modern,
   futurist,
+  editorial,
 }: {
   stoic: React.ReactNode;
   modern?: React.ReactNode;
   futurist?: React.ReactNode;
+  editorial?: React.ReactNode;
 }) {
   const { theme } = useTheme();
 
   if (theme === "stoic") return <>{stoic}</>;
   if (theme === "modern" && modern) return <>{modern}</>;
   if (theme === "futurist" && futurist) return <>{futurist}</>;
+  if (theme === "editorial" && editorial) return <>{editorial}</>;
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-thayer-bg">

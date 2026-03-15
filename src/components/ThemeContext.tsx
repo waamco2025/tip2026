@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useState, useEffect } from "react";
 
-export type ThemeName = "stoic" | "modern" | "futurist";
+export type ThemeName = "stoic" | "modern" | "futurist" | "editorial";
 
 const ThemeContext = createContext<{
   theme: ThemeName;

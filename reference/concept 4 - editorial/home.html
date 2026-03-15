@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thayer Investment Partners</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&family=Syne:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0C0C0A;
+      --surface: #141410;
+      --text: #EAE5DB;
+      --muted: #7A7568;
+      --accent: #C49A45;
+      --accent-dim: rgba(196,154,69,0.12);
+      --rule: rgba(255,255,255,0.07);
+      --serif: 'Cormorant Garamond', Georgia, serif;
+      --sans: 'Syne', sans-serif;
+    }
+
+    html {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--serif);
+      scroll-behavior: smooth;
+    }
+
+    body { overflow-x: hidden; }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.5rem 3rem;
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.4s, background 0.4s;
+    }
+
+    nav.scrolled {
+      border-color: var(--rule);
+      background: rgba(12,12,10,0.94);
+      backdrop-filter: blur(16px);
+    }
+
+    .nav-logo {
+      font-family: var(--sans);
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: var(--sans);
+      font-size: 0.68rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--text); }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      height: 100vh;
+      min-height: 700px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 0 3rem 5rem;
+      overflow: hidden;
+    }
+
+    #aurora {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 950px;
+    }
+
+    .hero-label {
+      font-family: var(--sans);
+      font-size: 0.65rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 2rem;
+    }
+
+    .hero-headline {
+      font-size: clamp(3.5rem, 8.5vw, 8.5rem);
+      font-weight: 300;
+      line-height: 1.02;
+      font-style: italic;
+      letter-spacing: -0.02em;
+      margin-bottom: 3rem;
+    }
+
+    .hero-sub {
+      display: flex;
+      align-items: center;
+      gap: 3rem;
+    }
+
+    .hero-descriptor {
+      font-family: var(--sans);
+      font-size: 0.68rem;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      max-width: 260px;
+      line-height: 1.8;
+      text-transform: uppercase;
+    }
+
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-family: var(--sans);
+      font-size: 0.68rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--text);
+      text-decoration: none;
+      border: 1px solid rgba(255,255,255,0.18);
+      padding: 0.9rem 1.8rem;
+      transition: border-color 0.3s, background 0.3s;
+      white-space: nowrap;
+    }
+
+    .hero-cta:hover {
+      border-color: var(--accent);
+      background: var(--accent-dim);
+    }
+
+    .scroll-indicator {
+      position: absolute;
+      bottom: 2.5rem;
+      right: 3rem;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .scroll-indicator span {
+      font-family: var(--sans);
+      font-size: 0.58rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--muted);
+      writing-mode: vertical-rl;
+    }
+
+    .scroll-line {
+      width: 1px;
+      height: 56px;
+      background: linear-gradient(to bottom, var(--accent), transparent);
+      animation: scrollPulse 2.2s ease-in-out infinite;
+    }
+
+    @keyframes scrollPulse {
+      0%, 100% { opacity: 0.35; transform: scaleY(1) translateY(0); }
+      50% { opacity: 1; transform: scaleY(0.5) translateY(10px); }
+    }
+
+    /* ── TICKER ── */
+    .ticker {
+      border-top: 1px solid var(--rule);
+      border-bottom: 1px solid var(--rule);
+      padding: 0.9rem 0;
+      overflow: hidden;
+      background: var(--surface);
+    }
+
+    .ticker-track {
+      display: flex;
+      gap: 3.5rem;
+      animation: tickerScroll 35s linear infinite;
+      width: max-content;
+    }
+
+    .ticker-item {
+      font-family: var(--sans);
+      font-size: 0.62rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--muted);
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .ticker-item::before {
+      content: '◆';
+      color: var(--accent);
+      font-size: 0.38rem;
+    }
+
+    @keyframes tickerScroll {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+
+    /* ── SECTIONS ── */
+    section { padding: 7rem 3rem; }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      margin-bottom: 5rem;
+    }
+
+    .section-label {
+      font-family: var(--sans);
+      font-size: 0.6rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--accent);
+      white-space: nowrap;
+    }
+
+    .section-rule {
+      flex: 1;
+      height: 1px;
+      background: var(--rule);
+    }
+
+    .section-number {
+      font-family: var(--sans);
+      font-size: 0.6rem;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+    }
+
+    /* ── INTRO ── */
+    .intro {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6rem;
+      align-items: start;
+    }
+
+    .intro-headline {
+      font-size: clamp(2rem, 3.8vw, 3.5rem);
+      font-weight: 300;
+      line-height: 1.15;
+      font-style: italic;
+    }
+
+    .intro-body p {
+      font-size: 1.1rem;
+      line-height: 1.85;
+      color: rgba(234,229,219,0.72);
+      margin-bottom: 1.5rem;
+      font-weight: 300;
+    }
+
+    .since-tag {
+      font-family: var(--sans);
+      font-size: 0.62rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-top: 2.5rem;
+    }
+
+    .since-tag::before {
+      content: '';
+      width: 2rem;
+      height: 1px;
+      background: var(--accent);
+      flex-shrink: 0;
+    }
+
+    /* ── STATS ── */
+    .stats-section {
+      background: var(--surface);
+      border-top: 1px solid var(--rule);
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .stat-item {
+      padding: 3rem 3rem 3rem 0;
+      border-right: 1px solid var(--rule);
+      padding-left: 3rem;
+    }
+
+    .stat-item:first-child { padding-left: 0; }
+    .stat-item:last-child { border-right: none; }
+
+    .stat-value {
+      font-size: clamp(3rem, 6vw, 5.5rem);
+      font-weight: 300;
+      font-style: italic;
+      line-height: 1;
+      margin-bottom: 1rem;
+    }
+
+    .stat-value em {
+      color: var(--accent);
+      font-style: normal;
+    }
+
+    .stat-label {
+      font-family: var(--sans);
+      font-size: 0.62rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--muted);
+      line-height: 1.6;
+      margin-bottom: 0.75rem;
+    }
+
+    .stat-sub {
+      font-size: 0.95rem;
+      color: var(--muted);
+      font-weight: 300;
+      line-height: 1.6;
+    }
+
+    /* ── FOCUS ── */
+    .focus-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .focus-item {
+      padding: 2.5rem 0;
+      border-bottom: 1px solid var(--rule);
+      display: grid;
+      grid-template-columns: 3.5rem 1fr;
+      gap: 1rem;
+      align-items: start;
+      transition: background 0.3s, padding-left 0.3s ease;
+      padding-left: 0;
+    }
+
+    .focus-item:nth-child(odd) {
+      border-right: 1px solid var(--rule);
+      padding-right: 3rem;
+    }
+
+    .focus-item:nth-child(even) {
+      padding-left: 3rem;
+    }
+
+    .focus-item:hover {
+      background: rgba(196,154,69,0.04);
+    }
+
+    .focus-item:nth-child(even):hover {
+      padding-left: 3.5rem;
+    }
+
+    .focus-num {
+      font-family: var(--sans);
+      font-size: 0.58rem;
+      letter-spacing: 0.12em;
+      color: var(--accent);
+      padding-top: 0.5rem;
+    }
+
+    .focus-title {
+      font-size: 1.45rem;
+      font-weight: 400;
+      font-style: italic;
+      margin-bottom: 0.5rem;
+      line-height: 1.2;
+    }
+
+    .focus-desc {
+      font-family: var(--sans);
+      font-size: 0.65rem;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    /* ── TESTIMONIALS ── */
+    .testimonials-section { background: var(--surface); }
+
+    .testimonial-item {
+      display: grid;
+      grid-template-columns: 1fr 200px;
+      gap: 3rem;
+      align-items: end;
+      padding: 3.5rem 0;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .testimonial-item:first-of-type { border-top: 1px solid var(--rule); }
+
+    .testimonial-quote {
+      font-size: clamp(1.2rem, 2.2vw, 1.8rem);
+      font-weight: 300;
+      font-style: italic;
+      line-height: 1.45;
+    }
+
+    .testimonial-quote::before { content: '\201C'; color: var(--accent); }
+    .testimonial-quote::after { content: '\201D'; color: var(--accent); }
+
+    .testimonial-attribution { text-align: right; }
+
+    .attr-name {
+      font-family: var(--sans);
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      color: var(--text);
+      margin-bottom: 0.3rem;
+    }
+
+    .attr-title {
+      font-family: var(--sans);
+      font-size: 0.6rem;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+    }
+
+    /* ── NEWS ── */
+    .news-item {
+      display: grid;
+      grid-template-columns: 110px 1fr 2rem;
+      gap: 2.5rem;
+      align-items: baseline;
+      padding: 2rem 0;
+      border-bottom: 1px solid var(--rule);
+      text-decoration: none;
+      color: inherit;
+      transition: gap 0.3s ease;
+    }
+
+    .news-item:first-of-type { border-top: 1px solid var(--rule); }
+    .news-item:hover { gap: 3.5rem; }
+
+    .news-date {
+      font-family: var(--sans);
+      font-size: 0.6rem;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    .news-title {
+      font-size: 1.2rem;
+      font-weight: 300;
+      font-style: italic;
+      line-height: 1.4;
+    }
+
+    .news-arrow {
+      color: var(--accent);
+      font-style: normal;
+      transition: transform 0.3s;
+    }
+
+    .news-item:hover .news-arrow { transform: translateX(4px); }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--rule);
+      padding: 2.5rem 3rem;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    .footer-logo {
+      font-family: var(--sans);
+      font-size: 0.65rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
+    .footer-links a {
+      font-family: var(--sans);
+      font-size: 0.6rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover { color: var(--text); }
+
+    .footer-copy {
+      font-family: var(--sans);
+      font-size: 0.58rem;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      text-align: right;
+    }
+
+    /* ── REVEAL ANIMATIONS ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.9s cubic-bezier(0.16,1,0.3,1), transform 0.9s cubic-bezier(0.16,1,0.3,1);
+    }
+
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-d1 { transition-delay: 0.1s; }
+    .reveal-d2 { transition-delay: 0.2s; }
+    .reveal-d3 { transition-delay: 0.32s; }
+    .reveal-d4 { transition-delay: 0.44s; }
+  </style>
+</head>
+<body>
+
+<nav id="nav">
+  <a href="/" class="nav-logo">Thayer Investment Partners</a>
+  <ul class="nav-links">
+    <li><a href="/about">About</a></li>
+    <li><a href="/portfolio">Portfolio</a></li>
+    <li><a href="/news">Insights</a></li>
+    <li><a href="/investor-relations">Investor Relations</a></li>
+  </ul>
+</nav>
+
+<section class="hero">
+  <canvas id="aurora"></canvas>
+  <div class="hero-content">
+    <p class="hero-label">Pioneers in Travel Technology &nbsp;·&nbsp; Est. 2008</p>
+    <h1 class="hero-headline">
+      Investing in the<br>
+      Future of Global<br>
+      Travel.
+    </h1>
+    <div class="hero-sub">
+      <p class="hero-descriptor">Venture capital for the world's largest and most dynamic industry</p>
+      <a href="/portfolio" class="hero-cta">Explore Portfolio &nbsp;→</a>
+    </div>
+  </div>
+  <div class="scroll-indicator">
+    <div class="scroll-line"></div>
+    <span>Scroll</span>
+  </div>
+</section>
+
+<div class="ticker" aria-hidden="true">
+  <div class="ticker-track">
+    <span class="ticker-item">Travel Technology Venture Capital</span>
+    <span class="ticker-item">$15 Trillion Global Industry</span>
+    <span class="ticker-item">Pioneers Since 2008</span>
+    <span class="ticker-item">Hotels & Hospitality</span>
+    <span class="ticker-item">Airlines & Mobility</span>
+    <span class="ticker-item">Experiences & Entertainment</span>
+    <span class="ticker-item">$2.1T Travel Tech Market by 2030</span>
+    <span class="ticker-item">Travel Technology Venture Capital</span>
+    <span class="ticker-item">$15 Trillion Global Industry</span>
+    <span class="ticker-item">Pioneers Since 2008</span>
+    <span class="ticker-item">Hotels & Hospitality</span>
+    <span class="ticker-item">Airlines & Mobility</span>
+    <span class="ticker-item">Experiences & Entertainment</span>
+    <span class="ticker-item">$2.1T Travel Tech Market by 2030</span>
+  </div>
+</div>
+
+<section>
+  <div class="section-header">
+    <span class="section-label">Our Mission</span>
+    <div class="section-rule"></div>
+    <span class="section-number">01</span>
+  </div>
+  <div class="intro">
+    <h2 class="intro-headline reveal">Where capital<br>meets exploration.</h2>
+    <div class="intro-body reveal reveal-d2">
+      <p>Travel and tourism represents one of the world's largest economic sectors, contributing over 10% of global GDP. Technology is fundamentally reshaping how people discover, book, experience, and share travel — creating unprecedented opportunities for innovation and value creation.</p>
+      <p>We partner with visionary founders building the next generation of transformative platforms for this industry.</p>
+      <div class="since-tag">The preeminent name in travel technology since 2008</div>
+    </div>
+  </div>
+</section>
+
+<section class="stats-section">
+  <div class="section-header">
+    <span class="section-label">The Opportunity</span>
+    <div class="section-rule"></div>
+    <span class="section-number">02</span>
+  </div>
+  <div class="stats-grid">
+    <div class="stat-item reveal">
+      <div class="stat-value">$<em>15</em>T</div>
+      <div class="stat-label">Global Travel Economy</div>
+      <div class="stat-sub">Contributing over 10% of global GDP annually</div>
+    </div>
+    <div class="stat-item reveal reveal-d2">
+      <div class="stat-value"><em>1.4</em>B</div>
+      <div class="stat-label">Annual International Arrivals</div>
+      <div class="stat-sub">Growing at an accelerating pace year over year</div>
+    </div>
+    <div class="stat-item reveal reveal-d3">
+      <div class="stat-value">$<em>2.1</em>T</div>
+      <div class="stat-label">Travel Tech Market by 2030</div>
+      <div class="stat-sub">23% digital booking penetration growth annually</div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-header">
+    <span class="section-label">Investment Focus</span>
+    <div class="section-rule"></div>
+    <span class="section-number">03</span>
+  </div>
+  <div class="focus-grid">
+    <div class="focus-item reveal">
+      <div class="focus-num">01</div>
+      <div>
+        <div class="focus-title">Hotels & Restaurants</div>
+        <div class="focus-desc">Hospitality tech platforms transforming the guest experience end-to-end</div>
+      </div>
+    </div>
+    <div class="focus-item reveal reveal-d1">
+      <div class="focus-num">02</div>
+      <div>
+        <div class="focus-title">Entertainment & Experiences</div>
+        <div class="focus-desc">Immersive technologies redefining leisure and discovery at scale</div>
+      </div>
+    </div>
+    <div class="focus-item reveal reveal-d1">
+      <div class="focus-num">03</div>
+      <div>
+        <div class="focus-title">Cruises & Airlines</div>
+        <div class="focus-desc">Next-generation solutions for air and sea transportation</div>
+      </div>
+    </div>
+    <div class="focus-item reveal reveal-d2">
+      <div class="focus-num">04</div>
+      <div>
+        <div class="focus-title">Real Estate</div>
+        <div class="focus-desc">PropTech innovations reshaping hospitality real estate globally</div>
+      </div>
+    </div>
+    <div class="focus-item reveal">
+      <div class="focus-num">05</div>
+      <div>
+        <div class="focus-title">Ground Transportation</div>
+        <div class="focus-desc">Mobility platforms connecting travelers seamlessly across cities</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="testimonials-section">
+  <div class="section-header">
+    <span class="section-label">What Partners Say</span>
+    <div class="section-rule"></div>
+    <span class="section-number">04</span>
+  </div>
+
+  <div class="testimonial-item reveal">
+    <div class="testimonial-quote">Thayer is a trusted co-pilot helping entrepreneurs navigate the complex landscape of the travel industry.</div>
+    <div class="testimonial-attribution">
+      <div class="attr-name">Matthijs Welle</div>
+      <div class="attr-title">CEO, Mews</div>
+    </div>
+  </div>
+  <div class="testimonial-item reveal reveal-d1">
+    <div class="testimonial-quote">An indispensable partner with unmatched depth of knowledge across every vertical in travel technology.</div>
+    <div class="testimonial-attribution">
+      <div class="attr-name">Med Benmansour</div>
+      <div class="attr-title">CEO, Nuitée</div>
+    </div>
+  </div>
+  <div class="testimonial-item reveal reveal-d2">
+    <div class="testimonial-quote">The network and relationships Thayer brings are simply unparalleled in this space.</div>
+    <div class="testimonial-attribution">
+      <div class="attr-name">Bo Davis</div>
+      <div class="attr-title">CEO, MarginEdge</div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-header">
+    <span class="section-label">Recent Headlines</span>
+    <div class="section-rule"></div>
+    <span class="section-number">05</span>
+  </div>
+
+  <a href="/news" class="news-item reveal">
+    <span class="news-date">Mar 5, 2026</span>
+    <span class="news-title">Thayer Leads $200M Series C in CloudHotel, Advancing AI-Powered Hospitality</span>
+    <span class="news-arrow">→</span>
+  </a>
+  <a href="/news" class="news-item reveal reveal-d1">
+    <span class="news-date">Feb 18, 2026</span>
+    <span class="news-title">Portfolio Company TripAI Acquires European Competitor for $85M</span>
+    <span class="news-arrow">→</span>
+  </a>
+  <a href="/news" class="news-item reveal reveal-d2">
+    <span class="news-date">Jan 30, 2026</span>
+    <span class="news-title">Thayer Named Top Travel & Hospitality VC Firm for Third Consecutive Year</span>
+    <span class="news-arrow">→</span>
+  </a>
+</section>
+
+<footer>
+  <div class="footer-logo">Thayer Investment Partners</div>
+  <ul class="footer-links">
+    <li><a href="/about">About</a></li>
+    <li><a href="/portfolio">Portfolio</a></li>
+    <li><a href="/news">Insights</a></li>
+    <li><a href="/investor-relations">Investors</a></li>
+    <li><a href="/privacy">Privacy</a></li>
+  </ul>
+  <div class="footer-copy">© 2026 Thayer Investment Partners. All rights reserved.</div>
+</footer>
+
+<script>
+// ── AURORA CANVAS ──
+const canvas = document.getElementById('aurora');
+const ctx = canvas.getContext('2d');
+let W, H;
+
+function resize() {
+  W = canvas.width = canvas.offsetWidth;
+  H = canvas.height = canvas.offsetHeight;
+}
+resize();
+window.addEventListener('resize', resize);
+
+const orbs = [
+  { x: 0.12, y: 0.28, vx: 0.00016, vy: 0.00011, r: 0.58, h: 40, s: 65, l: 16 },
+  { x: 0.78, y: 0.62, vx: -0.00013, vy: 0.00015, r: 0.52, h: 200, s: 40, l: 11 },
+  { x: 0.48, y: 0.12, vx: 0.00009, vy: -0.00016, r: 0.44, h: 28, s: 55, l: 9 },
+  { x: 0.88, y: 0.22, vx: -0.00017, vy: 0.00013, r: 0.36, h: 215, s: 30, l: 9 },
+  { x: 0.3, y: 0.8, vx: 0.00012, vy: -0.00009, r: 0.4, h: 50, s: 45, l: 8 },
+];
+
+function drawAurora() {
+  ctx.clearRect(0, 0, W, H);
+  ctx.globalCompositeOperation = 'screen';
+
+  orbs.forEach(o => {
+    o.x += o.vx;
+    o.y += o.vy;
+    if (o.x < -0.3 || o.x > 1.3) o.vx *= -1;
+    if (o.y < -0.3 || o.y > 1.3) o.vy *= -1;
+
+    const cx = o.x * W;
+    const cy = o.y * H;
+    const r = o.r * Math.max(W, H);
+    const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, r);
+    g.addColorStop(0, `hsla(${o.h},${o.s}%,${o.l}%,0.75)`);
+    g.addColorStop(0.5, `hsla(${o.h},${o.s}%,${o.l}%,0.2)`);
+    g.addColorStop(1, `hsla(${o.h},${o.s}%,${o.l}%,0)`);
+
+    ctx.fillStyle = g;
+    ctx.beginPath();
+    ctx.arc(cx, cy, r, 0, Math.PI * 2);
+    ctx.fill();
+  });
+}
+
+(function loop() {
+  drawAurora();
+  requestAnimationFrame(loop);
+})();
+
+// ── NAV SCROLL ──
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 50);
+}, { passive: true });
+
+// ── SCROLL REVEAL ──
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      observer.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.12 });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>

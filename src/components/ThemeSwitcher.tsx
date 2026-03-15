@@ -6,6 +6,7 @@ const themes: { name: ThemeName; label: string }[] = [
   { name: "stoic", label: "Stoic" },
   { name: "modern", label: "Modern" },
   { name: "futurist", label: "Futurist" },
+  { name: "editorial", label: "Editorial" },
 ];
 
 export default function ThemeSwitcher() {

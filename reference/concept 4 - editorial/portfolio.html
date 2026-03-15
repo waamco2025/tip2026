@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portfolio — Thayer Investment Partners</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&family=Syne:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0C0C0A; --surface: #141410; --surface2: #1A1A16;
+      --text: #EAE5DB; --muted: #7A7568; --muted2: #5A5650;
+      --accent: #C49A45; --accent-dim: rgba(196,154,69,0.10);
+      --accent-border: rgba(196,154,69,0.28); --rule: rgba(255,255,255,0.07);
+      --serif: 'Cormorant Garamond', Georgia, serif; --sans: 'Syne', sans-serif;
+    }
+    h1, h2, h3, h4 { text-wrap: balance; }
+    p, li, blockquote { text-wrap: pretty; widows: 3; orphans: 3; }
+
+    html { background: var(--bg); color: var(--text); font-family: var(--serif); scroll-behavior: smooth; }
+    body { overflow-x: hidden; }
+
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 1.5rem 3rem; border-bottom: 1px solid transparent; transition: border-color 0.4s, background 0.4s; }
+    nav.scrolled { border-color: var(--rule); background: rgba(12,12,10,0.94); backdrop-filter: blur(16px); }
+    .nav-logo { font-family: var(--sans); font-size: 0.72rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text); text-decoration: none; }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a { font-family: var(--sans); font-size: 0.68rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+    .nav-links a:hover, .nav-links a.active { color: var(--text); }
+
+    .page-hero { padding: 12rem 3rem 6rem; border-bottom: 1px solid var(--rule); }
+    .page-hero-label { font-family: var(--sans); font-size: 0.62rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.75rem; }
+    .page-hero h1 { font-size: clamp(2.8rem, 6vw, 6.5rem); font-weight: 300; font-style: italic; line-height: 1.06; letter-spacing: -0.02em; margin-bottom: 1.75rem; max-width: 820px; }
+    .page-hero-meta { display: flex; gap: 4rem; align-items: baseline; }
+    .meta-stat { }
+    .meta-value { font-size: 2.2rem; font-weight: 300; font-style: italic; color: var(--accent); }
+    .meta-label { font-family: var(--sans); font-size: 0.58rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); margin-top: 0.25rem; }
+
+    section { padding: 6rem 3rem; }
+    .section-header { display: flex; align-items: center; gap: 1.5rem; margin-bottom: 4.5rem; }
+    .section-label { font-family: var(--sans); font-size: 0.6rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent); white-space: nowrap; }
+    .section-rule { flex: 1; height: 1px; background: var(--rule); }
+    .section-number { font-family: var(--sans); font-size: 0.6rem; letter-spacing: 0.12em; color: var(--muted); }
+
+    /* FILTERS */
+    .filter-bar { display: flex; gap: 0; border: 1px solid var(--rule); width: fit-content; margin-bottom: 4rem; }
+    .filter-btn { font-family: var(--sans); font-size: 0.6rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); background: none; border: none; border-right: 1px solid var(--rule); padding: 0.8rem 1.4rem; cursor: pointer; transition: color 0.2s, background 0.2s; white-space: nowrap; }
+    .filter-btn:last-child { border-right: none; }
+    .filter-btn:hover { color: var(--text); background: rgba(255,255,255,0.03); }
+    .filter-btn.active { color: var(--accent); background: var(--accent-dim); }
+
+    /* PORTFOLIO GRID */
+    .portfolio-grid { display: grid; grid-template-columns: repeat(3, 1fr); }
+    .portfolio-item { border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule); padding: 2.5rem; transition: background 0.3s; cursor: pointer; text-decoration: none; color: inherit; display: block; }
+    .portfolio-item:nth-child(3n) { border-right: none; }
+    .portfolio-item:hover { background: rgba(255,255,255,0.02); }
+    .portfolio-item.hidden { display: none; }
+
+    .portfolio-img { width: 100%; aspect-ratio: 16/9; background: var(--surface2); margin-bottom: 1.75rem; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+    .portfolio-img-label { font-family: var(--sans); font-size: 0.55rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted2); }
+    .portfolio-cat { font-family: var(--sans); font-size: 0.56rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.5rem; }
+    .portfolio-name { font-size: 1.5rem; font-style: italic; font-weight: 400; margin-bottom: 0.5rem; }
+    .portfolio-desc { font-family: var(--sans); font-size: 0.62rem; letter-spacing: 0.04em; color: var(--muted); line-height: 1.7; margin-bottom: 1.25rem; }
+    .portfolio-tags { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+    .tag { font-family: var(--sans); font-size: 0.52rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted2); border: 1px solid var(--rule); padding: 0.3rem 0.65rem; }
+
+    /* FEATURED DEAL */
+    .featured-section { background: var(--surface); border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+    .featured-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
+    .featured-img { aspect-ratio: 4/3; background: var(--surface2); border-right: 1px solid var(--rule); display: flex; align-items: center; justify-content: center; }
+    .featured-img-label { font-family: var(--sans); font-size: 0.58rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted2); }
+    .featured-content { padding: 4rem; display: flex; flex-direction: column; justify-content: center; }
+    .featured-badge { font-family: var(--sans); font-size: 0.56rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); border: 1px solid var(--accent-border); padding: 0.35rem 0.8rem; display: inline-block; width: fit-content; margin-bottom: 2rem; }
+    .featured-title { font-size: clamp(1.8rem, 3vw, 2.8rem); font-weight: 300; font-style: italic; line-height: 1.2; margin-bottom: 1.5rem; }
+    .featured-body { font-family: var(--sans); font-size: 0.66rem; letter-spacing: 0.04em; color: var(--muted); line-height: 1.8; margin-bottom: 2.5rem; }
+    .featured-stats { display: flex; gap: 3rem; border-top: 1px solid var(--rule); padding-top: 2rem; }
+    .feat-stat-val { font-size: 2rem; font-style: italic; font-weight: 300; color: var(--accent); display: block; }
+    .feat-stat-label { font-family: var(--sans); font-size: 0.56rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+
+    footer { border-top: 1px solid var(--rule); padding: 2.5rem 3rem; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 2rem; }
+    .footer-logo { font-family: var(--sans); font-size: 0.65rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); }
+    .footer-links { display: flex; gap: 2.5rem; list-style: none; }
+    .footer-links a { font-family: var(--sans); font-size: 0.6rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+    .footer-links a:hover { color: var(--text); }
+    .footer-copy { font-family: var(--sans); font-size: 0.58rem; letter-spacing: 0.1em; color: var(--muted); text-align: right; }
+
+    .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.9s cubic-bezier(0.16,1,0.3,1), transform 0.9s cubic-bezier(0.16,1,0.3,1); }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-d1 { transition-delay: 0.1s; }
+    .reveal-d2 { transition-delay: 0.22s; }
+    .reveal-d3 { transition-delay: 0.34s; }
+  </style>
+</head>
+<body>
+
+<nav id="nav">
+  <a href="index.html" class="nav-logo">Thayer Investment Partners</a>
+  <ul class="nav-links">
+    <li><a href="about.html">About</a></li>
+    <li><a href="portfolio.html" class="active">Portfolio</a></li>
+    <li><a href="insights.html">Insights</a></li>
+    <li><a href="investor-relations.html">Investor Relations</a></li>
+  </ul>
+</nav>
+
+<div class="page-hero">
+  <p class="page-hero-label">Our Portfolio</p>
+  <h1>Investing in companies<br>shaping the future<br>of global travel.</h1>
+  <div class="page-hero-meta">
+    <div class="meta-stat">
+      <div class="meta-value">$2.8B+</div>
+      <div class="meta-label">Portfolio Value</div>
+    </div>
+    <div class="meta-stat">
+      <div class="meta-value">12</div>
+      <div class="meta-label">Active Companies</div>
+    </div>
+    <div class="meta-stat">
+      <div class="meta-value">5</div>
+      <div class="meta-label">Sectors Covered</div>
+    </div>
+    <div class="meta-stat">
+      <div class="meta-value">3</div>
+      <div class="meta-label">Flagship Funds</div>
+    </div>
+  </div>
+</div>
+
+<section>
+  <div class="section-header">
+    <span class="section-label">Active Portfolio</span>
+    <div class="section-rule"></div>
+    <span class="section-number">01</span>
+  </div>
+
+  <div class="filter-bar">
+    <button class="filter-btn active" data-filter="all">All</button>
+    <button class="filter-btn" data-filter="hotels">Hotels & Restaurants</button>
+    <button class="filter-btn" data-filter="entertainment">Entertainment</button>
+    <button class="filter-btn" data-filter="aviation">Cruises & Airlines</button>
+    <button class="filter-btn" data-filter="realestate">Real Estate</button>
+    <button class="filter-btn" data-filter="transport">Transportation</button>
+  </div>
+
+  <div class="portfolio-grid">
+
+    <a class="portfolio-item reveal" data-category="hotels">
+      <div class="portfolio-img"><span class="portfolio-img-label">Company Image</span></div>
+      <div class="portfolio-cat">Hotels & Restaurants</div>
+      <div class="portfolio-name">TravelAI</div>
+      <div class="portfolio-desc">AI-powered platform transforming how travelers plan, book, and experience journeys worldwide.</div>
+      <div class="portfolio-tags"><span class="tag">Series B</span><span class="tag">AI/ML</span><span class="tag">B2C</span></div>
+    </a>
+
+    <a class="portfolio-item reveal reveal-d1" data-category="hotels">
+      <div class="portfolio-img"><span class="portfolio-img-label">Company Image</span></div>
+      <div class="portfolio-cat">Hotels & Restaurants</div>
+      <div class="portfolio-name">Voyager Hotels</div>
+      <div class="portfolio-desc">Next-generation property management platform serving boutique and independent hotels globally.</div>
+      <div class="portfolio-tags"><span class="tag">Series A</span><span class="tag">SaaS</span><span class="tag">B2B</span></div>
+    </a>
+
+    <a class="portfolio-item reveal reveal-d2" data-category="aviation">
+      <div class="portfolio-img"><span class="portfolio-img-label">Company Image</span></div>
+      <div class="portfolio-cat">Cruises & Airlines</div>
+      <div class="portfolio-name">CruiseLink</div>
+      <div class="portfolio-desc">Distribution and revenue management infrastructure for the modern cruise industry.</div>
+      <div class="portfolio-tags"><span class="tag">Growth</span><span class="tag">Distribution</span><span class="tag">B2B</span></div>
+    </a>
+
+    <a class="portfolio-item reveal" data-category="aviation">
+      <div class="portfolio-img"><span class="portfolio-img-label">Company Image</span></div>
+      <div class="portfolio-cat">Cruises & Airlines</div>
+      <div class="portfolio-name">SkyBridge Aviation</div>
+      <div class="portfolio-desc">NDC-native retailing platform enabling airlines to sell richer, more personalized fare bundles.</div>
+      <div class="portfolio-tags"><span class="tag">Series B</span><span class="tag">NDC</span><span class="tag">B2B</span></div>
+    </a>
+
+    <a class="portfolio-item reveal reveal-d1" data-category="entertainment">
+      <div class="portfolio-img"><span class="portfolio-img-label">Company Image</span></div>
+      <div class="portfolio-cat">Entertainment & Experiences</div>
+      <div class="portfolio-name">Nomad Experiences</div>
+      <div class="portfolio-desc">Immersive local experience platform connecting travelers with curated, off-the-beaten-path activities.</div>
+      <div class="portfolio-tags"><span class="tag">Series A</span><span class="tag">Marketplace</span><span class="tag">B2C</span></div>
+    </a>
+
+    <a class="portfolio-item reveal reveal-d2" data-category="transport">
+      <div class="portfolio-img"><span class="portfolio-img-label">Company Image</span></div>
+      <div class="portfolio-cat">Ground Transportation</div>
+      <div class="portfolio-name">GroundFleet</div>
+      <div class="portfolio-desc">Enterprise fleet and transfer management platform for airports, hotels, and corporate travel programs.</div>
+      <div class="portfolio-tags"><span class="tag">Series B</span><span class="tag">Enterprise</span><span class="tag">B2B</span></div>
+    </a>
+
+    <a class="portfolio-item reveal" data-category="hotels">
+      <div class="portfolio-img"><span class="portfolio-img-label">Company Image</span></div>
+      <div class="portfolio-cat">Hotels & Restaurants</div>
+      <div class="portfolio-name">Meridian Resorts</div>
+      <div class="portfolio-desc">Guest experience platform enabling luxury resorts to deliver hyper-personalized service at scale.</div>
+      <div class="portfolio-tags"><span class="tag">Growth</span><span class="tag">CX</span><span class="tag">Luxury</span></div>
+    </a>
+
+    <a class="portfolio-item reveal reveal-d1" data-category="aviation">
+      <div class="portfolio-img"><span class="portfolio-img-label">Company Image</span></div>
+      <div class="portfolio-cat">Cruises & Airlines</div>
+      <div class="portfolio-name">Embark</div>
+      <div class="portfolio-desc">AI-powered ancillary revenue platform helping airlines and cruise lines maximize per-passenger yield.</div>
+      <div class="portfolio-tags"><span class="tag">Series A</span><span class="tag">Revenue</span><span class="tag">AI/ML</span></div>
+    </a>
+
+    <a class="portfolio-item reveal reveal-d2" data-category="realestate">
+      <div class="portfolio-img"><span class="portfolio-img-label">Company Image</span></div>
+      <div class="portfolio-cat">Real Estate</div>
+      <div class="portfolio-name">Atlas Property Group</div>
+      <div class="portfolio-desc">PropTech platform enabling institutional investors to acquire and manage hospitality real estate portfolios.</div>
+      <div class="portfolio-tags"><span class="tag">Series B</span><span class="tag">PropTech</span><span class="tag">B2B</span></div>
+    </a>
+
+    <a class="portfolio-item reveal" data-category="hotels">
+      <div class="portfolio-img"><span class="portfolio-img-label">Company Image</span></div>
+      <div class="portfolio-cat">Hotels & Restaurants</div>
+      <div class="portfolio-name">Zenith Dining</div>
+      <div class="portfolio-desc">Restaurant technology suite built for high-volume hotel F&B operations and casino dining.</div>
+      <div class="portfolio-tags"><span class="tag">Seed</span><span class="tag">F&B</span><span class="tag">SaaS</span></div>
+    </a>
+
+    <a class="portfolio-item reveal reveal-d1" data-category="entertainment">
+      <div class="portfolio-img"><span class="portfolio-img-label">Company Image</span></div>
+      <div class="portfolio-cat">Entertainment & Experiences</div>
+      <div class="portfolio-name">WanderPass</div>
+      <div class="portfolio-desc">Subscription access platform for travelers covering museum entries, tours, and city experiences worldwide.</div>
+      <div class="portfolio-tags"><span class="tag">Series A</span><span class="tag">Subscription</span><span class="tag">B2C</span></div>
+    </a>
+
+    <a class="portfolio-item reveal reveal-d2" data-category="transport">
+      <div class="portfolio-img"><span class="portfolio-img-label">Company Image</span></div>
+      <div class="portfolio-cat">Ground Transportation</div>
+      <div class="portfolio-name">Horizon Rail</div>
+      <div class="portfolio-desc">Modern rail booking and intermodal itinerary platform bridging the gap between air and high-speed rail.</div>
+      <div class="portfolio-tags"><span class="tag">Series A</span><span class="tag">Rail</span><span class="tag">B2C</span></div>
+    </a>
+
+  </div>
+</section>
+
+<section class="featured-section">
+  <div class="section-header" style="padding: 0 0 4.5rem;">
+    <span class="section-label">Featured Deal</span>
+    <div class="section-rule"></div>
+    <span class="section-number">02</span>
+  </div>
+  <div class="featured-inner">
+    <div class="featured-img reveal"><span class="featured-img-label">CloudHotel — Founder Photo or Office</span></div>
+    <div class="featured-content reveal reveal-d1">
+      <div class="featured-badge">Lead Investor — Series C</div>
+      <div class="featured-title">CloudHotel: Advancing AI-Powered Hospitality at Scale</div>
+      <p class="featured-body">Thayer led the $200M Series C in CloudHotel, accelerating the company's expansion into European and Asian markets and bringing intelligent property management to over 10,000 hotels worldwide. The investment represents Thayer's largest single commitment to date and underscores our conviction in the AI transformation of hotel operations.</p>
+      <div class="featured-stats">
+        <div>
+          <span class="feat-stat-val">$200M</span>
+          <span class="feat-stat-label">Series C</span>
+        </div>
+        <div>
+          <span class="feat-stat-val">10,000+</span>
+          <span class="feat-stat-label">Hotels Served</span>
+        </div>
+        <div>
+          <span class="feat-stat-val">42</span>
+          <span class="feat-stat-label">Countries</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">Thayer Investment Partners</div>
+  <ul class="footer-links">
+    <li><a href="about.html">About</a></li>
+    <li><a href="portfolio.html">Portfolio</a></li>
+    <li><a href="insights.html">Insights</a></li>
+    <li><a href="investor-relations.html">Investors</a></li>
+  </ul>
+  <div class="footer-copy">© 2026 Thayer Investment Partners. All rights reserved.</div>
+</footer>
+
+<script>
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 50), { passive: true });
+  const observer = new IntersectionObserver(entries => entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } }), { threshold: 0.08 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // Filter logic
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const filter = btn.dataset.filter;
+      document.querySelectorAll('.portfolio-item').forEach(item => {
+        const show = filter === 'all' || item.dataset.category === filter;
+        item.classList.toggle('hidden', !show);
+      });
+    });
+  });
+</script>
+</body>
+</html>
