@@ -7,17 +7,17 @@ import Link from "next/link";
 export function EditorialNav({ active = "home" }: { active?: string }) {
   const [open, setOpen] = useState(false);
   const links = [
-    { label: "About", href: "/concepts/editorial/about", key: "about" },
-    { label: "Portfolio", href: "/concepts/editorial/portfolio", key: "portfolio" },
-    { label: "Insights", href: "/concepts/editorial/insights", key: "insights" },
-    { label: "Investor Relations", href: "/concepts/editorial/investor-relations", key: "ir" },
+    { label: "About", href: "/about", key: "about" },
+    { label: "Portfolio", href: "/portfolio", key: "portfolio" },
+    { label: "Insights", href: "/news", key: "insights" },
+    { label: "Investor Relations", href: "/investor-relations", key: "ir" },
   ];
   const linkCls = (k: string) =>
     `transition-colors duration-300 ${active === k ? "text-[#EAE5DB]" : "text-[#7A7568] hover:text-[#EAE5DB]"}`;
 
   return (
     <nav className="sticky top-0 z-50 bg-[#0C0C0A] px-6 md:px-12 py-5 md:py-6 flex items-center justify-between border-b border-white/[0.07]">
-      <Link href="/concepts/editorial">
+      <Link href="/">
         <img src="/logotype.svg" alt="Thayer" className="h-8" />
       </Link>
 
@@ -150,7 +150,7 @@ export default function EditorialHomePage() {
             We partner with visionary founders building the platforms that will define the next era of global travel.
           </p>
           <Link
-            href="/concepts/editorial/portfolio"
+            href="/portfolio"
             className="inline-block border border-white/[0.15] px-8 py-3 text-[0.68rem] uppercase tracking-[0.18em] text-[#EAE5DB] hover:border-[#C49A45] hover:text-[#C49A45] transition-all duration-500"
             style={sans}
           >
@@ -265,7 +265,7 @@ export default function EditorialHomePage() {
             {headlines.map((h, i) => (
               <Link
                 key={i}
-                href="/concepts/editorial/insights"
+                href="/news"
                 className="group flex items-center gap-6 md:gap-10 py-6 border-b border-white/[0.07] hover:border-[#C49A45]/30 transition-colors"
               >
                 <span className="text-[0.62rem] uppercase tracking-[0.18em] text-[#7A7568] shrink-0 w-20" style={sans}>{h.date}</span>

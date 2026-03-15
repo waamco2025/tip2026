@@ -134,7 +134,7 @@ export default function EditorialArticlePage() {
             {related.map((r, i) => (
               <Link
                 key={i}
-                href="/concepts/editorial/article"
+                href="/news/thayer-travelai-series-b"
                 className="group flex items-center gap-6 md:gap-10 py-5 border-b border-white/[0.07] hover:border-[#C49A45]/30 transition-colors"
               >
                 <span className="text-[0.58rem] uppercase tracking-[0.16em] text-[#7A7568] shrink-0 w-24" style={sans}>{r.date}</span>
@@ -149,14 +149,14 @@ export default function EditorialArticlePage() {
       {/* ── Article Navigation ── */}
       <section className="px-6 md:px-12 py-12 md:py-16 border-t border-white/[0.07]">
         <div className="max-w-5xl mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-          <Link href="/concepts/editorial/insights" className="group flex items-center gap-4 text-[#7A7568] hover:text-[#C49A45] transition-colors">
+          <Link href="/news" className="group flex items-center gap-4 text-[#7A7568] hover:text-[#C49A45] transition-colors">
             <span>&larr;</span>
             <div>
               <span className="text-[0.55rem] uppercase tracking-[0.18em] block mb-1" style={sans}>Previous</span>
               <span className="text-[1rem] font-light italic" style={serif}>Portfolio Company StaySync Closes $28M Series A</span>
             </div>
           </Link>
-          <Link href="/concepts/editorial/insights" className="group flex items-center gap-4 text-[#7A7568] hover:text-[#C49A45] transition-colors text-right">
+          <Link href="/news" className="group flex items-center gap-4 text-[#7A7568] hover:text-[#C49A45] transition-colors text-right">
             <div>
               <span className="text-[0.55rem] uppercase tracking-[0.18em] block mb-1" style={sans}>Next</span>
               <span className="text-[1rem] font-light italic" style={serif}>Thayer Fund III Announces Final Close at $150M</span>

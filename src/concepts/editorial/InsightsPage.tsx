@@ -46,7 +46,7 @@ export default function EditorialInsightsPage() {
       <section className="px-6 md:px-12 py-24 md:py-32 border-t border-white/[0.07]">
         <div className="max-w-7xl mx-auto">
           <SectionHeader label="Featured" number="01" />
-          <Link href="/concepts/editorial/article" className="group grid md:grid-cols-2 gap-8 md:gap-16">
+          <Link href="/news/thayer-travelai-series-b" className="group grid md:grid-cols-2 gap-8 md:gap-16">
             <div className="aspect-[4/3] bg-[#141410] border border-white/[0.07] flex items-end p-6 group-hover:border-[#C49A45]/30 transition-colors">
               <span className="text-[0.55rem] uppercase tracking-[0.2em] text-[#7A7568]" style={sans}>Featured Image</span>
             </div>
@@ -75,7 +75,7 @@ export default function EditorialInsightsPage() {
             {articles.map((a, i) => (
               <Link
                 key={i}
-                href="/concepts/editorial/article"
+                href="/news/thayer-travelai-series-b"
                 className="group grid md:grid-cols-[140px_1fr] gap-4 md:gap-10 py-8 border-b border-white/[0.07] hover:border-[#C49A45]/30 transition-colors"
               >
                 <span className="text-[0.6rem] uppercase tracking-[0.16em] text-[#7A7568] pt-1" style={sans}>{a.date}</span>
