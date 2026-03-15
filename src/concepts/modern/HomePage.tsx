@@ -75,7 +75,7 @@ export default function ModernHome() {
       {/* Testimonials */}
       <section className="bg-white px-6 md:px-14 py-12 md:py-20 flex flex-col items-center gap-12 border-b border-[#E5E5E5]">
         <div className="flex flex-col items-center gap-3">
-          <span className="text-[#00D776] font-semibold text-xs tracking-[2px]">WHAT OUR PARTNERS SAY</span>
+          <span className="text-[#C9A962] font-semibold text-xs tracking-[2px]">WHAT OUR PARTNERS SAY</span>
           <h2 className="font-playfair text-2xl md:text-4xl italic text-[#1A2E23]">Trusted by Industry Leaders</h2>
         </div>
         <div className="flex flex-col md:flex-row gap-6 w-full">
@@ -84,12 +84,12 @@ export default function ModernHome() {
               <p className="text-[#666] text-sm leading-relaxed">{t.quote}</p>
               <div className="flex flex-col gap-0.5">
                 <span className="text-[#1A2E23] text-[13px] font-medium">{t.name}</span>
-                <span className="text-[#00D776] text-xs">{t.title}</span>
+                <span className="text-[#C9A962] text-xs">{t.title}</span>
               </div>
             </div>
           ))}
         </div>
-        <Link href="/portfolio" className="text-[#00D776] text-[13px] font-medium hover:underline">View Full Portfolio →</Link>
+        <Link href="/portfolio" className="text-[#C9A962] text-[13px] font-medium hover:underline">View Full Portfolio →</Link>
       </section>
 
       {/* Statement */}
@@ -108,17 +108,17 @@ export default function ModernHome() {
             ))}
           </div>
         ))}
-        <Link href="/portfolio" className="text-[#00D776] text-sm font-medium hover:underline">View our portfolio →</Link>
+        <Link href="/portfolio" className="text-[#C9A962] text-sm font-medium hover:underline">View our portfolio →</Link>
       </section>
 
       {/* Investment Categories */}
       <section className="bg-white px-6 md:px-14 py-12 md:py-20 flex flex-col items-center gap-12 border-y border-[#E5E5E5]">
-        <span className="text-[#00D776] font-semibold text-xs tracking-[2px]">INVESTMENT FOCUS</span>
+        <span className="text-[#C9A962] font-semibold text-xs tracking-[2px]">INVESTMENT FOCUS</span>
         <h2 className="font-playfair text-2xl md:text-4xl italic text-[#1A2E23]">Our Investment Categories</h2>
         <div className="grid grid-cols-2 md:grid-cols-5 gap-5 w-full">
           {categories.map((c, i) => (
             <div key={i} className="flex flex-col items-center gap-4 p-6 border border-[#E5E5E5]">
-              <c.icon className="w-7 h-7 text-[#00D776]" />
+              <c.icon className="w-7 h-7 text-[#C9A962]" />
               <h3 className="font-playfair text-base leading-[1.3] text-center text-[#1A2E23] whitespace-pre-line">{c.name}</h3>
               <p className="text-[#666] text-xs leading-[1.5] text-center text-balance">{c.desc}</p>
             </div>
