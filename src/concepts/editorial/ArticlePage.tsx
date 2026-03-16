@@ -39,7 +39,7 @@ export default function EditorialArticlePage() {
             <h1 className="text-[clamp(2rem,4.5vw,3.8rem)] leading-[1.1] font-light italic mb-6" style={{ ...serif, color: c.text }}>
               Thayer Leads $45M Series B in TravelAI Platform
             </h1>
-            <p className="text-[1.1rem] leading-[1.85] font-light max-w-2xl" style={{ ...serif, color: c.bodyText }}>
+            <p className="text-[1.1rem] leading-[1.85] font-normal max-w-2xl" style={{ ...serif, color: c.bodyText }}>
               The investment will accelerate TravelAI&rsquo;s expansion into 14 new markets and fund development of
               next-generation generative AI capabilities for the travel industry.
             </p>
@@ -67,12 +67,12 @@ export default function EditorialArticlePage() {
       {/* ── Article Body ── */}
       <section className="px-6 md:px-12 pb-24 md:pb-32">
         <div className="max-w-3xl mx-auto">
-          <p className="text-[1.1rem] leading-[1.85] font-light mb-8" style={{ ...serif, color: c.bodyText }}>
+          <p className="text-[1.1rem] leading-[1.85] font-normal mb-8" style={{ ...serif, color: c.bodyText }}>
             Thayer Investment Partners announced today that it has led a $45 million Series B investment in TravelAI,
             the leading generative AI platform for the global travel industry. The round included participation from
             existing investors and strategic partners across the hospitality ecosystem.
           </p>
-          <p className="text-[1.1rem] leading-[1.85] font-light mb-8" style={{ ...serif, color: c.bodyText }}>
+          <p className="text-[1.1rem] leading-[1.85] font-normal mb-8" style={{ ...serif, color: c.bodyText }}>
             TravelAI has built a comprehensive AI platform that enables travel companies to deliver hyper-personalized
             experiences at scale. The platform serves over 2.4 million active users across 14 markets, processing
             billions of data points to generate real-time recommendations, dynamic pricing, and predictive analytics.
@@ -89,19 +89,19 @@ export default function EditorialArticlePage() {
             </cite>
           </blockquote>
 
-          <p className="text-[1.1rem] leading-[1.85] font-light mb-8" style={{ ...serif, color: c.bodyText }}>
+          <p className="text-[1.1rem] leading-[1.85] font-normal mb-8" style={{ ...serif, color: c.bodyText }}>
             The Series B funding will be used to expand TravelAI&rsquo;s platform into 14 new international markets,
             with a focus on Europe and Asia-Pacific regions where demand for AI-powered travel personalization is
             growing rapidly. The company also plans to double its engineering team and invest heavily in its
             generative AI capabilities.
           </p>
-          <p className="text-[1.1rem] leading-[1.85] font-light mb-8" style={{ ...serif, color: c.bodyText }}>
+          <p className="text-[1.1rem] leading-[1.85] font-normal mb-8" style={{ ...serif, color: c.bodyText }}>
             Founded in 2021, TravelAI has quickly established itself as the category leader in AI-powered travel
             technology. The company&rsquo;s platform integrates with major hotel chains, airlines, and online travel
             agencies, providing a unified AI layer that improves conversion rates, guest satisfaction, and
             operational efficiency.
           </p>
-          <p className="text-[1.1rem] leading-[1.85] font-light mb-8" style={{ ...serif, color: c.bodyText }}>
+          <p className="text-[1.1rem] leading-[1.85] font-normal mb-8" style={{ ...serif, color: c.bodyText }}>
             The investment underscores Thayer&rsquo;s continued commitment to identifying and backing the most
             innovative companies in the travel technology ecosystem. With Fund III now actively deploying capital,
             the firm is positioned to lead additional rounds in companies that are leveraging artificial intelligence,
@@ -119,7 +119,7 @@ export default function EditorialArticlePage() {
             </cite>
           </blockquote>
 
-          <p className="text-[1.1rem] leading-[1.85] font-light" style={{ ...serif, color: c.bodyText }}>
+          <p className="text-[1.1rem] leading-[1.85] font-normal" style={{ ...serif, color: c.bodyText }}>
             TravelAI is the latest in a series of investments by Thayer in the AI and machine learning space
             within travel. The firm&rsquo;s portfolio includes several other companies leveraging advanced
             technology to improve efficiency and guest experiences across hotels, airlines, and experiences

@@ -49,7 +49,7 @@ export default function EditorialInvestorRelationsPage() {
             <h1 className="text-[clamp(2rem,4.5vw,4rem)] leading-[1.08] font-light italic mb-6" style={{ ...serif, color: c.text }}>
               Documents, filings, and market data.
             </h1>
-            <p className="text-[1.1rem] leading-[1.85] font-light" style={{ ...serif, color: c.bodyText }}>
+            <p className="text-[1.1rem] leading-[1.85] font-normal" style={{ ...serif, color: c.bodyText }}>
               Access fund documents, regulatory filings, and performance data for Thayer Investment Partners&rsquo;
               limited partners and prospective investors.
             </p>
@@ -104,7 +104,7 @@ export default function EditorialInvestorRelationsPage() {
               <h2 className="text-[clamp(1.6rem,3vw,2.6rem)] leading-[1.15] font-light italic mb-6" style={{ ...serif, color: c.text }}>
                 Three generations of travel-focused investing.
               </h2>
-              <p className="text-[1.1rem] leading-[1.85] font-light" style={{ ...serif, color: c.bodyText }}>
+              <p className="text-[1.1rem] leading-[1.85] font-normal" style={{ ...serif, color: c.bodyText }}>
                 Since inception, Thayer has deployed capital across three dedicated travel technology funds,
                 building a portfolio that spans the entire travel ecosystem from hospitality and aviation to
                 entertainment and real estate technology.

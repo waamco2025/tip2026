@@ -182,7 +182,7 @@ export default function EditorialHomePage() {
           >
             Investing in the Future of Global Travel.
           </h1>
-          <p className="text-[1.1rem] leading-[1.85] font-light max-w-xl mb-10" style={{ ...serif, color: c.bodyText }}>
+          <p className="text-[1.1rem] leading-[1.85] font-normal max-w-xl mb-10" style={{ ...serif, color: c.bodyText }}>
             Thayer Investment Partners is a venture capital firm exclusively focused on travel technology.
             We partner with visionary founders building the platforms that will define the next era of global travel.
           </p>
@@ -222,12 +222,12 @@ export default function EditorialHomePage() {
               Where capital meets exploration.
             </h2>
             <div>
-              <p className="text-[1.1rem] leading-[1.85] font-light mb-6" style={{ ...serif, color: c.bodyText }}>
+              <p className="text-[1.1rem] leading-[1.85] font-normal mb-6" style={{ ...serif, color: c.bodyText }}>
                 At Thayer Investment Partners, we believe that travel is one of the most powerful forces in the global economy.
                 It connects cultures, drives innovation, and creates opportunities that ripple across industries and borders.
                 Our mission is to identify and invest in the technology companies that are reshaping how the world moves.
               </p>
-              <p className="text-[1.1rem] leading-[1.85] font-light mb-8" style={{ ...serif, color: c.bodyText }}>
+              <p className="text-[1.1rem] leading-[1.85] font-normal mb-8" style={{ ...serif, color: c.bodyText }}>
                 We bring more than capital—we bring decades of operating experience across hotels, airlines, entertainment,
                 and real estate. Our partners have built and scaled businesses across the travel ecosystem,
                 giving us a unique vantage point on where the industry is heading.
@@ -250,7 +250,7 @@ export default function EditorialHomePage() {
               <div key={i} className="border p-8 md:p-10" style={{ borderColor: c.rule }}>
                 <span className="text-[clamp(2.2rem,4vw,3.6rem)] font-light block mb-3" style={{ ...serif, color: c.accent }}>{s.value}</span>
                 <span className="text-[0.62rem] uppercase tracking-[0.22em] block mb-4" style={{ ...sans, color: c.text }}>{s.label}</span>
-                <p className="text-[0.92rem] leading-[1.7] font-light" style={{ ...serif, color: c.muted }}>{s.sub}</p>
+                <p className="text-[0.92rem] leading-[1.7] font-normal" style={{ ...serif, color: c.muted }}>{s.sub}</p>
               </div>
             ))}
           </div>

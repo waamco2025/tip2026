@@ -60,7 +60,7 @@ export default function EditorialInsightsPage() {
               <h2 className="text-[clamp(1.6rem,3vw,2.6rem)] leading-[1.15] font-light italic mb-6 group-hover:text-[#C49A45] transition-colors" style={{ ...serif, color: c.text }}>
                 Thayer Leads $45M Series B in TravelAI Platform
               </h2>
-              <p className="text-[1.1rem] leading-[1.85] font-light mb-8" style={{ ...serif, color: c.bodyText }}>
+              <p className="text-[1.1rem] leading-[1.85] font-normal mb-8" style={{ ...serif, color: c.bodyText }}>
                 TravelAI&rsquo;s generative AI platform is transforming how travel companies personalize experiences at scale.
                 The Series B will fund expansion into 14 new markets and accelerate enterprise partnerships with major hotel chains.
               </p>
