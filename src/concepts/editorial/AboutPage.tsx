@@ -9,9 +9,9 @@ function SectionHeader({ label, number }: { label: string; number: string }) {
   const c = ec(light);
   return (
     <div className="flex items-center gap-6 mb-16 md:mb-20">
-      <span className="text-[0.62rem] uppercase tracking-[0.22em] shrink-0" style={{ fontFamily: "'Syne', sans-serif", color: c.accent }}>{label}</span>
+      <span className="text-[0.72rem] uppercase tracking-[0.22em] shrink-0" style={{ fontFamily: "'Syne', sans-serif", color: c.accent, fontWeight: c.sansWeight }}>{label}</span>
       <div className="flex-1 h-px" style={{ backgroundColor: c.rule }} />
-      <span className="text-[0.62rem] uppercase tracking-[0.22em] shrink-0" style={{ fontFamily: "'Syne', sans-serif", color: c.muted }}>{number}</span>
+      <span className="text-[0.72rem] uppercase tracking-[0.22em] shrink-0" style={{ fontFamily: "'Syne', sans-serif", color: c.muted, fontWeight: c.sansWeight }}>{number}</span>
     </div>
   );
 }
@@ -55,7 +55,7 @@ export default function EditorialAboutPage() {
       {/* ── Hero ── */}
       <section className="px-6 md:px-12 py-24 md:py-40">
         <div className="max-w-7xl mx-auto">
-          <span className="text-[0.62rem] uppercase tracking-[0.22em] block mb-8" style={{ ...sans, color: c.accent }}>About the Firm</span>
+          <span className="text-[0.72rem] uppercase tracking-[0.22em] block mb-8" style={{ ...sans, color: c.accent, fontWeight: c.sansWeight }}>About the Firm</span>
           <h1 className="text-[clamp(2.2rem,5.5vw,5rem)] leading-[1.08] font-light italic mb-8 max-w-4xl" style={{ ...serif, color: c.text }}>
             A History of Innovation in Travel.
           </h1>
@@ -73,9 +73,9 @@ export default function EditorialAboutPage() {
           <div className="flex flex-col gap-0">
             {milestones.map((m, i) => (
               <div key={i} className="grid md:grid-cols-[120px_1fr] gap-4 md:gap-12 py-10 border-b" style={{ borderColor: c.rule }}>
-                <span className="text-[1.8rem] font-light" style={{ ...serif, color: c.accent }}>{m.year}</span>
+                <span className="text-[1.8rem] font-light" style={{ ...serif, color: c.accent, fontWeight: c.statWeight }}>{m.year}</span>
                 <div>
-                  <h3 className="text-[1.3rem] font-light italic mb-3" style={{ ...serif, color: c.text }}>{m.title}</h3>
+                  <h3 className="text-[1.3rem] font-light italic mb-3" style={{ ...serif, color: c.text, fontWeight: c.headingWeight }}>{m.title}</h3>
                   <p className="text-[1.25rem] leading-[1.85]" style={{ ...serif, color: c.bodyText, fontWeight: c.bodyWeight }}>{m.desc}</p>
                 </div>
               </div>
@@ -91,9 +91,9 @@ export default function EditorialAboutPage() {
           <div className="grid md:grid-cols-3 gap-8 md:gap-12">
             {philosophies.map((p, i) => (
               <div key={i} className="border p-8 md:p-10" style={{ borderColor: c.rule }}>
-                <span className="text-[0.58rem] uppercase tracking-[0.22em] block mb-4" style={{ ...sans, color: c.accent }}>0{i + 1}</span>
-                <h3 className="text-[1.5rem] font-light italic mb-4" style={{ ...serif, color: c.text }}>{p.title}</h3>
-                <p className="text-[1.05rem] leading-[1.8]" style={{ ...serif, color: c.bodyText }}>{p.desc}</p>
+                <span className="text-[0.68rem] uppercase tracking-[0.22em] block mb-4" style={{ ...sans, color: c.accent, fontWeight: c.sansWeight }}>0{i + 1}</span>
+                <h3 className="text-[1.5rem] font-light italic mb-4" style={{ ...serif, color: c.text, fontWeight: c.headingWeight }}>{p.title}</h3>
+                <p className="text-[1.05rem] leading-[1.8]" style={{ ...serif, color: c.bodyText, fontWeight: c.bodyWeight }}>{p.desc}</p>
               </div>
             ))}
           </div>
@@ -108,12 +108,12 @@ export default function EditorialAboutPage() {
             {team.map((t, i) => (
               <div key={i} className="group">
                 <div className="aspect-[3/4] border mb-5 flex items-end p-6 transition-colors duration-500" style={{ backgroundColor: c.surface, borderColor: c.rule }}>
-                  <span className="text-[0.55rem] uppercase tracking-[0.2em]" style={{ ...sans, color: c.muted }}>Portrait</span>
+                  <span className="text-[0.65rem] uppercase tracking-[0.2em]" style={{ ...sans, color: c.muted, fontWeight: c.sansWeight }}>Portrait</span>
                 </div>
-                <h3 className="text-[1.25rem] font-light italic mb-1" style={{ ...serif, color: c.text }}>{t.name}</h3>
-                <span className="text-[0.6rem] uppercase tracking-[0.18em] block mb-3" style={{ ...sans, color: c.accent }}>{t.role}</span>
-                <p className="text-[0.88rem] leading-[1.75] line-clamp-3" style={{ ...serif, color: c.bodyText }}>{t.bio}</p>
-                <span className="text-[0.58rem] uppercase tracking-[0.18em] mt-3 inline-block cursor-pointer hover:opacity-80 transition-colors" style={{ ...sans, color: c.muted }}>Read More</span>
+                <h3 className="text-[1.25rem] font-light italic mb-1" style={{ ...serif, color: c.text, fontWeight: c.headingWeight }}>{t.name}</h3>
+                <span className="text-[0.7rem] uppercase tracking-[0.18em] block mb-3" style={{ ...sans, color: c.accent, fontWeight: c.sansWeight }}>{t.role}</span>
+                <p className="text-[0.88rem] leading-[1.75] line-clamp-3" style={{ ...serif, color: c.bodyText, fontWeight: c.bodyWeight }}>{t.bio}</p>
+                <span className="text-[0.68rem] uppercase tracking-[0.18em] mt-3 inline-block cursor-pointer hover:opacity-80 transition-colors" style={{ ...sans, color: c.muted, fontWeight: c.sansWeight }}>Read More</span>
               </div>
             ))}
           </div>
@@ -138,7 +138,7 @@ export default function EditorialAboutPage() {
             <div className="grid grid-cols-3 gap-4">
               {Array.from({ length: 9 }).map((_, i) => (
                 <div key={i} className="aspect-[3/2] border flex items-center justify-center transition-colors duration-500" style={{ backgroundColor: c.surface, borderColor: c.rule }}>
-                  <span className="text-[0.5rem] uppercase tracking-[0.15em]" style={{ ...sans, color: c.muted, opacity: 0.4 }}>Logo</span>
+                  <span className="text-[0.6rem] uppercase tracking-[0.15em]" style={{ ...sans, color: c.muted, opacity: 0.4 }}>Logo</span>
                 </div>
               ))}
             </div>

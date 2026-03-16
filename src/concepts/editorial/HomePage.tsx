@@ -34,8 +34,8 @@ export function EditorialNav({ active = "home" }: { active?: string }) {
           <Link
             key={l.key}
             href={l.href}
-            className={`text-[0.68rem] uppercase tracking-[0.14em] ${linkCls(l.key)}`}
-            style={{ color: active === l.key ? c.text : c.muted }}
+            className={`text-[0.78rem] uppercase tracking-[0.14em] ${linkCls(l.key)}`}
+            style={{ color: active === l.key ? c.text : c.muted, fontWeight: c.sansWeight }}
           >
             {l.label}
           </Link>
@@ -68,7 +68,7 @@ export function EditorialNav({ active = "home" }: { active?: string }) {
               key={l.key}
               href={l.href}
               className={`text-[0.72rem] uppercase tracking-[0.14em] ${linkCls(l.key)}`}
-              style={{ color: active === l.key ? c.text : c.muted }}
+              style={{ color: active === l.key ? c.text : c.muted, fontWeight: c.sansWeight }}
               onClick={() => setOpen(false)}
             >
               {l.label}
@@ -90,13 +90,13 @@ export function EditorialFooter() {
       style={{ borderColor: c.rule, backgroundColor: c.bg, fontFamily: "'Syne', sans-serif" }}
     >
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
-        <span className="text-[0.68rem] uppercase tracking-[0.18em]" style={{ color: c.muted }}>Thayer Investment Partners</span>
+        <span className="text-[0.78rem] uppercase tracking-[0.18em]" style={{ color: c.muted, fontWeight: c.sansWeight }}>Thayer Investment Partners</span>
         <div className="flex flex-wrap gap-6">
           {["About", "Portfolio", "Insights", "Investor Relations", "Privacy", "Terms"].map((t) => (
-            <span key={t} className="text-[0.62rem] uppercase tracking-[0.14em] hover:opacity-80 transition-colors cursor-pointer" style={{ color: c.muted }}>{t}</span>
+            <span key={t} className="text-[0.72rem] uppercase tracking-[0.14em] hover:opacity-80 transition-colors cursor-pointer" style={{ color: c.muted, fontWeight: c.sansWeight }}>{t}</span>
           ))}
         </div>
-        <span className="text-[0.6rem] uppercase tracking-[0.1em]" style={{ color: c.muted, opacity: 0.6 }}>&copy; 2026 Thayer Investment Partners. All rights reserved.</span>
+        <span className="text-[0.7rem] uppercase tracking-[0.1em]" style={{ color: c.muted, opacity: 0.6 }}>&copy; 2026 Thayer Investment Partners. All rights reserved.</span>
       </div>
     </footer>
   );
@@ -108,9 +108,9 @@ function SectionHeader({ label, number }: { label: string; number: string }) {
   const c = ec(light);
   return (
     <div className="flex items-center gap-6 mb-16 md:mb-20">
-      <span className="text-[0.62rem] uppercase tracking-[0.22em] shrink-0" style={{ fontFamily: "'Syne', sans-serif", color: c.accent }}>{label}</span>
+      <span className="text-[0.72rem] uppercase tracking-[0.22em] shrink-0" style={{ fontFamily: "'Syne', sans-serif", color: c.accent, fontWeight: c.sansWeight }}>{label}</span>
       <div className="flex-1 h-px" style={{ backgroundColor: c.rule }} />
-      <span className="text-[0.62rem] uppercase tracking-[0.22em] shrink-0" style={{ fontFamily: "'Syne', sans-serif", color: c.muted }}>{number}</span>
+      <span className="text-[0.72rem] uppercase tracking-[0.22em] shrink-0" style={{ fontFamily: "'Syne', sans-serif", color: c.muted, fontWeight: c.sansWeight }}>{number}</span>
     </div>
   );
 }
@@ -174,7 +174,7 @@ export default function EditorialHomePage() {
       {/* ── Hero ── */}
       <section className="relative min-h-screen flex items-center px-6 md:px-12 py-24 md:py-0">
         <div className="max-w-7xl mx-auto w-full">
-          <span className="text-[0.62rem] uppercase tracking-[0.22em] block mb-8" style={{ ...sans, color: c.accent }}>
+          <span className="text-[0.72rem] uppercase tracking-[0.22em] block mb-8" style={{ ...sans, color: c.accent, fontWeight: c.sansWeight }}>
             Pioneers in Travel Technology &middot; Est. 2008
           </span>
           <h1
@@ -189,8 +189,8 @@ export default function EditorialHomePage() {
           </p>
           <Link
             href="/portfolio"
-            className="inline-block border px-8 py-3 text-[0.68rem] uppercase tracking-[0.18em] transition-all duration-500"
-            style={{ ...sans, borderColor: c.rule, color: c.text }}
+            className="inline-block border px-8 py-3 text-[0.78rem] uppercase tracking-[0.18em] transition-all duration-500"
+            style={{ ...sans, borderColor: c.rule, color: c.text, fontWeight: c.sansWeight }}
           >
             Explore Portfolio &rarr;
           </Link>
@@ -198,7 +198,7 @@ export default function EditorialHomePage() {
 
         {/* Scroll indicator */}
         <div className="absolute right-6 md:right-12 bottom-12 flex flex-col items-center gap-3">
-          <span className="text-[0.55rem] uppercase tracking-[0.2em] [writing-mode:vertical-lr]" style={{ ...sans, color: c.muted }}>Scroll</span>
+          <span className="text-[0.65rem] uppercase tracking-[0.2em] [writing-mode:vertical-lr]" style={{ ...sans, color: c.muted, fontWeight: c.sansWeight }}>Scroll</span>
           <div className="w-px h-12" style={{ backgroundColor: c.rule }} />
         </div>
       </section>
@@ -207,7 +207,7 @@ export default function EditorialHomePage() {
       <section className="border-y overflow-hidden py-5" style={{ borderColor: c.rule }}>
         <div className="flex whitespace-nowrap" style={{ animation: "editorial-marquee 35s linear infinite" }}>
           {[...tickerItems, ...tickerItems].map((item, i) => (
-            <span key={i} className="text-[0.62rem] uppercase tracking-[0.2em] mx-6 shrink-0" style={{ ...sans, color: c.muted }}>
+            <span key={i} className="text-[0.72rem] uppercase tracking-[0.2em] mx-6 shrink-0" style={{ ...sans, color: c.muted, fontWeight: c.sansWeight }}>
               {item} <span style={{ color: c.accent }} className="mx-4">&#9670;</span>
             </span>
           ))}
@@ -235,7 +235,7 @@ export default function EditorialHomePage() {
               </p>
               <div className="flex items-center gap-4">
                 <div className="w-12 h-px" style={{ backgroundColor: c.accent }} />
-                <span className="text-[0.62rem] uppercase tracking-[0.22em]" style={{ ...sans, color: c.accent }}>Since 2008</span>
+                <span className="text-[0.72rem] uppercase tracking-[0.22em]" style={{ ...sans, color: c.accent, fontWeight: c.sansWeight }}>Since 2008</span>
               </div>
             </div>
           </div>
@@ -249,8 +249,8 @@ export default function EditorialHomePage() {
           <div className="grid md:grid-cols-3 gap-8 md:gap-12">
             {stats.map((s, i) => (
               <div key={i} className="border p-8 md:p-10" style={{ borderColor: c.rule }}>
-                <span className="text-[clamp(2.2rem,4vw,3.6rem)] font-light block mb-3" style={{ ...serif, color: c.accent }}>{s.value}</span>
-                <span className="text-[0.62rem] uppercase tracking-[0.22em] block mb-4" style={{ ...sans, color: c.text }}>{s.label}</span>
+                <span className="text-[clamp(2.2rem,4vw,3.6rem)] font-light block mb-3" style={{ ...serif, color: c.accent, fontWeight: c.statWeight }}>{s.value}</span>
+                <span className="text-[0.72rem] uppercase tracking-[0.22em] block mb-4" style={{ ...sans, color: c.text, fontWeight: c.sansWeight }}>{s.label}</span>
                 <p className="text-[1.05rem] leading-[1.7]" style={{ ...serif, color: c.muted, fontWeight: c.bodyWeight }}>{s.sub}</p>
               </div>
             ))}
@@ -265,9 +265,9 @@ export default function EditorialHomePage() {
           <div className="grid md:grid-cols-2 gap-x-16 gap-y-12">
             {focuses.map((f) => (
               <div key={f.num} className="border-t pt-8" style={{ borderColor: c.rule }}>
-                <span className="text-[0.58rem] uppercase tracking-[0.22em] block mb-3" style={{ ...sans, color: c.accent }}>{f.num}</span>
-                <h3 className="text-[1.5rem] font-light italic mb-3" style={{ ...serif, color: c.text }}>{f.title}</h3>
-                <p className="text-[0.82rem] leading-[1.75]" style={{ ...sans, color: c.muted }}>{f.desc}</p>
+                <span className="text-[0.78rem] uppercase tracking-[0.22em] block mb-3" style={{ ...sans, color: c.accent, fontWeight: c.sansWeight }}>{f.num}</span>
+                <h3 className="text-[1.5rem] font-light italic mb-3" style={{ ...serif, color: c.text, fontWeight: c.headingWeight }}>{f.title}</h3>
+                <p className="text-[0.82rem] leading-[1.75]" style={{ ...sans, color: c.muted, fontWeight: c.sansWeight }}>{f.desc}</p>
               </div>
             ))}
           </div>
@@ -282,12 +282,12 @@ export default function EditorialHomePage() {
             {testimonials.map((t, i) => (
               <div key={i} className="border p-8 md:p-10 flex flex-col" style={{ borderColor: c.rule }}>
                 <span className="text-[2.5rem] leading-none mb-4" style={{ ...serif, color: c.accent }}>&ldquo;</span>
-                <p className="text-[1.05rem] leading-[1.8] font-light italic flex-1 mb-8" style={{ ...serif, color: c.bodyText }}>
+                <p className="text-[1.15rem] leading-[1.8] font-light italic flex-1 mb-8" style={{ ...serif, color: c.bodyText, fontWeight: c.bodyWeight }}>
                   {t.quote}
                 </p>
                 <div className="text-right">
-                  <span className="text-[0.62rem] uppercase tracking-[0.18em] block" style={{ ...sans, color: c.text }}>{t.author}</span>
-                  <span className="text-[0.58rem] uppercase tracking-[0.14em]" style={{ ...sans, color: c.muted }}>{t.role}</span>
+                  <span className="text-[0.72rem] uppercase tracking-[0.18em] block" style={{ ...sans, color: c.text, fontWeight: c.sansWeight }}>{t.author}</span>
+                  <span className="text-[0.78rem] uppercase tracking-[0.14em]" style={{ ...sans, color: c.muted, fontWeight: c.sansWeight }}>{t.role}</span>
                 </div>
               </div>
             ))}
@@ -307,8 +307,8 @@ export default function EditorialHomePage() {
                 className="group flex items-center gap-6 md:gap-10 py-6 border-b transition-colors"
                 style={{ borderColor: c.rule }}
               >
-                <span className="text-[0.62rem] uppercase tracking-[0.18em] shrink-0 w-20" style={{ ...sans, color: c.muted }}>{h.date}</span>
-                <span className="text-[1.15rem] md:text-[1.35rem] font-light italic flex-1 group-hover:text-[#C49A45] transition-colors" style={{ ...serif, color: c.text }}>{h.title}</span>
+                <span className="text-[0.72rem] uppercase tracking-[0.18em] shrink-0 w-20" style={{ ...sans, color: c.muted, fontWeight: c.sansWeight }}>{h.date}</span>
+                <span className="text-[1.15rem] md:text-[1.35rem] font-light italic flex-1 group-hover:text-[#C49A45] transition-colors" style={{ ...serif, color: c.text, fontWeight: c.headingWeight }}>{h.title}</span>
                 <span className="group-hover:text-[#C49A45] transition-colors shrink-0" style={{ color: c.muted }}>&rarr;</span>
               </Link>
             ))}

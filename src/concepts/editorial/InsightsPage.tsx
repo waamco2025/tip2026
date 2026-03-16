@@ -10,9 +10,9 @@ function SectionHeader({ label, number }: { label: string; number: string }) {
   const c = ec(light);
   return (
     <div className="flex items-center gap-6 mb-16 md:mb-20">
-      <span className="text-[0.62rem] uppercase tracking-[0.22em] shrink-0" style={{ fontFamily: "'Syne', sans-serif", color: c.accent }}>{label}</span>
+      <span className="text-[0.72rem] uppercase tracking-[0.22em] shrink-0" style={{ fontFamily: "'Syne', sans-serif", color: c.accent, fontWeight: c.sansWeight }}>{label}</span>
       <div className="flex-1 h-px" style={{ backgroundColor: c.rule }} />
-      <span className="text-[0.62rem] uppercase tracking-[0.22em] shrink-0" style={{ fontFamily: "'Syne', sans-serif", color: c.muted }}>{number}</span>
+      <span className="text-[0.72rem] uppercase tracking-[0.22em] shrink-0" style={{ fontFamily: "'Syne', sans-serif", color: c.muted, fontWeight: c.sansWeight }}>{number}</span>
     </div>
   );
 }
@@ -40,7 +40,7 @@ export default function EditorialInsightsPage() {
       {/* ── Hero ── */}
       <section className="px-6 md:px-12 py-24 md:py-40">
         <div className="max-w-7xl mx-auto">
-          <span className="text-[0.62rem] uppercase tracking-[0.22em] block mb-8" style={{ ...sans, color: c.accent }}>Insights</span>
+          <span className="text-[0.72rem] uppercase tracking-[0.22em] block mb-8" style={{ ...sans, color: c.accent, fontWeight: c.sansWeight }}>Insights</span>
           <h1 className="text-[clamp(2rem,5vw,4.5rem)] leading-[1.08] font-light italic max-w-4xl" style={{ ...serif, color: c.text }}>
             Perspectives on the future of travel &amp; technology.
           </h1>
@@ -53,18 +53,18 @@ export default function EditorialInsightsPage() {
           <SectionHeader label="Featured" number="01" />
           <Link href="/news/thayer-travelai-series-b" className="group grid md:grid-cols-2 gap-8 md:gap-16">
             <div className="aspect-[4/3] border flex items-end p-6 group-hover:border-[#C49A45]/30 transition-colors" style={{ backgroundColor: c.surface, borderColor: c.rule }}>
-              <span className="text-[0.55rem] uppercase tracking-[0.2em]" style={{ ...sans, color: c.muted }}>Featured Image</span>
+              <span className="text-[0.65rem] uppercase tracking-[0.2em]" style={{ ...sans, color: c.muted, fontWeight: c.sansWeight }}>Featured Image</span>
             </div>
             <div className="flex flex-col justify-center">
-              <span className="text-[0.55rem] uppercase tracking-[0.2em] block mb-4" style={{ ...sans, color: c.accent }}>Mar 05, 2026 &middot; Investment</span>
-              <h2 className="text-[clamp(1.6rem,3vw,2.6rem)] leading-[1.15] font-light italic mb-6 group-hover:text-[#C49A45] transition-colors" style={{ ...serif, color: c.text }}>
+              <span className="text-[0.65rem] uppercase tracking-[0.2em] block mb-4" style={{ ...sans, color: c.accent, fontWeight: c.sansWeight }}>Mar 05, 2026 &middot; Investment</span>
+              <h2 className="text-[clamp(1.6rem,3vw,2.6rem)] leading-[1.15] font-light italic mb-6 group-hover:text-[#C49A45] transition-colors" style={{ ...serif, color: c.text, fontWeight: c.headingWeight }}>
                 Thayer Leads $45M Series B in TravelAI Platform
               </h2>
               <p className="text-[1.25rem] leading-[1.85] mb-8" style={{ ...serif, color: c.bodyText, fontWeight: c.bodyWeight }}>
                 TravelAI&rsquo;s generative AI platform is transforming how travel companies personalize experiences at scale.
                 The Series B will fund expansion into 14 new markets and accelerate enterprise partnerships with major hotel chains.
               </p>
-              <span className="text-[0.62rem] uppercase tracking-[0.18em] group-hover:text-[#C49A45] transition-colors" style={{ ...sans, color: c.muted }}>
+              <span className="text-[0.72rem] uppercase tracking-[0.18em] group-hover:text-[#C49A45] transition-colors" style={{ ...sans, color: c.muted, fontWeight: c.sansWeight }}>
                 Read Article &rarr;
               </span>
             </div>
@@ -84,15 +84,15 @@ export default function EditorialInsightsPage() {
                 className="group grid md:grid-cols-[140px_1fr] gap-4 md:gap-10 py-8 border-b transition-colors"
                 style={{ borderColor: c.rule }}
               >
-                <span className="text-[0.6rem] uppercase tracking-[0.16em] pt-1" style={{ ...sans, color: c.muted }}>{a.date}</span>
+                <span className="text-[0.7rem] uppercase tracking-[0.16em] pt-1" style={{ ...sans, color: c.muted, fontWeight: c.sansWeight }}>{a.date}</span>
                 <div>
                   <div className="flex items-center gap-3 mb-3">
-                    <span className="text-[0.55rem] uppercase tracking-[0.2em]" style={{ ...sans, color: c.accent }}>{a.tag}</span>
+                    <span className="text-[0.65rem] uppercase tracking-[0.2em]" style={{ ...sans, color: c.accent, fontWeight: c.sansWeight }}>{a.tag}</span>
                   </div>
-                  <h3 className="text-[1.3rem] md:text-[1.5rem] font-light italic mb-3 group-hover:text-[#C49A45] transition-colors" style={{ ...serif, color: c.text }}>
+                  <h3 className="text-[1.3rem] md:text-[1.5rem] font-light italic mb-3 group-hover:text-[#C49A45] transition-colors" style={{ ...serif, color: c.text, fontWeight: c.headingWeight }}>
                     {a.title}
                   </h3>
-                  <p className="text-[1.05rem] leading-[1.75]" style={{ ...serif, color: c.bodyText }}>{a.excerpt}</p>
+                  <p className="text-[1.05rem] leading-[1.75]" style={{ ...serif, color: c.bodyText, fontWeight: c.bodyWeight }}>{a.excerpt}</p>
                 </div>
               </Link>
             ))}
