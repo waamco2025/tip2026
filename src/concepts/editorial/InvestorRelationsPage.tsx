@@ -50,7 +50,7 @@ export default function EditorialInvestorRelationsPage() {
             <h1 className="text-[clamp(2rem,4.5vw,4rem)] leading-[1.08] font-light italic mb-6" style={{ ...serif, color: c.text }}>
               Documents, filings, and market data.
             </h1>
-            <p className="text-[1.1rem] leading-[1.85]" style={{ ...serif, color: c.bodyText, fontWeight: c.bodyWeight }}>
+            <p className="text-[1.25rem] leading-[1.85]" style={{ ...serif, color: c.bodyText, fontWeight: c.bodyWeight }}>
               Access fund documents, regulatory filings, and performance data for Thayer Investment Partners&rsquo;
               limited partners and prospective investors.
             </p>
@@ -105,7 +105,7 @@ export default function EditorialInvestorRelationsPage() {
               <h2 className="text-[clamp(1.6rem,3vw,2.6rem)] leading-[1.15] font-light italic mb-6" style={{ ...serif, color: c.text }}>
                 Three generations of travel-focused investing.
               </h2>
-              <p className="text-[1.1rem] leading-[1.85]" style={{ ...serif, color: c.bodyText, fontWeight: c.bodyWeight }}>
+              <p className="text-[1.25rem] leading-[1.85]" style={{ ...serif, color: c.bodyText, fontWeight: c.bodyWeight }}>
                 Since inception, Thayer has deployed capital across three dedicated travel technology funds,
                 building a portfolio that spans the entire travel ecosystem from hospitality and aviation to
                 entertainment and real estate technology.
@@ -114,7 +114,7 @@ export default function EditorialInvestorRelationsPage() {
             <div className="flex flex-col gap-4">
               {funds.map((f, i) => (
                 <div key={i} className="border p-6 grid grid-cols-[1fr_auto_auto_auto] items-center gap-4 md:gap-8" style={{ borderColor: c.rule }}>
-                  <span className="text-[1.1rem] font-light italic" style={{ ...serif, color: c.text }}>{f.name}</span>
+                  <span className="text-[1.25rem] font-light italic" style={{ ...serif, color: c.text }}>{f.name}</span>
                   <span className="text-[1rem] font-light" style={{ ...serif, color: c.accent }}>{f.size}</span>
                   <span className="text-[0.55rem] uppercase tracking-[0.16em]" style={{ ...sans, color: c.muted }}>{f.vintage}</span>
                   <span
@@ -151,7 +151,7 @@ export default function EditorialInvestorRelationsPage() {
             <div className="border p-8 md:p-10" style={{ borderColor: c.rule }}>
               <span className="text-[0.58rem] uppercase tracking-[0.22em] block mb-5" style={{ ...sans, color: c.accent }}>LP Inquiries</span>
               <h3 className="text-[1.3rem] font-light italic mb-4" style={{ ...serif, color: c.text }}>Limited Partner Relations</h3>
-              <p className="text-[0.92rem] leading-[1.8] mb-6" style={{ ...serif, color: c.bodyText }}>
+              <p className="text-[1.05rem] leading-[1.8] mb-6" style={{ ...serif, color: c.bodyText }}>
                 For existing limited partners with questions about fund performance, capital calls,
                 or distributions, please contact our investor relations team.
               </p>
@@ -163,7 +163,7 @@ export default function EditorialInvestorRelationsPage() {
             <div className="border p-8 md:p-10" style={{ borderColor: c.rule }}>
               <span className="text-[0.58rem] uppercase tracking-[0.22em] block mb-5" style={{ ...sans, color: c.accent }}>Fund Administration</span>
               <h3 className="text-[1.3rem] font-light italic mb-4" style={{ ...serif, color: c.text }}>Operations & Compliance</h3>
-              <p className="text-[0.92rem] leading-[1.8] mb-6" style={{ ...serif, color: c.bodyText }}>
+              <p className="text-[1.05rem] leading-[1.8] mb-6" style={{ ...serif, color: c.bodyText }}>
                 For questions related to fund administration, tax documents,
                 or compliance matters, please contact our operations team.
               </p>

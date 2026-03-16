@@ -59,7 +59,7 @@ export default function EditorialAboutPage() {
           <h1 className="text-[clamp(2.2rem,5.5vw,5rem)] leading-[1.08] font-light italic mb-8 max-w-4xl" style={{ ...serif, color: c.text }}>
             A History of Innovation in Travel.
           </h1>
-          <p className="text-[1.1rem] leading-[1.85] max-w-2xl" style={{ ...serif, color: c.bodyText, fontWeight: c.bodyWeight }}>
+          <p className="text-[1.25rem] leading-[1.85] max-w-2xl" style={{ ...serif, color: c.bodyText, fontWeight: c.bodyWeight }}>
             Since 2008, Thayer Investment Partners has been at the forefront of travel technology investing,
             partnering with visionary founders to build companies that reshape how the world moves, stays, and experiences new places.
           </p>
@@ -76,7 +76,7 @@ export default function EditorialAboutPage() {
                 <span className="text-[1.8rem] font-light" style={{ ...serif, color: c.accent }}>{m.year}</span>
                 <div>
                   <h3 className="text-[1.3rem] font-light italic mb-3" style={{ ...serif, color: c.text }}>{m.title}</h3>
-                  <p className="text-[1.1rem] leading-[1.85]" style={{ ...serif, color: c.bodyText, fontWeight: c.bodyWeight }}>{m.desc}</p>
+                  <p className="text-[1.25rem] leading-[1.85]" style={{ ...serif, color: c.bodyText, fontWeight: c.bodyWeight }}>{m.desc}</p>
                 </div>
               </div>
             ))}
@@ -93,7 +93,7 @@ export default function EditorialAboutPage() {
               <div key={i} className="border p-8 md:p-10" style={{ borderColor: c.rule }}>
                 <span className="text-[0.58rem] uppercase tracking-[0.22em] block mb-4" style={{ ...sans, color: c.accent }}>0{i + 1}</span>
                 <h3 className="text-[1.5rem] font-light italic mb-4" style={{ ...serif, color: c.text }}>{p.title}</h3>
-                <p className="text-[0.92rem] leading-[1.8]" style={{ ...serif, color: c.bodyText }}>{p.desc}</p>
+                <p className="text-[1.05rem] leading-[1.8]" style={{ ...serif, color: c.bodyText }}>{p.desc}</p>
               </div>
             ))}
           </div>
@@ -129,7 +129,7 @@ export default function EditorialAboutPage() {
               <h2 className="text-[clamp(1.6rem,3vw,2.8rem)] leading-[1.15] font-light italic mb-6" style={{ ...serif, color: c.text }}>
                 A global network built over decades.
               </h2>
-              <p className="text-[1.1rem] leading-[1.85]" style={{ ...serif, color: c.bodyText, fontWeight: c.bodyWeight }}>
+              <p className="text-[1.25rem] leading-[1.85]" style={{ ...serif, color: c.bodyText, fontWeight: c.bodyWeight }}>
                 Our portfolio companies benefit from Thayer&rsquo;s extensive network of industry leaders, corporate partners,
                 and advisors spanning every segment of the travel ecosystem. From hotel chains and airline groups to
                 technology platforms and government tourism boards, we connect our founders with the relationships that matter.
