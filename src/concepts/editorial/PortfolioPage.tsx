@@ -124,7 +124,7 @@ export default function EditorialPortfolioPage() {
               <h2 className="text-[clamp(1.6rem,3vw,2.6rem)] leading-[1.15] font-light italic mb-6" style={{ ...serif, color: c.text }}>
                 CloudHotel: Advancing AI-Powered Hospitality at Scale
               </h2>
-              <p className="text-[1.1rem] leading-[1.85] font-normal mb-8" style={{ ...serif, color: c.bodyText }}>
+              <p className="text-[1.1rem] leading-[1.85] mb-8" style={{ ...serif, color: c.bodyText, fontWeight: c.bodyWeight }}>
                 CloudHotel represents the next generation of hospitality technology—an AI-powered platform that enables independent
                 hotels to compete with major chains through intelligent property management, dynamic pricing, and personalized guest experiences.
                 Thayer led the company&rsquo;s $200M Series C, accelerating expansion into 42 countries.

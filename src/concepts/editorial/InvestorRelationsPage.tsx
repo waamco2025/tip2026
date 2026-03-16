@@ -3,6 +3,7 @@
 import React from "react";
 import { EditorialNav, EditorialFooter } from "./HomePage";
 import { useEditorialMode, ec } from "./EditorialModeContext";
+import { EditorialStockWidgets } from "@/components/StockWidgets";
 
 function SectionHeader({ label, number }: { label: string; number: string }) {
   const { light } = useEditorialMode();
@@ -49,7 +50,7 @@ export default function EditorialInvestorRelationsPage() {
             <h1 className="text-[clamp(2rem,4.5vw,4rem)] leading-[1.08] font-light italic mb-6" style={{ ...serif, color: c.text }}>
               Documents, filings, and market data.
             </h1>
-            <p className="text-[1.1rem] leading-[1.85] font-normal" style={{ ...serif, color: c.bodyText }}>
+            <p className="text-[1.1rem] leading-[1.85]" style={{ ...serif, color: c.bodyText, fontWeight: c.bodyWeight }}>
               Access fund documents, regulatory filings, and performance data for Thayer Investment Partners&rsquo;
               limited partners and prospective investors.
             </p>
@@ -104,7 +105,7 @@ export default function EditorialInvestorRelationsPage() {
               <h2 className="text-[clamp(1.6rem,3vw,2.6rem)] leading-[1.15] font-light italic mb-6" style={{ ...serif, color: c.text }}>
                 Three generations of travel-focused investing.
               </h2>
-              <p className="text-[1.1rem] leading-[1.85] font-normal" style={{ ...serif, color: c.bodyText }}>
+              <p className="text-[1.1rem] leading-[1.85]" style={{ ...serif, color: c.bodyText, fontWeight: c.bodyWeight }}>
                 Since inception, Thayer has deployed capital across three dedicated travel technology funds,
                 building a portfolio that spans the entire travel ecosystem from hospitality and aviation to
                 entertainment and real estate technology.
@@ -137,13 +138,8 @@ export default function EditorialInvestorRelationsPage() {
       <section className="px-6 md:px-12 py-24 md:py-32">
         <div className="max-w-7xl mx-auto">
           <SectionHeader label="Market Data" number="03" />
-          <div className="border p-12 md:p-16 flex flex-col items-center justify-center min-h-[300px]" style={{ borderColor: c.rule }}>
-            <span className="text-[0.62rem] uppercase tracking-[0.22em] mb-4" style={{ ...sans, color: c.muted }}>NASDAQ Travel Index</span>
-            <div className="w-full max-w-2xl h-48 border flex items-center justify-center" style={{ backgroundColor: c.surface, borderColor: c.rule }}>
-              <span className="text-[0.55rem] uppercase tracking-[0.2em]" style={{ ...sans, color: c.muted, opacity: 0.4 }}>Market Widget Placeholder</span>
-            </div>
-            <span className="text-[0.55rem] uppercase tracking-[0.16em] mt-4" style={{ ...sans, color: c.muted, opacity: 0.5 }}>Data delayed 15 minutes. Source: NASDAQ</span>
-          </div>
+          <EditorialStockWidgets light={light} />
+          <p className="text-[0.55rem] uppercase tracking-[0.16em] mt-6 text-center" style={{ ...sans, color: c.muted, opacity: 0.5 }}>Data delayed 15 minutes. Source: NASDAQ</p>
         </div>
       </section>
 

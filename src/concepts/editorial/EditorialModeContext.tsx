@@ -42,6 +42,8 @@ export function ec(light: boolean) {
     accent: "#C49A45",
     rule: light ? "rgba(0,0,0,0.08)" : "rgba(255,255,255,0.07)",
     bodyText: light ? "rgba(26,25,23,0.82)" : "rgba(234,229,219,0.82)",
+    bodyWeight: light ? 500 : 400,
     hamburger: light ? "#1A1917" : "#EAE5DB",
+    logo: light ? "/logotype-dark.svg" : "/logotype.svg",
   };
 }

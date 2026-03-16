@@ -141,6 +141,132 @@ export function StoicStockWidgets() {
   );
 }
 
+/** Editorial variant */
+export function EditorialStockWidgets({ light = false }: { light?: boolean }) {
+  const [stocks, setStocks] = useState<StockData[] | null>(null);
+
+  useEffect(() => {
+    fetch("/api/stocks")
+      .then((r) => r.json())
+      .then((d) => { if (Array.isArray(d)) setStocks(d); })
+      .catch(() => {});
+  }, []);
+
+  const cardBg = light ? "#F0EDE8" : "#141410";
+  const border = light ? "rgba(0,0,0,0.08)" : "rgba(255,255,255,0.07)";
+  const ticker = light ? "#1A1917" : "#EAE5DB";
+  const muted = light ? "#8A8578" : "#7A7568";
+  const accent = "#C49A45";
+  const upColor = "#C49A45";
+  const downColor = light ? "#B91C1C" : "#EF4444";
+  const chartBg = light ? "#E8E5E0" : "#0C0C0A";
+  const badgeBg = "rgba(196,154,69,0.12)";
+  const priceFont = "'Cormorant Garamond', serif";
+  const labelFont = "'Syne', sans-serif";
+
+  if (!stocks) {
+    return (
+      <div className="flex flex-col md:flex-row gap-6">
+        {[0, 1, 2].map((i) => (
+          <div
+            key={i}
+            className="flex-1 h-[280px] animate-pulse"
+            style={{ backgroundColor: cardBg, border: `1px solid ${border}` }}
+          />
+        ))}
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex flex-col md:flex-row gap-6">
+      {stocks.map((s) => {
+        const up = s.change >= 0;
+        return (
+          <div
+            key={s.ticker}
+            className="flex-1 flex flex-col gap-4 p-7"
+            style={{ backgroundColor: cardBg, border: `1px solid ${border}` }}
+          >
+            <div className="flex justify-between items-center">
+              <a
+                href={nasdaqUrl(s.ticker)}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm font-semibold hover:underline"
+                style={{ color: ticker, fontFamily: labelFont }}
+              >
+                {s.ticker}
+              </a>
+              <a
+                href={nasdaqUrl(s.ticker)}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[11px] font-medium tracking-[1px] px-2.5 py-1 hover:opacity-80"
+                style={{ color: accent, backgroundColor: badgeBg, fontFamily: labelFont }}
+              >
+                NASDAQ
+              </a>
+            </div>
+            <a
+              href={nasdaqUrl(s.ticker)}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xs hover:underline"
+              style={{ color: muted, fontFamily: labelFont }}
+            >
+              {s.name}
+            </a>
+            <div className="flex items-center gap-3">
+              <a
+                href={nasdaqUrl(s.ticker)}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-4xl hover:underline"
+                style={{ color: ticker, fontFamily: priceFont }}
+              >
+                ${s.price.toFixed(2)}
+              </a>
+              <div
+                className="flex items-center gap-1 px-2.5 py-1 rounded"
+                style={{ backgroundColor: up ? "rgba(196,154,69,0.12)" : light ? "rgba(185,28,28,0.1)" : "rgba(239,68,68,0.12)" }}
+              >
+                <span
+                  className="text-xs font-semibold"
+                  style={{ color: up ? upColor : downColor, fontFamily: labelFont }}
+                >
+                  {up ? "+" : ""}
+                  {s.change.toFixed(2)} ({s.changePercent.toFixed(2)}%)
+                </span>
+              </div>
+            </div>
+            <a
+              href={nasdaqUrl(s.ticker)}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block w-full h-20 overflow-hidden hover:opacity-80 transition-opacity"
+              style={{ backgroundColor: chartBg, border: `1px solid ${border}` }}
+            >
+              <Sparkline
+                data={s.sparkline}
+                color={up ? upColor : downColor}
+              />
+            </a>
+            <div className="flex justify-between">
+              <span className="text-[11px]" style={{ color: muted, fontFamily: labelFont }}>
+                {formatVolume(s.volume)}
+              </span>
+              <span className="text-[11px]" style={{ color: muted, fontFamily: labelFont }}>
+                Last updated: {s.updated}
+              </span>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
 /** Modern (light) variant */
 export function ModernStockWidgets() {
   const [stocks, setStocks] = useState<StockData[] | null>(null);
