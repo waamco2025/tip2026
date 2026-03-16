@@ -90,13 +90,13 @@ export function EditorialFooter() {
       style={{ borderColor: c.rule, backgroundColor: c.bg, fontFamily: "'Syne', sans-serif" }}
     >
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
-        <span className="text-[0.78rem] uppercase tracking-[0.18em]" style={{ color: c.muted, fontWeight: c.sansWeight }}>Thayer Investment Partners</span>
-        <div className="flex flex-wrap gap-6">
+        <span className="text-[0.65rem] uppercase tracking-[0.18em] whitespace-nowrap shrink-0" style={{ color: c.muted, fontWeight: c.sansWeight }}>Thayer Investment Partners</span>
+        <div className="flex flex-wrap gap-5">
           {["About", "Portfolio", "Insights", "Investor Relations", "Privacy", "Terms"].map((t) => (
-            <span key={t} className="text-[0.72rem] uppercase tracking-[0.14em] hover:opacity-80 transition-colors cursor-pointer" style={{ color: c.muted, fontWeight: c.sansWeight }}>{t}</span>
+            <span key={t} className="text-[0.6rem] uppercase tracking-[0.14em] hover:opacity-80 transition-colors cursor-pointer whitespace-nowrap" style={{ color: c.muted, fontWeight: c.sansWeight }}>{t}</span>
           ))}
         </div>
-        <span className="text-[0.7rem] uppercase tracking-[0.1em]" style={{ color: c.muted, opacity: 0.6 }}>&copy; 2026 Thayer Investment Partners. All rights reserved.</span>
+        <span className="text-[0.58rem] uppercase tracking-[0.1em] whitespace-nowrap shrink-0" style={{ color: c.muted, opacity: 0.6 }}>&copy; 2026 Thayer Investment Partners. All rights reserved.</span>
       </div>
     </footer>
   );
