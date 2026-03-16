@@ -2,18 +2,23 @@
 
 import React from "react";
 import { EditorialNav, EditorialFooter } from "./HomePage";
+import { useEditorialMode, ec } from "./EditorialModeContext";
 
 function SectionHeader({ label, number }: { label: string; number: string }) {
+  const { light } = useEditorialMode();
+  const c = ec(light);
   return (
     <div className="flex items-center gap-6 mb-16 md:mb-20">
-      <span className="text-[0.62rem] uppercase tracking-[0.22em] text-[#C49A45] shrink-0" style={{ fontFamily: "'Syne', sans-serif" }}>{label}</span>
-      <div className="flex-1 h-px bg-white/[0.07]" />
-      <span className="text-[0.62rem] uppercase tracking-[0.22em] text-[#7A7568] shrink-0" style={{ fontFamily: "'Syne', sans-serif" }}>{number}</span>
+      <span className="text-[0.62rem] uppercase tracking-[0.22em] shrink-0" style={{ fontFamily: "'Syne', sans-serif", color: c.accent }}>{label}</span>
+      <div className="flex-1 h-px" style={{ backgroundColor: c.rule }} />
+      <span className="text-[0.62rem] uppercase tracking-[0.22em] shrink-0" style={{ fontFamily: "'Syne', sans-serif", color: c.muted }}>{number}</span>
     </div>
   );
 }
 
 export default function EditorialAboutPage() {
+  const { light } = useEditorialMode();
+  const c = ec(light);
   const serif = { fontFamily: "'Cormorant Garamond', Georgia, serif" };
   const sans = { fontFamily: "'Syne', sans-serif" };
 
@@ -44,17 +49,17 @@ export default function EditorialAboutPage() {
   ];
 
   return (
-    <div className="bg-[#0C0C0A] text-[#EAE5DB] min-h-screen">
+    <div className="min-h-screen transition-colors duration-500" style={{ backgroundColor: c.bg, color: c.text }}>
       <EditorialNav active="about" />
 
       {/* ── Hero ── */}
       <section className="px-6 md:px-12 py-24 md:py-40">
         <div className="max-w-7xl mx-auto">
-          <span className="text-[0.62rem] uppercase tracking-[0.22em] text-[#C49A45] block mb-8" style={sans}>About the Firm</span>
-          <h1 className="text-[clamp(2.2rem,5.5vw,5rem)] leading-[1.08] font-light italic mb-8 max-w-4xl" style={serif}>
+          <span className="text-[0.62rem] uppercase tracking-[0.22em] block mb-8" style={{ ...sans, color: c.accent }}>About the Firm</span>
+          <h1 className="text-[clamp(2.2rem,5.5vw,5rem)] leading-[1.08] font-light italic mb-8 max-w-4xl" style={{ ...serif, color: c.text }}>
             A History of Innovation in Travel.
           </h1>
-          <p className="text-[1.1rem] leading-[1.85] font-light max-w-2xl" style={{ ...serif, color: "rgba(234,229,219,0.72)" }}>
+          <p className="text-[1.1rem] leading-[1.85] font-light max-w-2xl" style={{ ...serif, color: c.bodyText }}>
             Since 2008, Thayer Investment Partners has been at the forefront of travel technology investing,
             partnering with visionary founders to build companies that reshape how the world moves, stays, and experiences new places.
           </p>
@@ -67,11 +72,11 @@ export default function EditorialAboutPage() {
           <SectionHeader label="Our Journey" number="01" />
           <div className="flex flex-col gap-0">
             {milestones.map((m, i) => (
-              <div key={i} className="grid md:grid-cols-[120px_1fr] gap-4 md:gap-12 py-10 border-b border-white/[0.07]">
-                <span className="text-[1.8rem] font-light text-[#C49A45]" style={serif}>{m.year}</span>
+              <div key={i} className="grid md:grid-cols-[120px_1fr] gap-4 md:gap-12 py-10 border-b" style={{ borderColor: c.rule }}>
+                <span className="text-[1.8rem] font-light" style={{ ...serif, color: c.accent }}>{m.year}</span>
                 <div>
-                  <h3 className="text-[1.3rem] font-light italic mb-3" style={serif}>{m.title}</h3>
-                  <p className="text-[1.1rem] leading-[1.85] font-light" style={{ ...serif, color: "rgba(234,229,219,0.72)" }}>{m.desc}</p>
+                  <h3 className="text-[1.3rem] font-light italic mb-3" style={{ ...serif, color: c.text }}>{m.title}</h3>
+                  <p className="text-[1.1rem] leading-[1.85] font-light" style={{ ...serif, color: c.bodyText }}>{m.desc}</p>
                 </div>
               </div>
             ))}
@@ -80,15 +85,15 @@ export default function EditorialAboutPage() {
       </section>
 
       {/* ── Philosophy (02) ── */}
-      <section className="bg-[#141410] px-6 md:px-12 py-24 md:py-32">
+      <section className="px-6 md:px-12 py-24 md:py-32 transition-colors duration-500" style={{ backgroundColor: c.surface }}>
         <div className="max-w-7xl mx-auto">
           <SectionHeader label="Our Philosophy" number="02" />
           <div className="grid md:grid-cols-3 gap-8 md:gap-12">
             {philosophies.map((p, i) => (
-              <div key={i} className="border border-white/[0.07] p-8 md:p-10">
-                <span className="text-[0.58rem] uppercase tracking-[0.22em] text-[#C49A45] block mb-4" style={sans}>0{i + 1}</span>
-                <h3 className="text-[1.5rem] font-light italic mb-4" style={serif}>{p.title}</h3>
-                <p className="text-[0.92rem] leading-[1.8]" style={{ ...serif, color: "rgba(234,229,219,0.65)" }}>{p.desc}</p>
+              <div key={i} className="border p-8 md:p-10" style={{ borderColor: c.rule }}>
+                <span className="text-[0.58rem] uppercase tracking-[0.22em] block mb-4" style={{ ...sans, color: c.accent }}>0{i + 1}</span>
+                <h3 className="text-[1.5rem] font-light italic mb-4" style={{ ...serif, color: c.text }}>{p.title}</h3>
+                <p className="text-[0.92rem] leading-[1.8]" style={{ ...serif, color: c.bodyText }}>{p.desc}</p>
               </div>
             ))}
           </div>
@@ -102,13 +107,13 @@ export default function EditorialAboutPage() {
           <div className="grid md:grid-cols-3 gap-8 md:gap-10">
             {team.map((t, i) => (
               <div key={i} className="group">
-                <div className="aspect-[3/4] bg-[#141410] border border-white/[0.07] mb-5 flex items-end p-6">
-                  <span className="text-[0.55rem] uppercase tracking-[0.2em] text-[#7A7568]" style={sans}>Portrait</span>
+                <div className="aspect-[3/4] border mb-5 flex items-end p-6 transition-colors duration-500" style={{ backgroundColor: c.surface, borderColor: c.rule }}>
+                  <span className="text-[0.55rem] uppercase tracking-[0.2em]" style={{ ...sans, color: c.muted }}>Portrait</span>
                 </div>
-                <h3 className="text-[1.25rem] font-light italic mb-1" style={serif}>{t.name}</h3>
-                <span className="text-[0.6rem] uppercase tracking-[0.18em] text-[#C49A45] block mb-3" style={sans}>{t.role}</span>
-                <p className="text-[0.88rem] leading-[1.75] line-clamp-3" style={{ ...serif, color: "rgba(234,229,219,0.6)" }}>{t.bio}</p>
-                <span className="text-[0.58rem] uppercase tracking-[0.18em] text-[#7A7568] mt-3 inline-block cursor-pointer hover:text-[#C49A45] transition-colors" style={sans}>Read More</span>
+                <h3 className="text-[1.25rem] font-light italic mb-1" style={{ ...serif, color: c.text }}>{t.name}</h3>
+                <span className="text-[0.6rem] uppercase tracking-[0.18em] block mb-3" style={{ ...sans, color: c.accent }}>{t.role}</span>
+                <p className="text-[0.88rem] leading-[1.75] line-clamp-3" style={{ ...serif, color: c.bodyText }}>{t.bio}</p>
+                <span className="text-[0.58rem] uppercase tracking-[0.18em] mt-3 inline-block cursor-pointer hover:opacity-80 transition-colors" style={{ ...sans, color: c.muted }}>Read More</span>
               </div>
             ))}
           </div>
@@ -116,15 +121,15 @@ export default function EditorialAboutPage() {
       </section>
 
       {/* ── Network (04) ── */}
-      <section className="px-6 md:px-12 py-24 md:py-32 border-t border-white/[0.07]">
+      <section className="px-6 md:px-12 py-24 md:py-32 border-t" style={{ borderColor: c.rule }}>
         <div className="max-w-7xl mx-auto">
           <SectionHeader label="Our Network" number="04" />
           <div className="grid md:grid-cols-2 gap-12 md:gap-20">
             <div>
-              <h2 className="text-[clamp(1.6rem,3vw,2.8rem)] leading-[1.15] font-light italic mb-6" style={serif}>
+              <h2 className="text-[clamp(1.6rem,3vw,2.8rem)] leading-[1.15] font-light italic mb-6" style={{ ...serif, color: c.text }}>
                 A global network built over decades.
               </h2>
-              <p className="text-[1.1rem] leading-[1.85] font-light" style={{ ...serif, color: "rgba(234,229,219,0.72)" }}>
+              <p className="text-[1.1rem] leading-[1.85] font-light" style={{ ...serif, color: c.bodyText }}>
                 Our portfolio companies benefit from Thayer&rsquo;s extensive network of industry leaders, corporate partners,
                 and advisors spanning every segment of the travel ecosystem. From hotel chains and airline groups to
                 technology platforms and government tourism boards, we connect our founders with the relationships that matter.
@@ -132,8 +137,8 @@ export default function EditorialAboutPage() {
             </div>
             <div className="grid grid-cols-3 gap-4">
               {Array.from({ length: 9 }).map((_, i) => (
-                <div key={i} className="aspect-[3/2] bg-[#141410] border border-white/[0.07] flex items-center justify-center">
-                  <span className="text-[0.5rem] uppercase tracking-[0.15em] text-[#7A7568]/40" style={sans}>Logo</span>
+                <div key={i} className="aspect-[3/2] border flex items-center justify-center transition-colors duration-500" style={{ backgroundColor: c.surface, borderColor: c.rule }}>
+                  <span className="text-[0.5rem] uppercase tracking-[0.15em]" style={{ ...sans, color: c.muted, opacity: 0.4 }}>Logo</span>
                 </div>
               ))}
             </div>

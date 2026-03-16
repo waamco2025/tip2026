@@ -1,6 +1,7 @@
 "use client";
 
 import { useTheme } from "./ThemeContext";
+import { EditorialModeProvider } from "@/concepts/editorial/EditorialModeContext";
 
 export default function ConceptShell({
   stoic,
@@ -18,7 +19,7 @@ export default function ConceptShell({
   if (theme === "stoic") return <>{stoic}</>;
   if (theme === "modern" && modern) return <>{modern}</>;
   if (theme === "futurist" && futurist) return <>{futurist}</>;
-  if (theme === "editorial" && editorial) return <>{editorial}</>;
+  if (theme === "editorial" && editorial) return <EditorialModeProvider>{editorial}</EditorialModeProvider>;
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-thayer-bg">

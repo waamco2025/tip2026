@@ -7,10 +7,10 @@ export type ThemeName = "stoic" | "modern" | "futurist" | "editorial";
 const ThemeContext = createContext<{
   theme: ThemeName;
   setTheme: (t: ThemeName) => void;
-}>({ theme: "stoic", setTheme: () => {} });
+}>({ theme: "editorial", setTheme: () => {} });
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setTheme] = useState<ThemeName>("stoic");
+  const [theme, setTheme] = useState<ThemeName>("editorial");
 
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", theme);

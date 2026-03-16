@@ -3,10 +3,8 @@
 import { useTheme, ThemeName } from "./ThemeContext";
 
 const themes: { name: ThemeName; label: string }[] = [
-  { name: "stoic", label: "Stoic" },
-  { name: "modern", label: "Modern" },
-  { name: "futurist", label: "Futurist" },
   { name: "editorial", label: "Editorial" },
+  { name: "modern", label: "Modern" },
 ];
 
 export default function ThemeSwitcher() {
