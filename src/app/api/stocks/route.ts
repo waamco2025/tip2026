@@ -2,6 +2,16 @@ import { NextResponse } from "next/server";
 
 const TICKERS = ["TVAIU", "TVAIR", "TVAI"];
 
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Methods": "GET, OPTIONS",
+  "Access-Control-Allow-Headers": "Content-Type",
+};
+
+export async function OPTIONS() {
+  return NextResponse.json({}, { headers: corsHeaders });
+}
+
 interface StockData {
   ticker: string;
   name: string;
@@ -103,11 +113,11 @@ export async function GET() {
       })
     );
 
-    return NextResponse.json(results);
+    return NextResponse.json(results, { headers: corsHeaders });
   } catch {
     return NextResponse.json(
       { error: "Failed to fetch stock data" },
-      { status: 500 }
+      { status: 500, headers: corsHeaders }
     );
   }
 }
