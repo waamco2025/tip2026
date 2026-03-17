@@ -85,8 +85,8 @@ export default function EditorialInvestorRelationsPage() {
                 >
                   {d.type}
                 </span>
-                <h3 className="text-[1.15rem] font-light italic mb-3 group-hover:text-[#C49A45] transition-colors" style={{ ...serif, color: c.text, fontWeight: c.headingWeight }}>{d.title}</h3>
-                <p className="text-[0.88rem] leading-[1.7] flex-1 mb-5" style={{ ...serif, color: c.bodyText, fontWeight: c.bodyWeight }}>{d.desc}</p>
+                <h3 className="text-[1.4rem] font-light italic mb-3 group-hover:text-[#C49A45] transition-colors" style={{ ...serif, color: c.text, fontWeight: c.headingWeight }}>{d.title}</h3>
+                <p className="text-[1.05rem] leading-[1.7] flex-1 mb-5" style={{ ...serif, color: c.bodyText, fontWeight: c.bodyWeight }}>{d.desc}</p>
                 <span className="text-[0.78rem] uppercase tracking-[0.18em] group-hover:text-[#C49A45] transition-colors" style={{ ...sans, color: c.muted, fontWeight: c.sansWeight }}>
                   {d.link} &rarr;
                 </span>
