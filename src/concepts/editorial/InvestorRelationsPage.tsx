@@ -24,12 +24,9 @@ export default function EditorialInvestorRelationsPage() {
   const sans = { fontFamily: "'Syne', sans-serif" };
 
   const documents = [
-    { type: "PDF", title: "Fund III Investor Presentation", desc: "Comprehensive overview of investment thesis, strategy, and portfolio construction for Fund III.", link: "Download PDF" },
-    { type: "PDF", title: "Annual Report 2025", desc: "Year-end performance review, portfolio updates, and market outlook for limited partners.", link: "Download PDF" },
-    { type: "SEC", title: "Form ADV Part 2A", desc: "SEC-required disclosure document detailing advisory services, fees, and business practices.", link: "View Filing" },
-    { type: "SEC", title: "Form D Filing", desc: "Notice of exempt offering of securities filed with the Securities and Exchange Commission.", link: "View Filing" },
-    { type: "XLS", title: "Quarterly Capital Account", desc: "Detailed capital account statements and performance attribution for current quarter.", link: "Download Report" },
-    { type: "PDF", title: "ESG & Impact Report", desc: "Environmental, social, and governance practices across portfolio companies and firm operations.", link: "Download PDF" },
+    { type: "PDF", title: "PFIC Statement", desc: "Annual Passive Foreign Investment Company statement for US tax reporting purposes.", link: "Download PDF" },
+    { type: "PDF", title: "Prospectus", desc: "Complete offering prospectus with detailed fund strategy, terms, and risk disclosures.", link: "View Prospectus" },
+    { type: "SEC", title: "SEC Form 8-K", desc: "Current report filing with the Securities and Exchange Commission for material events.", link: "View Filing" },
   ];
 
   const funds = [
