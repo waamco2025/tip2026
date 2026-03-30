@@ -55,14 +55,21 @@ export default function ModernHome() {
       <section className="flex flex-col md:flex-row h-auto md:h-[560px]">
         <div className="w-full md:w-[660px] shrink-0 flex flex-col justify-center gap-8 bg-[#0D2818] px-6 md:px-14 py-12 md:py-20 min-h-[400px] md:min-h-0">
           <span className="text-[#C9A962] font-semibold text-xs tracking-[2px]">PIONEERS IN TRAVEL TECHNOLOGY VENTURE CAPITAL</span>
-          <h1 className="font-playfair text-[32px] md:text-[52px] italic font-normal text-white leading-[1.1]">Investing in the Future of&nbsp;<span className="whitespace-nowrap">Global Travel</span></h1>
-          <p className="text-white/80 text-base leading-relaxed max-w-[500px]">Thayer Investment Partners identifies and supports the most promising ventures shaping the future of travel&nbsp;<span className="whitespace-nowrap">technology worldwide.</span></p>
+          <h1 className="font-playfair text-[32px] md:text-[52px] italic font-normal text-white leading-[1.1]">Investing in the Technology Powering the Global Travel&nbsp;<span className="whitespace-nowrap">Industry</span></h1>
+          <p className="text-white/80 text-base leading-relaxed max-w-[500px]">Thayer Investment Partners is a strategic venture capital firm focused on helping entrepreneurs navigate the dynamic, complex world of travel. Our investors are global corporations, executives, operators and accomplished entrepreneurs who share our belief that travel builds a&nbsp;<span className="whitespace-nowrap">better world.</span></p>
           <Link href="/about" className="bg-[#C9A962] text-[#0D2818] font-semibold text-[13px] tracking-[1px] px-8 py-3.5 w-fit hover:bg-[#B89A55] transition-colors">LEARN MORE</Link>
         </div>
         <div className="h-[300px] md:h-auto flex-1 bg-cover bg-center" style={{ backgroundImage: "url('/images/modern-hero.png')" }} />
       </section>
 
-      {/* Stats Bar */}
+      {/* Our Mission (Platform Section) */}
+      <section className="bg-white px-6 md:px-14 py-12 md:py-24 flex flex-col gap-10">
+        <h2 className="font-playfair text-[28px] md:text-[42px] italic font-semibold text-[#0D2818] leading-[1.2] max-w-[800px]">We&apos;ve built a different kind of platform.</h2>
+        <p className="text-[#666] text-base leading-[1.7] max-w-[800px]">Thayer Investment Partners leverages deep industry relationships and operational expertise to create value for our portfolio companies. Our platform connects startups with the world&apos;s largest travel corporations, providing unparalleled access to distribution, customers, and strategic guidance.</p>
+        <div className="w-full h-[250px] md:h-[400px] bg-cover bg-center rounded" style={{ backgroundImage: "url('/images/modern-platform.png')" }} />
+      </section>
+
+      {/* The Opportunity (Stats Bar) */}
       <section className="flex flex-col md:flex-row justify-between bg-white px-6 md:px-14 py-12 border-y border-[#E5E5E5] gap-8 md:gap-0">
         {[{ val: "110+", label: "Portfolio Companies" }, { val: "150+", label: "Corporate Partners" }, { val: "~$3B", label: "Assets Under Management" }].map((s, i) => (
           <div key={i} className="flex-1 flex flex-col items-center gap-1">
@@ -72,7 +79,41 @@ export default function ModernHome() {
         ))}
       </section>
 
-      {/* Testimonials */}
+      {/* Investment Focus */}
+      <section className="bg-white px-6 md:px-14 py-12 md:py-20 flex flex-col items-center gap-12 border-b border-[#E5E5E5]">
+        <span className="text-[#C9A962] font-semibold text-xs tracking-[2px]">INVESTMENT FOCUS</span>
+        <h2 className="font-playfair text-2xl md:text-4xl italic text-[#1A2E23]">Our Investment Categories</h2>
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-5 w-full">
+          {categories.map((c, i) => (
+            <div key={i} className="flex flex-col items-center gap-4 p-6 border border-[#E5E5E5]">
+              <c.icon className="w-7 h-7 text-[#C9A962]" />
+              <h3 className="font-playfair text-base leading-[1.3] text-center text-[#1A2E23] whitespace-pre-line">{c.name}</h3>
+              <p className="text-[#666] text-xs leading-[1.5] text-center text-balance">{c.desc}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Portfolio */}
+      <section className="px-6 md:px-32 py-12 md:py-24 flex justify-center">
+        <h2 className="font-playfair text-[28px] md:text-[42px] italic font-semibold text-[#0D2818] leading-[1.3] text-center max-w-[720px]">
+          We help the world&apos;s largest travel companies solve big problems and unlock new opportunities.
+        </h2>
+      </section>
+
+      {/* Portfolio Logos */}
+      <section className="bg-white px-6 md:px-14 py-12 flex flex-col items-center gap-12 border-b border-[#E5E5E5]">
+        {[0, 1].map((row) => (
+          <div key={row} className="flex flex-wrap gap-10 justify-center md:justify-between w-full md:w-[1008px]">
+            {[0, 1, 2, 3, 4, 5].map((col) => (
+              <LogoPlaceholder key={col} />
+            ))}
+          </div>
+        ))}
+        <Link href="/portfolio" className="text-[#C9A962] text-sm font-medium hover:underline">View our portfolio →</Link>
+      </section>
+
+      {/* What Partners Say */}
       <section className="bg-white px-6 md:px-14 py-12 md:py-20 flex flex-col items-center gap-12 border-b border-[#E5E5E5]">
         <div className="flex flex-col items-center gap-3">
           <span className="text-[#C9A962] font-semibold text-xs tracking-[2px]">WHAT OUR PARTNERS SAY</span>
@@ -92,57 +133,35 @@ export default function ModernHome() {
         <Link href="/portfolio" className="text-[#C9A962] text-[13px] font-medium hover:underline">View Full Portfolio →</Link>
       </section>
 
-      {/* Statement */}
-      <section className="px-6 md:px-32 py-12 md:py-24 flex justify-center">
-        <h2 className="font-playfair text-[28px] md:text-[42px] italic font-semibold text-[#0D2818] leading-[1.3] text-center max-w-[720px]">
-          We help the world&apos;s largest travel companies solve big problems and unlock new opportunities.
-        </h2>
-      </section>
-
-      {/* Portfolio Logos */}
-      <section className="bg-white px-6 md:px-14 py-12 flex flex-col items-center gap-12">
-        {[0, 1].map((row) => (
-          <div key={row} className="flex flex-wrap gap-10 justify-center md:justify-between w-full md:w-[1008px]">
-            {[0, 1, 2, 3, 4, 5].map((col) => (
-              <LogoPlaceholder key={col} />
-            ))}
-          </div>
-        ))}
-        <Link href="/portfolio" className="text-[#C9A962] text-sm font-medium hover:underline">View our portfolio →</Link>
-      </section>
-
-      {/* Investment Categories */}
-      <section className="bg-white px-6 md:px-14 py-12 md:py-20 flex flex-col items-center gap-12 border-y border-[#E5E5E5]">
-        <span className="text-[#C9A962] font-semibold text-xs tracking-[2px]">INVESTMENT FOCUS</span>
-        <h2 className="font-playfair text-2xl md:text-4xl italic text-[#1A2E23]">Our Investment Categories</h2>
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-5 w-full">
-          {categories.map((c, i) => (
-            <div key={i} className="flex flex-col items-center gap-4 p-6 border border-[#E5E5E5]">
-              <c.icon className="w-7 h-7 text-[#C9A962]" />
-              <h3 className="font-playfair text-base leading-[1.3] text-center text-[#1A2E23] whitespace-pre-line">{c.name}</h3>
-              <p className="text-[#666] text-xs leading-[1.5] text-center text-balance">{c.desc}</p>
-            </div>
+      {/* Network */}
+      <section className="bg-white px-6 md:px-14 py-20 md:py-40 flex flex-col items-center gap-12 border-b border-[#E5E5E5]">
+        <h2 className="font-playfair text-2xl md:text-4xl italic font-semibold text-[#0D2818] leading-[1.3] text-center max-w-[800px]">We are backed by visionary corporations from every corner of the travel world.</h2>
+        <div className="flex flex-wrap gap-12 justify-center md:justify-between w-full md:w-[1008px]">
+          {[0, 1, 2, 3, 4, 5].map((col) => (
+            <LogoPlaceholder key={col} />
           ))}
         </div>
       </section>
 
-      {/* Platform Section */}
-      <section className="bg-white px-6 md:px-14 py-12 md:py-24 flex flex-col gap-10">
-        <h2 className="font-playfair text-[28px] md:text-[42px] italic font-semibold text-[#0D2818] leading-[1.2] max-w-[800px]">We&apos;ve built a different kind of platform.</h2>
-        <p className="text-[#666] text-base leading-[1.7] max-w-[800px]">Thayer Investment Partners leverages deep industry relationships and operational expertise to create value for our portfolio companies. Our platform connects startups with the world&apos;s largest travel corporations, providing unparalleled access to distribution, customers, and strategic guidance.</p>
-        <div className="w-full h-[250px] md:h-[400px] bg-cover bg-center rounded" style={{ backgroundImage: "url('/images/modern-platform.png')" }} />
-      </section>
-
-      {/* Backed By */}
-      <section className="bg-white px-6 md:px-14 py-20 md:py-40 flex flex-col items-center gap-12">
-        <h2 className="font-playfair text-2xl md:text-4xl italic font-semibold text-[#0D2818] leading-[1.3] text-center max-w-[800px]">We are backed by visionary corporations from every corner of the travel world.</h2>
-        {[0, 1].map((row) => (
-          <div key={row} className="flex flex-wrap gap-12 justify-center md:justify-between w-full md:w-[1008px]">
-            {[0, 1, 2, 3].map((col) => (
-              <LogoPlaceholder key={col} />
-            ))}
-          </div>
-        ))}
+      {/* Recent Headlines */}
+      <section className="bg-white px-6 md:px-14 py-12 md:py-20 border-b border-[#E5E5E5]">
+        <div className="flex flex-col items-center gap-3 mb-12">
+          <span className="text-[#C9A962] font-semibold text-xs tracking-[2px]">RECENT HEADLINES</span>
+          <h2 className="font-playfair text-2xl md:text-4xl italic text-[#1A2E23]">Latest News</h2>
+        </div>
+        <div className="flex flex-col">
+          {[
+            { date: "Mar 2026", title: "Thayer Leads $45M Series B in TravelAI Platform" },
+            { date: "Feb 2026", title: "Portfolio Company CloudHotel Expands to 42 Countries" },
+            { date: "Jan 2026", title: "Thayer Fund III Announces Final Close at $150M" },
+          ].map((h, i) => (
+            <Link key={i} href="/news" className="group flex items-center gap-6 md:gap-10 py-6 border-b border-[#E5E5E5] transition-colors">
+              <span className="text-[#666] text-xs tracking-[1px] shrink-0 w-20">{h.date}</span>
+              <span className="font-playfair text-lg md:text-xl italic text-[#1A2E23] flex-1 group-hover:text-[#C9A962] transition-colors">{h.title}</span>
+              <span className="text-[#999] group-hover:text-[#C9A962] transition-colors shrink-0">→</span>
+            </Link>
+          ))}
+        </div>
       </section>
 
       {/* Footer */}

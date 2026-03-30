@@ -95,55 +95,21 @@ export default function ModernAbout() {
       <section className="flex flex-col md:flex-row h-auto md:h-[560px]">
         <div className="flex flex-col justify-center gap-6 bg-[#0D2818] px-6 md:px-14 py-12 md:py-20 w-full md:w-[660px] min-h-[400px] md:min-h-0">
           <span className="text-[#C9A962] font-semibold text-xs tracking-[2px]">ABOUT</span>
-          <h1 className="font-playfair text-[32px] md:text-[48px] italic text-white leading-[1.2] max-w-[520px]">We partner with visionaries to build the future of global travel</h1>
-          <p className="text-[#8A9B8F] text-[15px] leading-relaxed max-w-[480px]">Since 2008, Thayer Investment Partners has been at the forefront of travel technology venture capital.</p>
+          <h1 className="font-playfair text-[32px] md:text-[48px] italic text-white leading-[1.2] max-w-[520px]">A History of Innovation in Travel.</h1>
+          <p className="text-[#8A9B8F] text-[15px] leading-relaxed max-w-[480px]">Since 2008, Thayer Investment Partners has been at the forefront of travel technology investing, partnering with visionary founders to build companies that reshape how the world moves, stays, and experiences new places.</p>
         </div>
         <div className="h-[300px] md:h-auto flex-1 bg-cover bg-center" style={{ backgroundImage: "url('/images/modern-about-hero.png')" }} />
       </section>
 
-      {/* Mission */}
-      <section className="flex flex-col md:flex-row gap-8 md:gap-20 bg-white px-6 md:px-14 py-12 md:py-20">
-        <div className="flex flex-col gap-4 shrink-0">
-          <span className="text-[#C9A962] font-semibold text-xs tracking-[2px]">OUR MISSION</span>
-          <div className="w-[60px] h-0.5 bg-[#C9A962]" />
-        </div>
-        <div className="flex flex-col gap-6">
-          <p className="text-[#333] text-base leading-[1.7]">Thayer Investment Partners is the largest asset manager investing at the intersection of travel and technology. We partner with some of the most influential innovators and entrepreneurs in the Built World.</p>
-          <p className="text-[#666] text-base leading-[1.7]">Our investor network consists of over 150 corporate partners across more than 20 countries and every major asset class in travel — from hospitality and aviation to ground transportation and travel services.</p>
-          <h3 className="font-playfair text-[28px] italic text-[#1A2E23]">Travel Technology</h3>
-          <p className="text-[#666] text-base leading-[1.7]">Together, we are catalyzing the digital transformation of the world&apos;s largest industry, backing breakthrough technologies that make global travel more efficient, sustainable, and resilient.</p>
-        </div>
-      </section>
-
-      {/* Stats */}
-      <section className="flex flex-col md:flex-row bg-white px-6 md:px-14 py-12 md:py-16 border-y border-[#E5E5E5] gap-8 md:gap-0">
-        {[{ val: "110+", label: "Portfolio Companies" }, { val: "20+", label: "Countries" }, { val: "150+", label: "Corporate Partners" }].map((s, i) => (
-          <div key={i} className={`flex-1 flex flex-col items-center gap-2 px-5 ${i === 1 ? "md:border-x border-[#E5E5E5]" : ""}`}>
-            <span className="font-playfair text-[36px] md:text-[56px] italic text-[#1A2E23]">{s.val}</span>
-            <span className="text-[#666] text-sm">{s.label}</span>
-          </div>
-        ))}
-      </section>
-
-      {/* Photo Break */}
-      <section className="relative h-[400px] overflow-hidden">
-        <div className="absolute inset-0 bg-[#1A2E23]" />
-        <div className="absolute inset-0 bg-gradient-to-b from-[#1A2E23]/[0.88] via-[#1A2E23]/25 to-[#1A2E23]/[0.88]" />
-        <div className="relative z-10 flex flex-col items-center justify-center h-full gap-4 px-6 md:px-14">
-          <div className="w-[60px] h-0.5 bg-[#00D776]" />
-          <h2 className="font-playfair text-[24px] md:text-[32px] italic text-white leading-[1.3] text-center max-w-[700px]">Shaping groundbreaking talent for the world&apos;s largest and most dynamic industry</h2>
-        </div>
-      </section>
-
-      {/* Approach */}
+      {/* Philosophy */}
       <section className="bg-white px-6 md:px-14 py-12 md:py-20 flex flex-col items-center gap-12">
-        <span className="text-[#C9A962] font-semibold text-xs tracking-[2px]">OUR APPROACH</span>
+        <span className="text-[#C9A962] font-semibold text-xs tracking-[2px]">OUR PHILOSOPHY</span>
         <h2 className="font-playfair text-[40px] italic text-[#1A2E23] text-center leading-[1.2] max-w-[700px]">Making travel more efficient and resilient</h2>
         <p className="text-[#666] text-base text-center leading-[1.7] max-w-[800px]">We believe that the convergence of travel and technology represents one of the most significant investment opportunities of our generation.</p>
         <div className="flex flex-col md:flex-row gap-6 w-full">
-          {[{ t: "Strategic Capital", d: "We provide growth equity and venture capital to companies transforming the travel industry through technology." },
-            { t: "Industry Network", d: "Our network of 150+ corporate partners gives portfolio companies unparalleled access to distribution and strategic opportunities." },
-            { t: "Global Reach", d: "With investments spanning 20+ countries, we bring a truly global perspective to travel technology innovation." }].map((c, i) => (
+          {[{ t: "Conviction", d: "We believe all businesses can be travel companies. All organizations sell to, partner with, or consume travel. Travel is more than airlines and accommodations \u2013 it is how and why people leave home and what shapes where and how they choose to live." },
+            { t: "Network", d: "We connect dots and open doors across the largest and most dynamic industry in the world: hotels, transportation, airlines, cruise, agencies, restaurants, events, sports, entertainment, and experiences." },
+            { t: "Partnership", d: "We invest on behalf of the travel industry. From horizontal platforms\u2014payments, cybersecurity, and workforce management\u2014to vertical solutions across loyalty, distribution, and critical operating systems, we back both industry outsiders and seasoned operators." }].map((c, i) => (
             <div key={i} className="flex-1 flex flex-col gap-4 p-7 border border-[#E5E5E5]">
               <h3 className="font-playfair text-[22px] italic text-[#1A2E23]">{c.t}</h3>
               <p className="text-[#666] text-sm leading-relaxed">{c.d}</p>
@@ -175,8 +141,26 @@ export default function ModernAbout() {
         </div>
       </section>
 
+      {/* Our Club */}
+      <section className="bg-white px-6 md:px-14 py-12 md:py-20">
+        <div className="flex flex-col md:flex-row gap-10 md:gap-20">
+          <div className="flex flex-col gap-4 md:w-1/2">
+            <span className="text-[#C9A962] font-semibold text-xs tracking-[2px]">OUR CLUB</span>
+            <h2 className="font-playfair text-[28px] md:text-[42px] italic font-semibold text-[#0D2818] leading-[1.2]">Decades of specialized investment and operating experience.</h2>
+            <p className="text-[#666] text-base leading-[1.7]">We work with a select group of corporate leaders who appreciate the value of long term partnership and share our belief that progress is centered around travel.</p>
+          </div>
+          <div className="grid grid-cols-3 gap-5 shrink-0 self-center">
+            {[0, 1, 2, 3, 4, 5].map((i) => (
+              <div key={i} className="w-32 h-20 border border-[#CCC] rounded flex items-center justify-center">
+                <span className="text-[#CCC] text-[10px] font-medium tracking-wider">LOGO</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Team */}
-      <section className="bg-white px-6 md:px-14 py-12 md:py-20 flex flex-col items-center gap-12">
+      <section className="bg-white px-6 md:px-14 py-12 md:py-20 flex flex-col items-center gap-12 border-t border-[#E5E5E5]">
         <div className="flex flex-col items-center gap-2">
           <span className="text-[#C9A962] font-semibold text-xs tracking-[2px]">LEADERSHIP</span>
           <h2 className="font-playfair text-2xl md:text-4xl italic text-[#1A2E23]">Our Team</h2>

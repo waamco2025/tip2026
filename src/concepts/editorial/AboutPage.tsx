@@ -31,9 +31,9 @@ export default function EditorialAboutPage() {
   ];
 
   const philosophies = [
-    { title: "Conviction", desc: "We invest with deep conviction in founders who are building category-defining companies in travel technology. Our thesis-driven approach means we understand the landscape before we deploy capital." },
-    { title: "Network", desc: "Our partners bring decades of operating experience and relationships across hotels, airlines, entertainment, and real estate\u2014giving our portfolio companies unmatched access to customers and distribution." },
-    { title: "Partnership", desc: "We are long-term partners, not passive investors. We work alongside founders through every stage of growth, from product-market fit to international expansion and beyond." },
+    { title: "Conviction", desc: "We believe all businesses can be travel companies. All organizations sell to, partner with, or consume travel. Travel is more than airlines and accommodations \u2013 it is how and why people leave home and what shapes where and how they choose to live." },
+    { title: "Network", desc: "We connect dots and open doors across the largest and most dynamic industry in the world: hotels, transportation, airlines, cruise, agencies, restaurants, events, sports, entertainment, and experiences." },
+    { title: "Partnership", desc: "We invest on behalf of the travel industry. From horizontal platforms\u2014payments, cybersecurity, and workforce management\u2014to vertical solutions across loyalty, distribution, and critical operating systems, we back both industry outsiders and seasoned operators." },
   ];
 
   const team = [
@@ -66,10 +66,26 @@ export default function EditorialAboutPage() {
         </div>
       </section>
 
-      {/* ── Timeline (01) ── */}
+      {/* ── Philosophy (01) ── */}
+      <section className="px-6 md:px-12 py-24 md:py-32 transition-colors duration-500" style={{ backgroundColor: c.surface }}>
+        <div className="max-w-7xl mx-auto">
+          <SectionHeader label="Our Philosophy" number="01" />
+          <div className="grid md:grid-cols-3 gap-8 md:gap-12">
+            {philosophies.map((p, i) => (
+              <div key={i} className="border p-8 md:p-10" style={{ borderColor: c.rule }}>
+                <span className="text-[0.68rem] uppercase tracking-[0.22em] block mb-4" style={{ ...sans, color: c.accent, fontWeight: c.sansWeight }}>0{i + 1}</span>
+                <h3 className="text-[1.5rem] font-light italic mb-4" style={{ ...serif, color: c.text, fontWeight: c.headingWeight }}>{p.title}</h3>
+                <p className="text-[1.05rem] leading-[1.8]" style={{ ...serif, color: c.bodyText, fontWeight: c.bodyWeight }}>{p.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Timeline (02) ── */}
       <section className="px-6 md:px-12 py-24 md:py-32">
         <div className="max-w-7xl mx-auto">
-          <SectionHeader label="Our Journey" number="01" />
+          <SectionHeader label="Our Journey" number="02" />
           <div className="flex flex-col gap-0">
             {milestones.map((m, i) => (
               <div key={i} className="grid md:grid-cols-[120px_1fr] gap-4 md:gap-12 py-10 border-b" style={{ borderColor: c.rule }}>
@@ -84,26 +100,35 @@ export default function EditorialAboutPage() {
         </div>
       </section>
 
-      {/* ── Philosophy (02) ── */}
+      {/* ── Our Club (03) ── */}
       <section className="px-6 md:px-12 py-24 md:py-32 transition-colors duration-500" style={{ backgroundColor: c.surface }}>
         <div className="max-w-7xl mx-auto">
-          <SectionHeader label="Our Philosophy" number="02" />
-          <div className="grid md:grid-cols-3 gap-8 md:gap-12">
-            {philosophies.map((p, i) => (
-              <div key={i} className="border p-8 md:p-10" style={{ borderColor: c.rule }}>
-                <span className="text-[0.68rem] uppercase tracking-[0.22em] block mb-4" style={{ ...sans, color: c.accent, fontWeight: c.sansWeight }}>0{i + 1}</span>
-                <h3 className="text-[1.5rem] font-light italic mb-4" style={{ ...serif, color: c.text, fontWeight: c.headingWeight }}>{p.title}</h3>
-                <p className="text-[1.05rem] leading-[1.8]" style={{ ...serif, color: c.bodyText, fontWeight: c.bodyWeight }}>{p.desc}</p>
-              </div>
-            ))}
+          <SectionHeader label="Our Club" number="03" />
+          <div className="grid md:grid-cols-2 gap-12 md:gap-20">
+            <div>
+              <h2 className="text-[clamp(1.6rem,3vw,2.8rem)] leading-[1.15] font-light italic mb-6" style={{ ...serif, color: c.text }}>
+                Decades of specialized investment and operating experience.
+              </h2>
+              <p className="text-[1.25rem] leading-[1.85]" style={{ ...serif, color: c.bodyText, fontWeight: c.bodyWeight }}>
+                We work with a select group of corporate leaders who appreciate the value of long term partnership
+                and share our belief that progress is centered around travel.
+              </p>
+            </div>
+            <div className="grid grid-cols-3 gap-4">
+              {Array.from({ length: 6 }).map((_, i) => (
+                <div key={i} className="aspect-[3/2] border flex items-center justify-center transition-colors duration-500" style={{ backgroundColor: c.surface, borderColor: c.rule }}>
+                  <span className="text-[0.6rem] uppercase tracking-[0.15em]" style={{ ...sans, color: c.muted, opacity: 0.4 }}>Logo</span>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
-      {/* ── Team (03) ── */}
+      {/* ── Team (04) ── */}
       <section className="px-6 md:px-12 py-24 md:py-32">
         <div className="max-w-7xl mx-auto">
-          <SectionHeader label="The Team" number="03" />
+          <SectionHeader label="The Team" number="04" />
           <div className="grid md:grid-cols-3 gap-8 md:gap-10">
             {team.map((t, i) => (
               <div key={i} className="group">
@@ -116,32 +141,6 @@ export default function EditorialAboutPage() {
                 <span className="text-[0.68rem] uppercase tracking-[0.18em] mt-3 inline-block cursor-pointer hover:opacity-80 transition-colors" style={{ ...sans, color: c.muted, fontWeight: c.sansWeight }}>Read More</span>
               </div>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── Network (04) ── */}
-      <section className="px-6 md:px-12 py-24 md:py-32 border-t" style={{ borderColor: c.rule }}>
-        <div className="max-w-7xl mx-auto">
-          <SectionHeader label="Our Network" number="04" />
-          <div className="grid md:grid-cols-2 gap-12 md:gap-20">
-            <div>
-              <h2 className="text-[clamp(1.6rem,3vw,2.8rem)] leading-[1.15] font-light italic mb-6" style={{ ...serif, color: c.text }}>
-                A global network built over decades.
-              </h2>
-              <p className="text-[1.25rem] leading-[1.85]" style={{ ...serif, color: c.bodyText, fontWeight: c.bodyWeight }}>
-                Our portfolio companies benefit from Thayer&rsquo;s extensive network of industry leaders, corporate partners,
-                and advisors spanning every segment of the travel ecosystem. From hotel chains and airline groups to
-                technology platforms and government tourism boards, we connect our founders with the relationships that matter.
-              </p>
-            </div>
-            <div className="grid grid-cols-3 gap-4">
-              {Array.from({ length: 9 }).map((_, i) => (
-                <div key={i} className="aspect-[3/2] border flex items-center justify-center transition-colors duration-500" style={{ backgroundColor: c.surface, borderColor: c.rule }}>
-                  <span className="text-[0.6rem] uppercase tracking-[0.15em]" style={{ ...sans, color: c.muted, opacity: 0.4 }}>Logo</span>
-                </div>
-              ))}
-            </div>
           </div>
         </div>
       </section>

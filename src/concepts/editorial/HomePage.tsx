@@ -181,11 +181,11 @@ export default function EditorialHomePage() {
             className="text-[clamp(2.4rem,6vw,5.5rem)] leading-[1.08] font-light italic mb-8 max-w-4xl"
             style={{ ...serif, color: c.text }}
           >
-            Investing in the Future of Global Travel.
+            Investing in the Technology Powering the Global Travel Industry.
           </h1>
           <p className="text-[1.25rem] leading-[1.85] max-w-xl mb-10" style={{ ...serif, color: c.bodyText, fontWeight: c.bodyWeight }}>
-            Thayer Investment Partners is a venture capital firm exclusively focused on travel technology.
-            We partner with visionary founders building the platforms that will define the next era of global travel.
+            Thayer Investment Partners is a strategic venture capital firm focused on helping entrepreneurs navigate the dynamic, complex world of travel.
+            Our investors are global corporations, executives, operators and accomplished entrepreneurs who share our belief that travel builds a better world.
           </p>
           <Link
             href="/portfolio"
@@ -220,18 +220,14 @@ export default function EditorialHomePage() {
           <SectionHeader label="Our Mission" number="01" />
           <div className="grid md:grid-cols-2 gap-12 md:gap-20">
             <h2 className="text-[clamp(1.8rem,3.5vw,3.2rem)] leading-[1.15] font-light italic" style={{ ...serif, color: c.text }}>
-              Where capital meets exploration.
+              Invest in Travel.
             </h2>
             <div>
-              <p className="text-[1.25rem] leading-[1.85] mb-6" style={{ ...serif, color: c.bodyText, fontWeight: c.bodyWeight }}>
-                At Thayer Investment Partners, we believe that travel is one of the most powerful forces in the global economy.
-                It connects cultures, drives innovation, and creates opportunities that ripple across industries and borders.
-                Our mission is to identify and invest in the technology companies that are reshaping how the world moves.
-              </p>
               <p className="text-[1.25rem] leading-[1.85] mb-8" style={{ ...serif, color: c.bodyText, fontWeight: c.bodyWeight }}>
-                We bring more than capital—we bring decades of operating experience across hotels, airlines, entertainment,
-                and real estate. Our partners have built and scaled businesses across the travel ecosystem,
-                giving us a unique vantage point on where the industry is heading.
+                Travel grows at the intersection of global commerce, infrastructure, and human connection
+                – it is the connective tissue of a globalized world. It breaks down barriers and brings people,
+                cultures, and ideas together. Our mission is to build a better world by identifying and investing
+                in the technology companies reshaping how people move, connect, and experience the world.
               </p>
               <div className="flex items-center gap-4">
                 <div className="w-12 h-px" style={{ backgroundColor: c.accent }} />
@@ -274,10 +270,36 @@ export default function EditorialHomePage() {
         </div>
       </section>
 
-      {/* ── What Partners Say (04) ── */}
+      {/* ── Portfolio (04) ── */}
       <section className="px-6 md:px-12 py-24 md:py-32 transition-colors duration-500" style={{ backgroundColor: c.surface }}>
         <div className="max-w-7xl mx-auto">
-          <SectionHeader label="What Partners Say" number="04" />
+          <SectionHeader label="Portfolio" number="04" />
+          <h2 className="text-[clamp(1.6rem,3vw,2.8rem)] leading-[1.15] font-light italic mb-12" style={{ ...serif, color: c.text }}>
+            We help the world&rsquo;s largest travel companies solve big problems and unlock new opportunities.
+          </h2>
+          <div className="grid grid-cols-3 md:grid-cols-4 gap-6 md:gap-8">
+            {Array.from({ length: 12 }).map((_, i) => (
+              <div key={i} className="aspect-[3/2] border flex items-center justify-center transition-colors duration-500" style={{ borderColor: c.rule }}>
+                <span className="text-[0.6rem] uppercase tracking-[0.15em]" style={{ ...sans, color: c.muted, opacity: 0.4 }}>Logo</span>
+              </div>
+            ))}
+          </div>
+          <div className="flex justify-center mt-12">
+            <Link
+              href="/portfolio"
+              className="text-[0.72rem] uppercase tracking-[0.18em] hover:opacity-80 transition-colors"
+              style={{ ...sans, color: c.accent, fontWeight: c.sansWeight }}
+            >
+              View Full Portfolio &rarr;
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ── What Partners Say (05) ── */}
+      <section className="px-6 md:px-12 py-24 md:py-32">
+        <div className="max-w-7xl mx-auto">
+          <SectionHeader label="What Partners Say" number="05" />
           <div className="grid md:grid-cols-3 gap-8 md:gap-12">
             {testimonials.map((t, i) => (
               <div key={i} className="border p-8 md:p-10 flex flex-col" style={{ borderColor: c.rule }}>
@@ -295,10 +317,27 @@ export default function EditorialHomePage() {
         </div>
       </section>
 
-      {/* ── Recent Headlines (05) ── */}
+      {/* ── Network (06) ── */}
+      <section className="px-6 md:px-12 py-24 md:py-32 transition-colors duration-500" style={{ backgroundColor: c.surface }}>
+        <div className="max-w-7xl mx-auto">
+          <SectionHeader label="Our Network" number="06" />
+          <h2 className="text-[clamp(1.6rem,3vw,2.8rem)] leading-[1.15] font-light italic mb-12" style={{ ...serif, color: c.text }}>
+            We are backed by visionary corporations from every corner of the travel world.
+          </h2>
+          <div className="grid grid-cols-3 md:grid-cols-6 gap-6 md:gap-8">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <div key={i} className="aspect-[3/2] border flex items-center justify-center transition-colors duration-500" style={{ borderColor: c.rule }}>
+                <span className="text-[0.6rem] uppercase tracking-[0.15em]" style={{ ...sans, color: c.muted, opacity: 0.4 }}>Logo</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Recent Headlines (07) ── */}
       <section className="px-6 md:px-12 py-24 md:py-32">
         <div className="max-w-7xl mx-auto">
-          <SectionHeader label="Recent Headlines" number="05" />
+          <SectionHeader label="Recent Headlines" number="07" />
           <div className="flex flex-col">
             {headlines.map((h, i) => (
               <Link
