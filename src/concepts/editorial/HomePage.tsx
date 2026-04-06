@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { Sun, Moon } from "lucide-react";
+import { Sun, Moon, Building2, Sparkles, Ship, Landmark, Car } from "lucide-react";
 import { useEditorialMode, ec } from "./EditorialModeContext";
 
 /* ─── Shared Nav ─── */
@@ -146,12 +146,12 @@ export default function EditorialHomePage() {
     { value: "$2.1T", label: "Travel Tech Market by 2030", sub: "Projected technology spend across the travel ecosystem" },
   ];
 
-  const focuses = [
-    { num: "01", title: "Hotels & Hospitality Technology", desc: "Cloud-based property management, guest experience platforms, and revenue optimization systems." },
-    { num: "02", title: "Airlines & Mobility Platforms", desc: "Next-generation booking engines, loyalty infrastructure, and operational intelligence tools." },
-    { num: "03", title: "Experiences & Entertainment", desc: "Marketplace platforms connecting travelers with curated local experiences and activities." },
-    { num: "04", title: "Real Estate & Development Tech", desc: "PropTech solutions for hospitality real estate, asset management, and smart building systems." },
-    { num: "05", title: "Transportation & Logistics", desc: "Ground transportation platforms, fleet management, and last-mile travel connectivity." },
+  const categories = [
+    { icon: Building2, name: "Hotels &\nRestaurants", desc: "Hospitality tech platforms transforming guest experiences" },
+    { icon: Sparkles, name: "Entertainment &\nExperiences", desc: "Immersive technologies redefining leisure and discovery" },
+    { icon: Ship, name: "Cruises &\nAirlines", desc: "Next-generation solutions for air and sea transportation" },
+    { icon: Landmark, name: "Real\nEstate", desc: "PropTech innovations in hospitality real estate" },
+    { icon: Car, name: "Ground\nTransportation", desc: "Mobility platforms connecting travelers seamlessly" },
   ];
 
   const testimonials = [
@@ -258,12 +258,12 @@ export default function EditorialHomePage() {
       <section className="px-6 md:px-12 py-24 md:py-32">
         <div className="max-w-7xl mx-auto">
           <SectionHeader label="Investment Focus" number="03" />
-          <div className="grid md:grid-cols-2 gap-x-16 gap-y-12">
-            {focuses.map((f) => (
-              <div key={f.num} className="border-t pt-8" style={{ borderColor: c.rule }}>
-                <span className="text-[0.78rem] uppercase tracking-[0.22em] block mb-3" style={{ ...sans, color: c.accent, fontWeight: c.sansWeight }}>{f.num}</span>
-                <h3 className="text-[1.5rem] font-light italic mb-3" style={{ ...serif, color: c.text, fontWeight: c.headingWeight }}>{f.title}</h3>
-                <p className="text-[0.82rem] leading-[1.75]" style={{ ...sans, color: c.muted, fontWeight: c.sansWeight }}>{f.desc}</p>
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
+            {categories.map((cat, i) => (
+              <div key={i} className="flex flex-col items-center gap-4 border p-6 md:p-8 transition-colors duration-500" style={{ borderColor: c.rule }}>
+                <cat.icon className="w-7 h-7" style={{ color: c.accent }} />
+                <h3 className="text-[1.1rem] leading-[1.3] text-center font-light italic whitespace-pre-line" style={{ ...serif, color: c.text, fontWeight: c.headingWeight }}>{cat.name}</h3>
+                <p className="text-[0.75rem] leading-[1.6] text-center" style={{ ...sans, color: c.muted, fontWeight: c.sansWeight }}>{cat.desc}</p>
               </div>
             ))}
           </div>

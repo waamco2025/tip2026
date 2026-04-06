@@ -1,0 +1,165 @@
+<!--
+  Thayer Investment Partners — Investor Relations Embed
+  Paste this entire block into a Webflow "Embed" element.
+  It fetches live NASDAQ data from your Netlify API.
+-->
+<style>
+  .tip-ir { font-family: 'Assistant', sans-serif; color: #333; max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+  .tip-ir *, .tip-ir *::before, .tip-ir *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  .tip-ir-section { padding: 60px 0; }
+  .tip-ir-section + .tip-ir-section { border-top: 1px solid #e5e5e5; }
+  .tip-ir h2 { font-family: 'Inria Serif', Georgia, serif; font-size: 32px; font-weight: 400; color: #1a1a1a; margin-bottom: 8px; }
+  .tip-ir .section-sub { font-size: 16px; color: #666; line-height: 1.6; margin-bottom: 40px; }
+
+  /* Document Cards */
+  .tip-ir-docs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  @media (max-width: 768px) { .tip-ir-docs { grid-template-columns: 1fr; } }
+  .tip-ir-doc { border: 1px solid #e5e5e5; padding: 32px; display: flex; flex-direction: column; gap: 16px; }
+  .tip-ir-doc-icon { width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; }
+  .tip-ir-doc-icon svg { width: 32px; height: 32px; color: #555; }
+  .tip-ir-doc h3 { font-family: 'Inria Serif', Georgia, serif; font-size: 20px; font-weight: 400; color: #1a1a1a; }
+  .tip-ir-doc p { font-size: 14px; color: #666; line-height: 1.6; flex: 1; }
+  .tip-ir-doc a { font-size: 13px; font-weight: 600; color: #1a73e8; text-decoration: none; transition: color 0.2s; }
+  .tip-ir-doc a:hover { color: #1557b0; text-decoration: underline; }
+
+  /* Stock Widgets */
+  .tip-ir-stocks { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  @media (max-width: 768px) { .tip-ir-stocks { grid-template-columns: 1fr; } }
+  .tip-ir-stock { border: 1px solid #e5e5e5; padding: 28px; display: flex; flex-direction: column; gap: 14px; }
+  .tip-ir-stock-top { display: flex; justify-content: space-between; align-items: center; }
+  .tip-ir-stock-ticker { font-size: 14px; font-weight: 700; color: #1a1a1a; text-decoration: none; }
+  .tip-ir-stock-ticker:hover { text-decoration: underline; }
+  .tip-ir-stock-badge { font-size: 11px; font-weight: 600; letter-spacing: 0.05em; color: #1a73e8; background: #e8f0fe; padding: 3px 10px; border-radius: 3px; text-decoration: none; }
+  .tip-ir-stock-badge:hover { opacity: 0.8; }
+  .tip-ir-stock-name { font-size: 12px; color: #888; }
+  .tip-ir-stock-name a { color: #888; text-decoration: none; }
+  .tip-ir-stock-name a:hover { text-decoration: underline; }
+  .tip-ir-stock-price-row { display: flex; align-items: center; gap: 12px; }
+  .tip-ir-stock-price { font-family: 'Inria Serif', Georgia, serif; font-size: 32px; color: #1a1a1a; text-decoration: none; }
+  .tip-ir-stock-price:hover { text-decoration: underline; }
+  .tip-ir-stock-change { font-size: 13px; font-weight: 600; padding: 3px 10px; border-radius: 4px; }
+  .tip-ir-stock-change.up { color: #137333; background: #e6f4ea; }
+  .tip-ir-stock-change.down { color: #c5221f; background: #fce8e6; }
+  .tip-ir-stock-chart { width: 100%; height: 80px; border: 1px solid #e5e5e5; border-radius: 3px; background: #fafafa; overflow: hidden; }
+  .tip-ir-stock-chart a { display: block; width: 100%; height: 100%; }
+  .tip-ir-stock-chart a:hover { opacity: 0.8; }
+  .tip-ir-stock-bottom { display: flex; justify-content: space-between; font-size: 11px; color: #999; }
+  .tip-ir-loading { height: 280px; background: #f5f5f5; border: 1px solid #e5e5e5; animation: tip-pulse 1.5s ease-in-out infinite; }
+  @keyframes tip-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+</style>
+
+<div class="tip-ir">
+  <!-- Documents & Filings -->
+  <div class="tip-ir-section">
+    <h2>Documents &amp; Filings</h2>
+    <p class="section-sub">Access important documents, SEC filings, and investor materials for Thayer Investment Partners.</p>
+    <div class="tip-ir-docs">
+      <div class="tip-ir-doc">
+        <div class="tip-ir-doc-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" /></svg>
+        </div>
+        <h3>PFIC Statement</h3>
+        <p>Annual Passive Foreign Investment Company statement for US tax reporting purposes.</p>
+        <a href="#">Download PDF &rarr;</a>
+      </div>
+      <div class="tip-ir-doc">
+        <div class="tip-ir-doc-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" /></svg>
+        </div>
+        <h3>Prospectus</h3>
+        <p>Complete offering prospectus with detailed fund strategy, terms, and risk disclosures.</p>
+        <a href="#">View Prospectus &rarr;</a>
+      </div>
+      <div class="tip-ir-doc">
+        <div class="tip-ir-doc-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M10.125 2.25h-4.5c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Zm3.75 11.625-2.625 2.625-1.5-1.5" /></svg>
+        </div>
+        <h3>SEC Form 8-K</h3>
+        <p>Current report filing with the Securities and Exchange Commission for material events.</p>
+        <a href="#">View Filing &rarr;</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Market Data -->
+  <div class="tip-ir-section">
+    <h2>Market Data</h2>
+    <p class="section-sub">Real-time NASDAQ performance data for Thayer Investment Partners securities.</p>
+    <div id="tip-ir-stocks-container" class="tip-ir-stocks">
+      <div class="tip-ir-loading"></div>
+      <div class="tip-ir-loading"></div>
+      <div class="tip-ir-loading"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  var API = 'https://tip2026.netlify.app/api/stocks';
+  var container = document.getElementById('tip-ir-stocks-container');
+
+  function nasdaqUrl(t) { return 'https://www.nasdaq.com/market-activity/stocks/' + t.toLowerCase(); }
+
+  function formatVol(v) {
+    if (v >= 1e6) return 'Vol: ' + (v/1e6).toFixed(1) + 'M';
+    return 'Vol: ' + v.toLocaleString();
+  }
+
+  function sparklineSVG(data, color) {
+    if (!data || data.length < 2) return '';
+    var W = 368, H = 80, pad = 8;
+    var min = Math.min.apply(null, data), max = Math.max.apply(null, data);
+    var range = max - min || 1;
+    var pts = data.map(function(v, i) {
+      var x = pad + (i / (data.length - 1)) * (W - pad * 2);
+      var y = H - pad - ((v - min) / range) * (H - pad * 2);
+      return x + ',' + y;
+    }).join(' ');
+    return '<svg viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="none" style="width:100%;height:100%">' +
+      '<polyline points="' + pts + '" fill="none" stroke="' + color + '" stroke-width="1.5" stroke-linejoin="round"/></svg>';
+  }
+
+  function renderStocks(stocks) {
+    container.innerHTML = stocks.map(function(s) {
+      var up = s.change >= 0;
+      var url = nasdaqUrl(s.ticker);
+      var changeClass = up ? 'up' : 'down';
+      var changeText = (up ? '+' : '') + s.change.toFixed(2) + ' (' + s.changePercent.toFixed(2) + '%)';
+      var chartColor = up ? '#137333' : '#c5221f';
+      return '<div class="tip-ir-stock">' +
+        '<div class="tip-ir-stock-top">' +
+          '<a href="' + url + '" target="_blank" rel="noopener" class="tip-ir-stock-ticker">' + s.ticker + '</a>' +
+          '<a href="' + url + '" target="_blank" rel="noopener" class="tip-ir-stock-badge">NASDAQ</a>' +
+        '</div>' +
+        '<div class="tip-ir-stock-name"><a href="' + url + '" target="_blank" rel="noopener">' + s.name + '</a></div>' +
+        '<div class="tip-ir-stock-price-row">' +
+          '<a href="' + url + '" target="_blank" rel="noopener" class="tip-ir-stock-price">$' + s.price.toFixed(2) + '</a>' +
+          '<span class="tip-ir-stock-change ' + changeClass + '">' + changeText + '</span>' +
+        '</div>' +
+        '<div class="tip-ir-stock-chart"><a href="' + url + '" target="_blank" rel="noopener">' + sparklineSVG(s.sparkline, chartColor) + '</a></div>' +
+        '<div class="tip-ir-stock-bottom">' +
+          '<span>' + formatVol(s.volume) + '</span>' +
+          '<span>Last updated: ' + s.updated + '</span>' +
+        '</div>' +
+      '</div>';
+    }).join('');
+  }
+
+  function renderFallback() {
+    var fallback = [
+      { ticker: 'TVAIU', name: 'Thayer Ventures Acquisition Corp - Unit', price: 10.42, change: 0.38, changePercent: 3.78, volume: 142380, updated: 'N/A', sparkline: [10.04,10.1,10.15,10.2,10.18,10.25,10.3,10.35,10.42] },
+      { ticker: 'TVAIR', name: 'Thayer Ventures Acquisition Corp - Right', price: 0.18, change: 0.02, changePercent: 12.5, volume: 28510, updated: 'N/A', sparkline: [0.16,0.15,0.16,0.17,0.16,0.17,0.18,0.18,0.18] },
+      { ticker: 'TVAI', name: 'Thayer Ventures Acquisition Corp - Class A', price: 10.85, change: 0.55, changePercent: 5.34, volume: 215740, updated: 'N/A', sparkline: [10.3,10.35,10.4,10.45,10.5,10.6,10.7,10.75,10.85] }
+    ];
+    renderStocks(fallback);
+  }
+
+  fetch(API)
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      if (Array.isArray(data) && data.length) renderStocks(data);
+      else renderFallback();
+    })
+    .catch(renderFallback);
+})();
+</script>
