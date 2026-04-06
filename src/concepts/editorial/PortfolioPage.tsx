@@ -26,18 +26,13 @@ export default function EditorialPortfolioPage() {
   const [active, setActive] = useState("All");
 
   const companies = [
-    { name: "CloudHotel", category: "Hotels & Restaurants", desc: "AI-powered property management and guest experience platform for independent hotels." },
-    { name: "StaySync", category: "Hotels & Restaurants", desc: "Revenue optimization and dynamic pricing engine for boutique hospitality brands." },
-    { name: "GuestPath", category: "Hotels & Restaurants", desc: "Contactless check-in and digital concierge platform for modern hotel operations." },
-    { name: "SkyBridge", category: "Cruises & Airlines", desc: "Next-generation airline distribution and booking infrastructure platform." },
-    { name: "AeroFlow", category: "Cruises & Airlines", desc: "Operational intelligence and crew management system for commercial aviation." },
-    { name: "VoyageAI", category: "Cruises & Airlines", desc: "AI-powered cruise itinerary planning and onboard experience personalization." },
-    { name: "ExperienceHub", category: "Entertainment", desc: "Marketplace connecting travelers with curated local tours and activities worldwide." },
-    { name: "LiveVenue", category: "Entertainment", desc: "Event discovery and ticketing platform for travel destinations and entertainment districts." },
-    { name: "RealtyView", category: "Real Estate", desc: "PropTech platform for hospitality real estate asset management and analytics." },
-    { name: "SpaceHQ", category: "Real Estate", desc: "Smart building and workspace management technology for mixed-use hospitality properties." },
-    { name: "TransitLink", category: "Transportation", desc: "Ground transportation aggregation and last-mile connectivity for travel ecosystems." },
-    { name: "FleetPulse", category: "Transportation", desc: "Fleet management and predictive maintenance platform for hospitality shuttle services." },
+    { name: "Canary Technologies", slug: "canary-technologies", w: 220, url: "https://www.canarytechnologies.com", category: "Hotels & Restaurants", desc: "Modern hospitality technology platform powering guest management and hotel operations." },
+    { name: "Mews", slug: "mews", w: 200, url: "https://www.mews.com", category: "Hotels & Restaurants", desc: "Cloud-native property management system for modern hospitality businesses worldwide." },
+    { name: "MarginEdge", slug: "marginedge", w: 220, url: "https://www.marginedge.com", category: "Hotels & Restaurants", desc: "Restaurant management platform automating back-office operations and financial insights." },
+    { name: "Nuit\u00e9e", slug: "nuitee", w: 160, url: "https://nuitee.com", category: "Hotels & Restaurants", desc: "B2B hotel distribution platform connecting travel companies to global accommodation inventory." },
+    { name: "Cardless", slug: "cardless", w: 200, url: "https://www.cardless.com", category: "Entertainment", desc: "Modern credit card platform enabling brands to launch and manage co-branded card programs." },
+    { name: "Rain", slug: "rain", w: 160, url: "https://www.rain.xyz", category: "Transportation", desc: "Earned wage access platform helping employers offer on-demand pay to their workforce." },
+    { name: "Super", slug: "super", w: 190, url: "https://www.super.com", category: "Entertainment", desc: "Next-generation travel and experiences platform for the modern traveler." },
   ];
 
   const filtered = active === "All" ? companies : companies.filter((co) => co.category === active);
@@ -103,12 +98,14 @@ export default function EditorialPortfolioPage() {
           <SectionHeader label="Active Investments" number="01" />
           <div className="grid md:grid-cols-3 gap-8 md:gap-10">
             {filtered.map((co, i) => (
-              <div key={i} className="group cursor-pointer">
-                <div className="aspect-[4/3] border mb-5 flex items-end p-5 group-hover:border-[#C49A45]/30 transition-colors" style={{ backgroundColor: c.surface, borderColor: c.rule }}>
-                  <span className="text-[0.6rem] uppercase tracking-[0.15em]" style={{ ...sans, color: c.muted, opacity: 0.4 }}>Company Image</span>
-                </div>
+              <div key={i} className="group">
+                <a href={co.url} target="_blank" rel="noopener noreferrer" className="aspect-[4/3] border mb-5 flex items-center justify-center px-10 group-hover:border-[#C49A45]/30 transition-colors cursor-pointer block" style={{ backgroundColor: c.surface, borderColor: c.rule }}>
+                  <img src={`/logos/portfolio/${co.slug}-${light ? "light" : "dark"}.svg`} alt={co.name} className="object-contain" style={{ width: co.w, maxWidth: "80%" }} />
+                </a>
                 <span className="text-[0.65rem] uppercase tracking-[0.2em] block mb-2" style={{ ...sans, color: c.accent, fontWeight: c.sansWeight }}>{co.category}</span>
-                <h3 className="text-[1.3rem] font-light italic mb-2 group-hover:text-[#C49A45] transition-colors" style={{ ...serif, color: c.text, fontWeight: c.headingWeight }}>{co.name}</h3>
+                <a href={co.url} target="_blank" rel="noopener noreferrer">
+                  <h3 className="text-[1.3rem] font-light italic mb-2 group-hover:text-[#C49A45] transition-colors" style={{ ...serif, color: c.text, fontWeight: c.headingWeight }}>{co.name}</h3>
+                </a>
                 <p className="text-[0.82rem] leading-[1.7]" style={{ ...sans, color: c.muted, fontWeight: c.sansWeight }}>{co.desc}</p>
               </div>
             ))}

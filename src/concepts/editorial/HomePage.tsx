@@ -11,6 +11,7 @@ export function EditorialNav({ active = "home" }: { active?: string }) {
   const { light, toggle } = useEditorialMode();
   const c = ec(light);
   const links = [
+    { label: "Home", href: "/", key: "home" },
     { label: "About", href: "/about", key: "about" },
     { label: "Portfolio", href: "/portfolio", key: "portfolio" },
     { label: "Insights", href: "/news", key: "insights" },
@@ -92,7 +93,7 @@ export function EditorialFooter() {
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
         <span className="text-[0.65rem] uppercase tracking-[0.18em] whitespace-nowrap shrink-0" style={{ color: c.muted, fontWeight: c.sansWeight }}>Thayer Investment Partners</span>
         <div className="flex flex-wrap gap-5">
-          {["About", "Portfolio", "Insights", "Investor Relations", "Privacy", "Terms"].map((t) => (
+          {["Home", "About", "Portfolio", "Insights", "Investor Relations", "Privacy", "Terms"].map((t) => (
             <span key={t} className="text-[0.6rem] uppercase tracking-[0.14em] hover:opacity-80 transition-colors cursor-pointer whitespace-nowrap" style={{ color: c.muted, fontWeight: c.sansWeight }}>{t}</span>
           ))}
         </div>
@@ -278,10 +279,18 @@ export default function EditorialHomePage() {
             We help the world&rsquo;s largest travel companies solve big problems and unlock new opportunities.
           </h2>
           <div className="grid grid-cols-3 md:grid-cols-4 gap-6 md:gap-8">
-            {Array.from({ length: 12 }).map((_, i) => (
-              <div key={i} className="aspect-[3/2] border flex items-center justify-center transition-colors duration-500" style={{ borderColor: c.rule }}>
-                <span className="text-[0.6rem] uppercase tracking-[0.15em]" style={{ ...sans, color: c.muted, opacity: 0.4 }}>Logo</span>
-              </div>
+            {[
+              { slug: "canary-technologies", name: "Canary Technologies", w: 160, url: "https://www.canarytechnologies.com" },
+              { slug: "mews", name: "Mews", w: 140, url: "https://www.mews.com" },
+              { slug: "marginedge", name: "MarginEdge", w: 160, url: "https://www.marginedge.com" },
+              { slug: "nuitee", name: "Nuit\u00e9e", w: 120, url: "https://nuitee.com" },
+              { slug: "cardless", name: "Cardless", w: 160, url: "https://www.cardless.com" },
+              { slug: "rain", name: "Rain", w: 120, url: "https://www.rain.xyz" },
+              { slug: "super", name: "Super", w: 140, url: "https://www.super.com" },
+            ].map((co, i) => (
+              <a key={i} href={co.url} target="_blank" rel="noopener noreferrer" className="aspect-[3/2] border flex items-center justify-center transition-colors duration-500 px-4 hover:border-[#C49A45]/30" style={{ borderColor: c.rule }}>
+                <img src={`/logos/portfolio/${co.slug}-${light ? "light" : "dark"}.svg`} alt={co.name} className="object-contain" style={{ width: co.w, maxWidth: "80%" }} />
+              </a>
             ))}
           </div>
           <div className="flex justify-center mt-12">
