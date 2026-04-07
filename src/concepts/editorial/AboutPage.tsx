@@ -60,9 +60,9 @@ export default function EditorialAboutPage() {
           ? "linear-gradient(to right, rgba(237,233,226,0.92) 0px, rgba(237,233,226,0.92) 500px, rgba(237,233,226,0.3) 100%)"
           : "linear-gradient(to right, rgba(18,18,18,0.92) 0px, rgba(18,18,18,0.92) 500px, rgba(18,18,18,0.2) 100%)"
         }} />
-        <div className="absolute inset-0 md:hidden" style={{ background: light
-          ? "linear-gradient(to top, rgba(237,233,226,0.95) 0%, rgba(237,233,226,0.85) 40%, rgba(237,233,226,0.2) 70%)"
-          : "linear-gradient(to top, rgba(18,18,18,0.95) 0%, rgba(18,18,18,0.85) 40%, rgba(18,18,18,0.2) 70%)"
+        <div className="absolute inset-0 md:hidden" style={{ backgroundColor: light
+          ? "rgba(237,233,226,0.85)"
+          : "rgba(18,18,18,0.82)"
         }} />
         <div className="absolute inset-x-0 bottom-0 h-[40%] hidden md:block" style={{ background: light
           ? "linear-gradient(to top, rgba(237,233,226,0.8) 0%, rgba(237,233,226,0) 100%)"
