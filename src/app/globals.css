@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+html {
+  scroll-behavior: smooth;
+}
+
 @theme {
   --font-manrope: "Manrope", sans-serif;
   --font-playfair: "Playfair Display", serif;

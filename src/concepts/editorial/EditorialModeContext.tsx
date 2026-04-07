@@ -42,11 +42,11 @@ export function ec(light: boolean) {
     accent: "#C49A45",
     rule: light ? "rgba(0,0,0,0.12)" : "rgba(255,255,255,0.07)",  // slightly more visible in light
     bodyText: light ? "rgba(26,25,23,0.88)" : "rgba(234,229,219,0.82)",  // higher contrast in light
-    bodyWeight: light ? 500 : 400,
+    bodyWeight: light ? 600 : 500,
     /* Additional weights for different contexts */
     sansWeight: light ? 600 : 500,    // sans-serif labels, dates, tags
-    headingWeight: light ? 500 : 400, // section subheadings (italic)
-    statWeight: light ? 500 : 300,    // stat numbers
+    headingWeight: light ? 600 : 500, // section subheadings (italic)
+    statWeight: light ? 600 : 400,    // stat numbers
     hamburger: light ? "#1A1917" : "#EAE5DB",
     logo: light ? "/logotype-dark.svg" : "/logotype.svg",
   };

@@ -60,7 +60,7 @@ export default function EditorialInsightsPage() {
               <h2 className="text-[clamp(1.6rem,3vw,2.6rem)] leading-[1.15] font-light italic mb-6 group-hover:text-[#C49A45] transition-colors" style={{ ...serif, color: c.text, fontWeight: c.headingWeight }}>
                 Thayer Leads $45M Series B in TravelAI Platform
               </h2>
-              <p className="text-[1.25rem] leading-[1.85] mb-8" style={{ ...serif, color: c.bodyText, fontWeight: c.bodyWeight }}>
+              <p className="text-[1.5rem] leading-[1.7] mb-8" style={{ ...serif, color: c.bodyText, fontWeight: c.bodyWeight }}>
                 TravelAI&rsquo;s generative AI platform is transforming how travel companies personalize experiences at scale.
                 The Series B will fund expansion into 14 new markets and accelerate enterprise partnerships with major hotel chains.
               </p>
@@ -89,10 +89,10 @@ export default function EditorialInsightsPage() {
                   <div className="flex items-center gap-3 mb-3">
                     <span className="text-[0.65rem] uppercase tracking-[0.2em]" style={{ ...sans, color: c.accent, fontWeight: c.sansWeight }}>{a.tag}</span>
                   </div>
-                  <h3 className="text-[1.3rem] md:text-[1.5rem] font-light italic mb-3 group-hover:text-[#C49A45] transition-colors" style={{ ...serif, color: c.text, fontWeight: c.headingWeight }}>
+                  <h3 className="text-[1.5rem] md:text-[1.5rem] font-light italic mb-3 group-hover:text-[#C49A45] transition-colors" style={{ ...serif, color: c.text, fontWeight: c.headingWeight }}>
                     {a.title}
                   </h3>
-                  <p className="text-[1.05rem] leading-[1.75]" style={{ ...serif, color: c.bodyText, fontWeight: c.bodyWeight }}>{a.excerpt}</p>
+                  <p className="text-[1.5rem] leading-[1.7]" style={{ ...serif, color: c.bodyText, fontWeight: c.bodyWeight }}>{a.excerpt}</p>
                 </div>
               </Link>
             ))}

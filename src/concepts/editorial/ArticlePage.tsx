@@ -39,7 +39,7 @@ export default function EditorialArticlePage() {
             <h1 className="text-[clamp(2rem,4.5vw,3.8rem)] leading-[1.1] font-light italic mb-6" style={{ ...serif, color: c.text }}>
               Thayer Leads $45M Series B in TravelAI Platform
             </h1>
-            <p className="text-[1.25rem] leading-[1.85] max-w-2xl" style={{ ...serif, color: c.bodyText, fontWeight: c.bodyWeight }}>
+            <p className="text-[1.5rem] leading-[1.7] max-w-2xl" style={{ ...serif, color: c.bodyText, fontWeight: c.bodyWeight }}>
               The investment will accelerate TravelAI&rsquo;s expansion into 14 new markets and fund development of
               next-generation generative AI capabilities for the travel industry.
             </p>
@@ -67,19 +67,19 @@ export default function EditorialArticlePage() {
       {/* ── Article Body ── */}
       <section className="px-6 md:px-12 pb-24 md:pb-32">
         <div className="max-w-3xl mx-auto">
-          <p className="text-[1.25rem] leading-[1.85] mb-8" style={{ ...serif, color: c.bodyText, fontWeight: c.bodyWeight }}>
+          <p className="text-[1.5rem] leading-[1.7] mb-8" style={{ ...serif, color: c.bodyText, fontWeight: c.bodyWeight }}>
             Thayer Investment Partners announced today that it has led a $45 million Series B investment in TravelAI,
             the leading generative AI platform for the global travel industry. The round included participation from
             existing investors and strategic partners across the hospitality ecosystem.
           </p>
-          <p className="text-[1.25rem] leading-[1.85] mb-8" style={{ ...serif, color: c.bodyText, fontWeight: c.bodyWeight }}>
+          <p className="text-[1.5rem] leading-[1.7] mb-8" style={{ ...serif, color: c.bodyText, fontWeight: c.bodyWeight }}>
             TravelAI has built a comprehensive AI platform that enables travel companies to deliver hyper-personalized
             experiences at scale. The platform serves over 2.4 million active users across 14 markets, processing
             billions of data points to generate real-time recommendations, dynamic pricing, and predictive analytics.
           </p>
 
           <blockquote className="border-l-2 pl-8 my-12" style={{ borderColor: c.accent }}>
-            <p className="text-[1.3rem] leading-[1.65] font-light italic" style={{ ...serif, color: c.bodyText, fontWeight: c.bodyWeight }}>
+            <p className="text-[1.5rem] leading-[1.7] font-light italic" style={{ ...serif, color: c.bodyText, fontWeight: c.bodyWeight }}>
               &ldquo;TravelAI represents a generational shift in how travel companies interact with their customers.
               The platform&rsquo;s ability to synthesize vast amounts of travel data into actionable, personalized
               experiences is truly transformative.&rdquo;
@@ -89,19 +89,19 @@ export default function EditorialArticlePage() {
             </cite>
           </blockquote>
 
-          <p className="text-[1.25rem] leading-[1.85] mb-8" style={{ ...serif, color: c.bodyText, fontWeight: c.bodyWeight }}>
+          <p className="text-[1.5rem] leading-[1.7] mb-8" style={{ ...serif, color: c.bodyText, fontWeight: c.bodyWeight }}>
             The Series B funding will be used to expand TravelAI&rsquo;s platform into 14 new international markets,
             with a focus on Europe and Asia-Pacific regions where demand for AI-powered travel personalization is
             growing rapidly. The company also plans to double its engineering team and invest heavily in its
             generative AI capabilities.
           </p>
-          <p className="text-[1.25rem] leading-[1.85] mb-8" style={{ ...serif, color: c.bodyText, fontWeight: c.bodyWeight }}>
+          <p className="text-[1.5rem] leading-[1.7] mb-8" style={{ ...serif, color: c.bodyText, fontWeight: c.bodyWeight }}>
             Founded in 2021, TravelAI has quickly established itself as the category leader in AI-powered travel
             technology. The company&rsquo;s platform integrates with major hotel chains, airlines, and online travel
             agencies, providing a unified AI layer that improves conversion rates, guest satisfaction, and
             operational efficiency.
           </p>
-          <p className="text-[1.25rem] leading-[1.85] mb-8" style={{ ...serif, color: c.bodyText, fontWeight: c.bodyWeight }}>
+          <p className="text-[1.5rem] leading-[1.7] mb-8" style={{ ...serif, color: c.bodyText, fontWeight: c.bodyWeight }}>
             The investment underscores Thayer&rsquo;s continued commitment to identifying and backing the most
             innovative companies in the travel technology ecosystem. With Fund III now actively deploying capital,
             the firm is positioned to lead additional rounds in companies that are leveraging artificial intelligence,
@@ -109,7 +109,7 @@ export default function EditorialArticlePage() {
           </p>
 
           <blockquote className="border-l-2 pl-8 my-12" style={{ borderColor: c.accent }}>
-            <p className="text-[1.3rem] leading-[1.65] font-light italic" style={{ ...serif, color: c.bodyText, fontWeight: c.bodyWeight }}>
+            <p className="text-[1.5rem] leading-[1.7] font-light italic" style={{ ...serif, color: c.bodyText, fontWeight: c.bodyWeight }}>
               &ldquo;Having Thayer as our lead investor gives us access to the deepest network in travel technology.
               Their team understands our market better than any other venture firm, and their operational support
               has been instrumental in our growth.&rdquo;
@@ -119,7 +119,7 @@ export default function EditorialArticlePage() {
             </cite>
           </blockquote>
 
-          <p className="text-[1.25rem] leading-[1.85]" style={{ ...serif, color: c.bodyText, fontWeight: c.bodyWeight }}>
+          <p className="text-[1.5rem] leading-[1.7]" style={{ ...serif, color: c.bodyText, fontWeight: c.bodyWeight }}>
             TravelAI is the latest in a series of investments by Thayer in the AI and machine learning space
             within travel. The firm&rsquo;s portfolio includes several other companies leveraging advanced
             technology to improve efficiency and guest experiences across hotels, airlines, and experiences
@@ -142,7 +142,7 @@ export default function EditorialArticlePage() {
                 style={{ borderColor: c.rule }}
               >
                 <span className="text-[0.68rem] uppercase tracking-[0.16em] shrink-0 w-24" style={{ ...sans, color: c.muted, fontWeight: c.sansWeight }}>{r.date}</span>
-                <span className="text-[1.25rem] md:text-[1.25rem] font-light italic flex-1 group-hover:text-[#C49A45] transition-colors" style={{ ...serif, color: c.text, fontWeight: c.headingWeight }}>{r.title}</span>
+                <span className="text-[1.5rem] md:text-[1.5rem] font-light italic flex-1 group-hover:text-[#C49A45] transition-colors" style={{ ...serif, color: c.text, fontWeight: c.headingWeight }}>{r.title}</span>
                 <span className="group-hover:text-[#C49A45] transition-colors shrink-0" style={{ color: c.muted }}>&rarr;</span>
               </Link>
             ))}
