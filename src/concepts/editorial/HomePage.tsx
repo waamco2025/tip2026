@@ -309,44 +309,17 @@ export default function EditorialHomePage() {
               </h1>
             </div>
 
-            {/* Bottom: cards, story, attribution — anchored to bottom */}
+            {/* Bottom: logo, story, attribution, cards — anchored to bottom */}
             <div className="hidden md:flex flex-col pb-8 shrink-0">
-              {/* Founder thumbnails + arrows */}
-              <div className="flex gap-2 mb-12 items-center relative z-20">
-                <button onClick={goPrev} className="w-[52px] h-[52px] flex items-center justify-center border transition-colors duration-300 hover:bg-[rgba(196,154,69,0.2)] shrink-0" style={{ borderColor: c.accent, color: c.accent }}>
-                  <ChevronLeft className="w-5 h-5" />
-                </button>
-                {carouselSlides.map((s, i) => (
-                  <button
-                    key={i}
-                    onClick={() => goTo(i)}
-                    className="h-[52px] flex items-center justify-center transition-all duration-300 cursor-pointer relative overflow-hidden shrink-0"
-                    style={{
-                      width: i === activeSlide ? 120 : 52,
-                      border: i === activeSlide ? "none" : "1px solid rgb(196,154,69)",
-                      ...(i === activeSlide
-                        ? { backgroundColor: "rgb(196,154,69)" }
-                        : {
-                            backgroundImage: s.image ? `url('${s.image}')` : undefined,
-                            backgroundSize: "cover",
-                            backgroundPosition: "right center",
-                            backgroundColor: !s.image ? (light ? "rgba(0,0,0,0.05)" : "rgba(255,255,255,0.05)") : undefined,
-                          }
-                      ),
-                    }}
-                  >
-                    {i === activeSlide ? (
-                      <img src={`/logos/portfolio/${s.slug}-dark.svg`} alt={s.company} className="object-contain px-3 relative z-10" style={{ maxHeight: "50%", maxWidth: "100%" }} />
-                    ) : null}
-                  </button>
+              {/* Company logo — cross-fade */}
+              <div className="relative mb-10" style={{ height: 40 }}>
+                {carouselSlides.map((s, idx) => (
+                  <img key={idx} src={`/logos/portfolio/${s.slug}-${light ? "light" : "dark"}.svg`} alt={s.company} className="absolute left-0 top-0 object-contain transition-opacity duration-700 ease-in-out" style={{ height: 40, opacity: idx === activeSlide ? 1 : 0 }} />
                 ))}
-                <button onClick={goNext} className="w-[52px] h-[52px] flex items-center justify-center border transition-colors duration-300 hover:bg-[rgba(196,154,69,0.2)] shrink-0" style={{ borderColor: c.accent, color: c.accent }}>
-                  <ChevronRight className="w-5 h-5" />
-                </button>
               </div>
 
               {/* Story + attribution — cross-fade */}
-              <div className="flex flex-row items-end justify-between w-full gap-6 relative" style={{ minHeight: "9rem" }}>
+              <div className="flex flex-row items-end justify-between w-full gap-6 relative mb-10" style={{ minHeight: "9rem" }}>
                 {carouselSlides.map((s, idx) => (
                   <div key={idx} className="absolute inset-0 flex flex-row items-end justify-between gap-6 transition-opacity duration-700 ease-in-out" style={{ opacity: idx === activeSlide ? 1 : 0, pointerEvents: idx === activeSlide ? "auto" : "none" }}>
                     <div className="flex flex-col items-start">
@@ -364,6 +337,34 @@ export default function EditorialHomePage() {
                     </div>
                   </div>
                 ))}
+              </div>
+
+              {/* Carousel cards + arrows */}
+              <div className="flex gap-2 items-center relative z-20">
+                <button onClick={goPrev} className="w-[52px] h-[52px] flex items-center justify-center border transition-colors duration-300 hover:bg-[rgba(196,154,69,0.2)] shrink-0" style={{ borderColor: c.accent, color: c.accent }}>
+                  <ChevronLeft className="w-5 h-5" />
+                </button>
+                {carouselSlides.map((s, i) => (
+                  <button
+                    key={i}
+                    onClick={() => goTo(i)}
+                    className="w-[52px] h-[52px] flex items-center justify-center transition-all duration-300 cursor-pointer relative overflow-hidden shrink-0"
+                    style={{
+                      border: i === activeSlide ? "2px solid #fff" : "1px solid rgb(196,154,69)",
+                      backgroundImage: s.image ? `url('${s.image}')` : undefined,
+                      backgroundSize: "cover",
+                      backgroundPosition: "right center",
+                      backgroundColor: !s.image ? (light ? "rgba(0,0,0,0.05)" : "rgba(255,255,255,0.05)") : undefined,
+                    }}
+                  >
+                    {i === activeSlide && (
+                      <div className="absolute inset-0 transition-opacity duration-300" style={{ backgroundColor: "rgba(196,154,69,0.6)" }} />
+                    )}
+                  </button>
+                ))}
+                <button onClick={goNext} className="w-[52px] h-[52px] flex items-center justify-center border transition-colors duration-300 hover:bg-[rgba(196,154,69,0.2)] shrink-0" style={{ borderColor: c.accent, color: c.accent }}>
+                  <ChevronRight className="w-5 h-5" />
+                </button>
               </div>
             </div>
 
