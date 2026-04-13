@@ -431,78 +431,12 @@ export default function EditorialHomePage() {
         </div>
       </div>
 
-      {/* ── Our Mission (01) ── */}
-      <section className="px-6 md:px-12 py-24 md:py-32">
-        <div className="max-w-7xl mx-auto">
-          <SectionHeader label="Our Mission" number="01" />
-          <div className="grid md:grid-cols-[1fr_2fr] gap-12 md:gap-12">
-            <h2 className="text-[clamp(1.8rem,3.5vw,3.2rem)] leading-[1.15] font-light italic" style={{ ...serif, color: c.text }}>
-              Invest in Travel.
-            </h2>
-            <div>
-              <p className="text-[1.5rem] leading-[1.7] mb-6" style={{ ...serif, color: c.bodyText, fontWeight: c.bodyWeight }}>
-                Travel grows at the intersection of global commerce, infrastructure, and human connection
-                – it is the connective tissue of a globalized world. It breaks down barriers and brings people,
-                cultures, and ideas together. Our mission is to build a better world by identifying and investing
-                in the technology companies reshaping how people move, connect, and experience the world.
-              </p>
-              <p className="text-[1.5rem] leading-[1.7] mb-8" style={{ ...serif, color: c.bodyText, fontWeight: c.bodyWeight }}>
-                Thayer Investment Partners is a strategic venture capital firm focused on helping entrepreneurs navigate the dynamic,
-                complex world of travel. Our investors are global corporations, executives, operators and accomplished
-                entrepreneurs who share our belief that travel builds a better world.
-              </p>
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-px" style={{ backgroundColor: c.accent }} />
-                <span className="text-[0.72rem] uppercase tracking-[0.22em]" style={{ ...sans, color: c.accent, fontWeight: c.sansWeight }}>Since 2008</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── The Opportunity (02) ── */}
+      {/* ── Portfolio (01) ── */}
       <section className="px-6 md:px-12 py-24 md:py-32 transition-colors duration-500" style={{ backgroundColor: c.surface }}>
         <div className="max-w-7xl mx-auto">
-          <SectionHeader label="The Opportunity" number="02" />
-          <div className="grid md:grid-cols-3 gap-8 md:gap-12">
-            {stats.map((s, i) => (
-              <div key={i} className="border p-8 md:p-10" style={{ borderColor: c.rule }}>
-                <span className="text-[clamp(2.2rem,4vw,3.6rem)] font-light block mb-3" style={{ ...serif, color: c.accent, fontWeight: c.statWeight }}>{s.value}</span>
-                <span className="text-[0.72rem] uppercase tracking-[0.22em] block mb-4" style={{ ...sans, color: c.text, fontWeight: c.sansWeight }}>{s.label}</span>
-                <p className="text-[1.5rem] leading-[1.7]" style={{ ...serif, color: c.muted, fontWeight: c.bodyWeight }}>{s.sub}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── Investment Focus (03) ── */}
-      <section className="px-6 md:px-12 py-24 md:py-32">
-        <div className="max-w-7xl mx-auto">
-          <SectionHeader label="Investment Focus" number="03" />
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {categories.map((cat, i) => {
-              const hovered = hoveredCat === i;
-              return (
-                <Link key={i} href={`/portfolio?category=${encodeURIComponent(cat.name)}`} className="flex flex-col items-center gap-4 border p-6 md:p-8 relative overflow-hidden cursor-pointer" style={{ borderColor: c.rule }}
-                  onMouseEnter={() => setHoveredCat(i)} onMouseLeave={() => setHoveredCat(null)}>
-                  <div className="absolute inset-0 transition-opacity duration-500" style={{ backgroundColor: "rgb(196,154,69)", opacity: hovered ? 1 : 0 }} />
-                  <cat.icon className="w-8 h-8 relative z-10 transition-colors duration-500" style={{ color: hovered ? c.bg : c.accent }} />
-                  <h3 className="text-[1.5rem] leading-[1.3] text-center font-light italic relative z-10 transition-colors duration-500" style={{ ...serif, color: hovered ? "#fff" : c.text, fontWeight: c.headingWeight }}>{cat.name}</h3>
-                  <p className="text-[0.9rem] leading-[1.6] text-center relative z-10 transition-colors duration-500" style={{ ...sans, color: hovered ? "rgba(255,255,255,0.8)" : c.muted, fontWeight: c.sansWeight }}>{cat.desc}</p>
-                </Link>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* ── Portfolio (04) ── */}
-      <section className="px-6 md:px-12 py-24 md:py-32 transition-colors duration-500" style={{ backgroundColor: c.surface }}>
-        <div className="max-w-7xl mx-auto">
-          <SectionHeader label="Portfolio" number="04" />
+          <SectionHeader label="Portfolio" number="01" />
           <h2 className="text-[clamp(1.6rem,3vw,2.8rem)] leading-[1.15] font-light italic mb-12" style={{ ...serif, color: c.text }}>
-            We help the world&rsquo;s largest travel companies solve big problems and unlock new opportunities.
+            Trusted by founders reshaping travel.
           </h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
             {[
@@ -535,10 +469,10 @@ export default function EditorialHomePage() {
         </div>
       </section>
 
-      {/* ── What Partners Say (05) ── */}
+      {/* ── What Partners Say (02) ── */}
       <section className="px-6 md:px-12 py-24 md:py-32">
         <div className="max-w-7xl mx-auto">
-          <SectionHeader label="What Partners Say" number="05" />
+          <SectionHeader label="What Partners Say" number="02" />
           <div className="grid md:grid-cols-3 gap-8 md:gap-12">
             {testimonials.map((t, i) => (
               <div key={i} className="border p-8 md:p-10 flex flex-col" style={{ borderColor: c.rule }}>
@@ -556,12 +490,12 @@ export default function EditorialHomePage() {
         </div>
       </section>
 
-      {/* ── Network (06) ── */}
+      {/* ── Our Club (03) ── */}
       <section className="px-6 md:px-12 py-24 md:py-32 transition-colors duration-500" style={{ backgroundColor: c.surface }}>
         <div className="max-w-7xl mx-auto">
-          <SectionHeader label="Our Club" number="06" />
+          <SectionHeader label="Our Club" number="03" />
           <h2 className="text-[clamp(1.6rem,3vw,2.8rem)] leading-[1.15] font-light italic mb-12" style={{ ...serif, color: c.text }}>
-            We are backed by visionary corporations from every corner of the travel world.
+            Backed by the leaders of global travel.
           </h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
             {[
@@ -584,8 +518,74 @@ export default function EditorialHomePage() {
         </div>
       </section>
 
-      {/* ── Recent Headlines (07) ── */}
+      {/* ── Our Mission (04) ── */}
       <section className="px-6 md:px-12 py-24 md:py-32">
+        <div className="max-w-7xl mx-auto">
+          <SectionHeader label="Our Mission" number="04" />
+          <div className="grid md:grid-cols-[1fr_2fr] gap-12 md:gap-12">
+            <h2 className="text-[clamp(1.8rem,3.5vw,3.2rem)] leading-[1.15] font-light italic" style={{ ...serif, color: c.text }}>
+              Invest in Travel.
+            </h2>
+            <div>
+              <p className="text-[1.5rem] leading-[1.7] mb-6" style={{ ...serif, color: c.bodyText, fontWeight: c.bodyWeight }}>
+                Travel grows at the intersection of global commerce, infrastructure, and human connection
+                – it is the connective tissue of a globalized world. It breaks down barriers and brings people,
+                cultures, and ideas together. Our mission is to build a better world by identifying and investing
+                in the technology companies reshaping how people move, connect, and experience the world.
+              </p>
+              <p className="text-[1.5rem] leading-[1.7] mb-8" style={{ ...serif, color: c.bodyText, fontWeight: c.bodyWeight }}>
+                Thayer Investment Partners is a strategic venture capital firm focused on helping entrepreneurs navigate the dynamic,
+                complex world of travel. Our investors are global corporations, executives, operators and accomplished
+                entrepreneurs who share our belief that travel builds a better world.
+              </p>
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-px" style={{ backgroundColor: c.accent }} />
+                <span className="text-[0.72rem] uppercase tracking-[0.22em]" style={{ ...sans, color: c.accent, fontWeight: c.sansWeight }}>Since 2008</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Investment Focus (05) ── */}
+      <section className="px-6 md:px-12 py-24 md:py-32 transition-colors duration-500" style={{ backgroundColor: c.surface }}>
+        <div className="max-w-7xl mx-auto">
+          <SectionHeader label="Investment Focus" number="05" />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {categories.map((cat, i) => {
+              const hovered = hoveredCat === i;
+              return (
+                <Link key={i} href={`/portfolio?category=${encodeURIComponent(cat.name)}`} className="flex flex-col items-center gap-4 border p-6 md:p-8 relative overflow-hidden cursor-pointer" style={{ borderColor: c.rule }}
+                  onMouseEnter={() => setHoveredCat(i)} onMouseLeave={() => setHoveredCat(null)}>
+                  <div className="absolute inset-0 transition-opacity duration-500" style={{ backgroundColor: "rgb(196,154,69)", opacity: hovered ? 1 : 0 }} />
+                  <cat.icon className="w-8 h-8 relative z-10 transition-colors duration-500" style={{ color: hovered ? c.bg : c.accent }} />
+                  <h3 className="text-[1.5rem] leading-[1.3] text-center font-light italic relative z-10 transition-colors duration-500" style={{ ...serif, color: hovered ? "#fff" : c.text, fontWeight: c.headingWeight }}>{cat.name}</h3>
+                  <p className="text-[0.9rem] leading-[1.6] text-center relative z-10 transition-colors duration-500" style={{ ...sans, color: hovered ? "rgba(255,255,255,0.8)" : c.muted, fontWeight: c.sansWeight }}>{cat.desc}</p>
+                </Link>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* ── The Opportunity (06) ── */}
+      <section className="px-6 md:px-12 py-24 md:py-32">
+        <div className="max-w-7xl mx-auto">
+          <SectionHeader label="The Opportunity" number="06" />
+          <div className="grid md:grid-cols-3 gap-8 md:gap-12">
+            {stats.map((s, i) => (
+              <div key={i} className="border p-8 md:p-10" style={{ borderColor: c.rule }}>
+                <span className="text-[clamp(2.2rem,4vw,3.6rem)] font-light block mb-3" style={{ ...serif, color: c.accent, fontWeight: c.statWeight }}>{s.value}</span>
+                <span className="text-[0.72rem] uppercase tracking-[0.22em] block mb-4" style={{ ...sans, color: c.text, fontWeight: c.sansWeight }}>{s.label}</span>
+                <p className="text-[1.5rem] leading-[1.7]" style={{ ...serif, color: c.muted, fontWeight: c.bodyWeight }}>{s.sub}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Recent Headlines (07) ── */}
+      <section className="px-6 md:px-12 py-24 md:py-32 transition-colors duration-500" style={{ backgroundColor: c.surface }}>
         <div className="max-w-7xl mx-auto">
           <SectionHeader label="Recent Headlines" number="07" />
           <div className="flex flex-col">
