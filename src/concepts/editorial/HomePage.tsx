@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
-import { Sun, Moon, Building2, Sparkles, Ship, Landmark, Car, CreditCard, ChevronLeft, ChevronRight } from "lucide-react";
+import { Sun, Moon, Building2, Sparkles, Ship, Landmark, Car, CreditCard, ChevronLeft, ChevronRight, Pause, Play } from "lucide-react";
 import { useEditorialMode, ec } from "./EditorialModeContext";
 
 /* ─── Shared Nav ─── */
@@ -128,6 +128,10 @@ const marqueeCSS = `
   0% { transform: translateX(0); }
   100% { transform: translateX(-50%); }
 }
+@keyframes carousel-timer {
+  0% { width: 0%; }
+  100% { width: 100%; }
+}
 .hero-bg { background-position: calc(50% - 320px) center; }
 @media(min-width:768px) { .hero-bg { background-position: center center; } }
 `;
@@ -197,34 +201,42 @@ export default function EditorialHomePage() {
   const slide = carouselSlides[activeSlide];
   const [hoveredCat, setHoveredCat] = useState<number | null>(null);
   const [userPaused, setUserPaused] = useState(false);
+  const [navPaused, setNavPaused] = useState(false);
   const autoAdvanceRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const paused = userPaused || navPaused;
 
   const goTo = useCallback((idx: number) => {
     setActiveSlide(idx);
-    setUserPaused(true);
+    setNavPaused(true);
   }, []);
 
   const goNext = useCallback(() => {
     setActiveSlide((prev) => (prev + 1) % carouselSlides.length);
-    setUserPaused(true);
+    setNavPaused(true);
   }, []);
 
   const goPrev = useCallback(() => {
     setActiveSlide((prev) => (prev - 1 + carouselSlides.length) % carouselSlides.length);
-    setUserPaused(true);
+    setNavPaused(true);
   }, []);
 
   useEffect(() => {
-    if (userPaused) {
-      // Resume auto-advance after 10s of no interaction
-      const resume = setTimeout(() => setUserPaused(false), 10000);
+    if (navPaused && !userPaused) {
+      const resume = setTimeout(() => setNavPaused(false), 10000);
       return () => clearTimeout(resume);
+    }
+  }, [navPaused, userPaused]);
+
+  useEffect(() => {
+    if (paused) {
+      if (autoAdvanceRef.current) clearInterval(autoAdvanceRef.current);
+      return;
     }
     autoAdvanceRef.current = setInterval(() => {
       setActiveSlide((prev) => (prev + 1) % carouselSlides.length);
     }, 6000);
     return () => { if (autoAdvanceRef.current) clearInterval(autoAdvanceRef.current); };
-  }, [userPaused]);
+  }, [paused]);
 
   const tickerItems = [
     "Travel Technology Venture Capital",
@@ -347,8 +359,8 @@ export default function EditorialHomePage() {
                 {carouselSlides.map((s, i) => (
                   <button
                     key={i}
-                    onClick={() => goTo(i)}
-                    className="w-[52px] h-[52px] flex items-center justify-center transition-all duration-300 cursor-pointer relative overflow-hidden shrink-0"
+                    onClick={() => { if (i === activeSlide) { setUserPaused(!userPaused); setNavPaused(false); } else { goTo(i); } }}
+                    className="group/card w-[52px] h-[52px] flex items-center justify-center cursor-pointer relative overflow-hidden shrink-0"
                     style={{
                       border: i === activeSlide ? "2px solid #fff" : "1px solid rgb(196,154,69)",
                       backgroundImage: s.image ? `url('${s.image}')` : undefined,
@@ -357,8 +369,23 @@ export default function EditorialHomePage() {
                       backgroundColor: !s.image ? (light ? "rgba(0,0,0,0.05)" : "rgba(255,255,255,0.05)") : undefined,
                     }}
                   >
+                    {/* Timer fill — sweeps left to right on active slide */}
                     {i === activeSlide && (
-                      <div className="absolute inset-0 transition-opacity duration-300" style={{ backgroundColor: "rgba(196,154,69,0.6)" }} />
+                      <div
+                        key={`timer-${activeSlide}-${paused}`}
+                        className="absolute inset-y-0 left-0"
+                        style={{
+                          backgroundColor: "rgba(196,154,69,0.6)",
+                          animation: paused ? "none" : "carousel-timer 6s linear forwards",
+                          width: paused ? "100%" : undefined,
+                        }}
+                      />
+                    )}
+                    {/* Pause/Play icon on hover */}
+                    {i === activeSlide && userPaused ? (
+                      <Play className="w-4 h-4 text-white relative z-10 opacity-0 group-hover/card:opacity-80 transition-opacity duration-200" />
+                    ) : (
+                      <Pause className="w-4 h-4 text-white relative z-10 opacity-0 group-hover/card:opacity-80 transition-opacity duration-200" />
                     )}
                   </button>
                 ))}
