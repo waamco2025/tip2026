@@ -132,21 +132,20 @@ const marqueeCSS = `
   0% { width: 0%; }
   100% { width: 100%; }
 }
-.hero-bg { background-position: calc(50% - 320px) center; }
-@media(min-width:768px) { .hero-bg { background-position: center center; } }
+@media(min-width:768px) { .hero-slide { background-position: center center !important; } }
 `;
 
 /* ─── Carousel Data ─── */
 const carouselSlides = [
   {
     company: "Mews", slug: "mews", label: "Mews",
-    image: "/images/carousel/mews.webp",
+    image: "/images/carousel/mews.webp", mobileBgPos: "calc(50% - 320px) center",
     founders: [{ name: "Richard Valtr", title: "Founder, Mews" }],
     story: "Mews reimagined the hotel operating system from the ground up. We backed their vision to replace legacy property management with a cloud-native platform now powering hospitality worldwide.",
   },
   {
     company: "Jetstream", slug: "jetstream", label: "Jetstream",
-    image: "/images/carousel/jetstream.webp",
+    image: "/images/carousel/jetstream.webp", mobileBgPos: "calc(50% - 240px) center",
     founders: [
       { name: "Raj Rajamani", title: "Founder & CEO, Jetstream" },
       { name: "Jared Phipps", title: "Founder & COO, Jetstream" },
@@ -155,7 +154,7 @@ const carouselSlides = [
   },
   {
     company: "Cloaked", slug: "cloaked", label: "Cloaked",
-    image: "/images/carousel/cloaked.webp",
+    image: "/images/carousel/cloaked.webp", mobileBgPos: "calc(50% - 174px) center",
     founders: [
       { name: "Arjun Bhatnagar", title: "Co-Founder & CEO, Cloaked" },
       { name: "Abhijay Bhatnagar", title: "Co-Founder & CTO, Cloaked" },
@@ -164,7 +163,7 @@ const carouselSlides = [
   },
   {
     company: "Canary Technologies", slug: "canary-technologies", label: "Canary",
-    image: "/images/carousel/canary.webp",
+    image: "/images/carousel/canary.webp", mobileBgPos: "calc(50% - 298px) center",
     founders: [
       { name: "Harman Singh Narula", title: "Co-Founder & CEO, Canary Technologies" },
       { name: "SJ Sawhney", title: "Co-Founder & President, Canary Technologies" },
@@ -173,19 +172,19 @@ const carouselSlides = [
   },
   {
     company: "MarginEdge", slug: "marginedge", label: "MarginEdge",
-    image: "/images/carousel/marginedge.webp",
+    image: "/images/carousel/marginedge.webp", mobileBgPos: "calc(50% - 320px) center",
     founders: [{ name: "Bo Davis", title: "Co-Founder & CEO, MarginEdge" }],
     story: "MarginEdge is eliminating the back-office burden for restaurants. We backed their platform to automate invoicing, inventory, and financial insights for operators everywhere.",
   },
   {
     company: "Nuitée", slug: "nuitee", label: "Nuitée",
-    image: "/images/carousel/nuitee.webp",
+    image: "/images/carousel/nuitee.webp", mobileBgPos: "calc(50% - 320px) center",
     founders: [{ name: "Med Benmansour", title: "Founder & CEO, Nuitée" }],
     story: "Nuitée is building the infrastructure layer for global hotel distribution. We backed their API-first platform connecting travel companies to accommodation inventory worldwide.",
   },
   {
     company: "Cardless", slug: "cardless", label: "Cardless",
-    image: "/images/carousel/cardless.webp",
+    image: "/images/carousel/cardless.webp", mobileBgPos: "calc(50% - 292px) center",
     founders: [
       { name: "Scott Kazmierowicz", title: "Co-Founder & CEO, Cardless" },
       { name: "Michael Spelfogel", title: "Co-Founder & President, Cardless" },
@@ -194,7 +193,7 @@ const carouselSlides = [
   },
   {
     company: "Rain", slug: "rain", label: "Rain",
-    image: "/images/carousel/rain.webp",
+    image: "/images/carousel/rain.webp", mobileBgPos: "calc(50% - 360px) center",
     founders: [
       { name: "Farooq Malik", title: "Co-Founder & CEO, Rain" },
       { name: "Charles Yoo-Naut", title: "Co-Founder, Rain" },
@@ -203,7 +202,7 @@ const carouselSlides = [
   },
   {
     company: "Super.com", slug: "super", label: "Super",
-    image: "/images/carousel/super.webp",
+    image: "/images/carousel/super.webp", mobileBgPos: "calc(50% - 320px) center",
     founders: [{ name: "Hussein Fazal", title: "Co-Founder & CEO, Super.com" }],
     story: "Super.com is building the everyday super app for savings. We invested in their vision to help millions save on travel, finances, and daily spending through one powerful platform.",
   },
@@ -305,7 +304,7 @@ export default function EditorialHomePage() {
           {/* Background images — cross-fade */}
           {carouselSlides.map((s, i) => (
             s.image ? (
-              <div key={i} className="absolute inset-0 bg-cover bg-center md:bg-center hero-bg transition-opacity duration-1000 ease-in-out" style={{ backgroundImage: `url('${s.image}')`, opacity: i === activeSlide ? 1 : 0 }} />
+              <div key={i} className="absolute inset-0 bg-cover hero-slide transition-opacity duration-1000 ease-in-out" style={{ backgroundImage: `url('${s.image}')`, backgroundPosition: s.mobileBgPos, opacity: i === activeSlide ? 1 : 0 }} />
             ) : (
               <div key={i} className="absolute inset-0 transition-opacity duration-1000 ease-in-out" style={{ backgroundColor: light ? "#d8d4cc" : "#1a1a1a", opacity: i === activeSlide ? 1 : 0 }} />
             )
@@ -415,7 +414,7 @@ export default function EditorialHomePage() {
 
             {/* Mobile attribution + arrows */}
             <div className="absolute bottom-14 left-6 right-6 md:hidden">
-              <div className="flex items-end justify-between gap-4">
+<div className="flex items-end justify-between gap-4">
                 <div className="flex flex-col items-start gap-3">
                   {slide.founders.map((f, i) => (
                     <div key={i} className="flex flex-col items-start">
