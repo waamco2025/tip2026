@@ -73,7 +73,7 @@ export default function EditorialAboutPage() {
           <h1 className="text-[clamp(2.2rem,5.5vw,5rem)] leading-[1.08] font-light italic mb-8 max-w-4xl" style={{ ...serif, color: c.text }}>
             A History of Innovation in Travel.
           </h1>
-          <p className="text-[1.5rem] leading-[1.7] max-w-2xl" style={{ ...serif, color: c.bodyText, fontWeight: c.bodyWeight }}>
+          <p className="text-[1.15rem] leading-[1.7] max-w-2xl" style={{ ...sans, color: c.bodyText, fontWeight: c.sansWeight }}>
             Since 2008, Thayer Investment Partners has been at the forefront of travel technology investing,
             partnering with visionary founders to build companies that reshape how the world moves, stays, and experiences new places.
           </p>
@@ -88,8 +88,8 @@ export default function EditorialAboutPage() {
             {philosophies.map((p, i) => (
               <div key={i} className="border p-8 md:p-10" style={{ borderColor: c.rule }}>
                 <span className="text-[0.68rem] uppercase tracking-[0.22em] block mb-4" style={{ ...sans, color: c.accent, fontWeight: c.sansWeight }}>0{i + 1}</span>
-                <h3 className="text-[1.5rem] font-light italic mb-4" style={{ ...serif, color: c.text, fontWeight: c.headingWeight }}>{p.title}</h3>
-                <p className="text-[1.5rem] leading-[1.7]" style={{ ...serif, color: c.bodyText, fontWeight: c.bodyWeight }}>{p.desc}</p>
+                <h3 className="text-[1.75rem] font-light italic mb-4" style={{ ...serif, color: c.text, fontWeight: c.headingWeight }}>{p.title}</h3>
+                <p className="text-[1.15rem] leading-[1.7]" style={{ ...sans, color: c.bodyText, fontWeight: c.sansWeight }}>{p.desc}</p>
               </div>
             ))}
           </div>
@@ -105,8 +105,8 @@ export default function EditorialAboutPage() {
               <div key={i} className="grid md:grid-cols-[120px_1fr] gap-4 md:gap-12 py-10 border-b" style={{ borderColor: c.rule }}>
                 <span className="text-[1.8rem] font-light" style={{ ...serif, color: c.accent, fontWeight: c.statWeight }}>{m.year}</span>
                 <div>
-                  <h3 className="text-[1.5rem] font-light italic mb-3" style={{ ...serif, color: c.text, fontWeight: c.headingWeight }}>{m.title}</h3>
-                  <p className="text-[1.5rem] leading-[1.7]" style={{ ...serif, color: c.bodyText, fontWeight: c.bodyWeight }}>{m.desc}</p>
+                  <h3 className="text-[1.75rem] font-light italic mb-3" style={{ ...serif, color: c.text, fontWeight: c.headingWeight }}>{m.title}</h3>
+                  <p className="text-[1.15rem] leading-[1.7]" style={{ ...sans, color: c.bodyText, fontWeight: c.sansWeight }}>{m.desc}</p>
                 </div>
               </div>
             ))}
@@ -121,7 +121,7 @@ export default function EditorialAboutPage() {
           <h2 className="text-[clamp(1.6rem,3vw,2.8rem)] leading-[1.15] font-light italic mb-6" style={{ ...serif, color: c.text }}>
             Decades of specialized investment and operating experience.
           </h2>
-          <p className="text-[1.5rem] leading-[1.7] mb-12" style={{ ...serif, color: c.bodyText, fontWeight: c.bodyWeight }}>
+          <p className="text-[1.15rem] leading-[1.7] mb-12" style={{ ...sans, color: c.bodyText, fontWeight: c.sansWeight }}>
             We work with a select group of corporate leaders who appreciate the value of long term partnership
             and share our belief that progress is centered around travel.
           </p>
@@ -154,22 +154,21 @@ export default function EditorialAboutPage() {
             {team.map((t, i) => {
               const expanded = expandedMember === i;
               return (
-                <div key={i} className="group">
+                <div key={i} className="group cursor-pointer" onClick={() => setExpandedMember(expanded ? null : i)}>
                   <div className="aspect-[3/4] border mb-5 flex items-end p-6 transition-colors duration-500" style={{ backgroundColor: c.surface, borderColor: c.rule }}>
                     <span className="text-[0.65rem] uppercase tracking-[0.2em]" style={{ ...sans, color: c.muted, fontWeight: c.sansWeight }}>Portrait</span>
                   </div>
-                  <h3 className="text-[1.5rem] font-light italic mb-1" style={{ ...serif, color: c.text, fontWeight: c.headingWeight }}>{t.name}</h3>
+                  <h3 className="text-[1.75rem] font-light italic mb-1" style={{ ...serif, color: c.text, fontWeight: c.headingWeight }}>{t.name}</h3>
                   <span className="text-[0.7rem] uppercase tracking-[0.18em] block mb-3" style={{ ...sans, color: c.accent, fontWeight: c.sansWeight }}>{t.role}</span>
                   <div className={`overflow-hidden transition-all duration-500 ${expanded ? "max-h-[500px]" : "max-h-0"}`}>
-                    <p className="text-[1.5rem] leading-[1.7] mb-3" style={{ ...serif, color: c.bodyText, fontWeight: c.bodyWeight }}>{t.bio}</p>
+                    <p className="text-[1.15rem] leading-[1.7] mb-3" style={{ ...sans, color: c.bodyText, fontWeight: c.sansWeight }}>{t.bio}</p>
                   </div>
-                  <button
-                    onClick={() => setExpandedMember(expanded ? null : i)}
-                    className="text-[0.68rem] uppercase tracking-[0.18em] mt-3 inline-block cursor-pointer hover:opacity-80 transition-colors"
+                  <span
+                    className="text-[0.68rem] uppercase tracking-[0.18em] mt-3 inline-block hover:opacity-80 transition-colors"
                     style={{ ...sans, color: c.muted, fontWeight: c.sansWeight }}
                   >
                     {expanded ? "Read Less" : "Read More"}
-                  </button>
+                  </span>
                 </div>
               );
             })}

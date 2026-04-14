@@ -21,7 +21,7 @@ function SectionHeader({ label, number }: { label: string; number: string }) {
 const companies = [
   {
     name: "Canary Technologies", slug: "canary-technologies", w: 220, url: "https://www.canarytechnologies.com",
-    img: "/images/carousel/canary.webp", category: "Hotels & Restaurants",
+    img: "/images/carousel/canary.webp", category: "Hospitality Technology",
     desc: "Modern hospitality technology platform powering guest management and hotel operations.",
     founders: [
       { name: "Harman Singh Narula", title: "Co-Founder & CEO" },
@@ -35,7 +35,7 @@ const companies = [
   },
   {
     name: "Mews", slug: "mews", w: 200, url: "https://www.mews.com",
-    img: "/images/carousel/mews.webp", category: "Hotels & Restaurants",
+    img: "/images/carousel/mews.webp", category: "Hospitality Technology",
     desc: "Cloud-native property management system for modern hospitality businesses worldwide.",
     founders: [
       { name: "Richard Valtr", title: "Founder" },
@@ -47,8 +47,38 @@ const companies = [
     ],
   },
   {
+    name: "Jetstream", slug: "jetstream", w: 180, url: "https://jetstream.security",
+    img: "", category: "Cybersecurity & Privacy",
+    desc: "AI governance platform giving enterprises visibility and control over autonomous AI systems.",
+    founders: [
+      { name: "Raj Rajamani", title: "Founder & CEO" },
+      { name: "Jared Phipps", title: "Founder & COO" },
+      { name: "Venu Vissamsetty", title: "Founder & Chief Architect" },
+      { name: "Jatheen Anand", title: "Founder & CTO" },
+    ],
+    story: "Raj Rajamani, Jared Phipps, Venu Vissamsetty, and Jatheen Anand are security veterans who held senior leadership roles at CrowdStrike, SentinelOne, and Cohesity. They saw enterprises racing to deploy AI without guardrails — 93% lacking any AI security governance. They built Jetstream to be the trust layer that lets organizations scale AI safely, providing visibility across teams and vendors, agentic identity management, and runtime control. We invested because as AI becomes critical infrastructure across travel and every other industry, governance isn\u2019t a nice-to-have — it\u2019s the prerequisite for trust.",
+    headlines: [
+      { date: "Apr 2026", title: "Jetstream Emerges from Stealth with $34M Seed Led by Redpoint Ventures" },
+      { date: "Mar 2026", title: "Jetstream Launches AI Governance Platform for Enterprise Security Teams" },
+    ],
+  },
+  {
+    name: "Cloaked", slug: "cloaked", w: 160, url: "https://cloaked.com",
+    img: "", category: "Cybersecurity & Privacy",
+    desc: "All-in-one consumer privacy and security platform protecting digital identities in the AI era.",
+    founders: [
+      { name: "Arjun Bhatnagar", title: "Co-Founder & CEO" },
+      { name: "Abhijay Bhatnagar", title: "Co-Founder & CTO" },
+    ],
+    story: "Brothers Arjun and Abhijay Bhatnagar recognized that AI-powered scams were weaponizing personal data at unprecedented scale, while privacy tools remained fragmented and reactive. They built Cloaked as the all-in-one platform that gives people back control — masked emails, masked phone numbers, data broker removal, dark web monitoring, and identity theft insurance in a single product. With 350,000+ paying users, 10 million+ identities protected, and 10x year-over-year growth, Cloaked has proven massive consumer demand. We invested because privacy is becoming mandatory infrastructure, and Cloaked is expanding from consumer traction into enterprise — a path that mirrors the most successful platform companies in cybersecurity.",
+    headlines: [
+      { date: "Mar 2026", title: "Cloaked Raises $375M Series B Led by General Catalyst" },
+      { date: "Jan 2026", title: "Cloaked Surpasses 350,000 Paying Users and 10M Protected Identities" },
+    ],
+  },
+  {
     name: "MarginEdge", slug: "marginedge", w: 220, url: "https://www.marginedge.com",
-    img: "/images/carousel/marginedge.webp", category: "Hotels & Restaurants",
+    img: "/images/carousel/marginedge.webp", category: "Restaurant Technology",
     desc: "Restaurant management platform automating back-office operations and financial insights.",
     founders: [
       { name: "Bo Davis", title: "Co-Founder & CEO" },
@@ -61,7 +91,7 @@ const companies = [
   },
   {
     name: "Nuit\u00e9e", slug: "nuitee", w: 160, url: "https://nuitee.com",
-    img: "/images/carousel/nuitee.webp", category: "Hotels & Restaurants",
+    img: "/images/carousel/nuitee.webp", category: "Travel Distribution",
     desc: "B2B hotel distribution platform connecting travel companies to global accommodation inventory.",
     founders: [
       { name: "Med Benmansour", title: "Founder & CEO" },
@@ -74,7 +104,7 @@ const companies = [
   },
   {
     name: "Cardless", slug: "cardless", w: 200, url: "https://www.cardless.com",
-    img: "/images/carousel/cardless.webp", category: "Fintech",
+    img: "/images/carousel/cardless.webp", category: "Payments & Loyalty",
     desc: "Modern credit card platform enabling brands to launch and manage co-branded card programs.",
     founders: [
       { name: "Scott Kazmierowicz", title: "Co-Founder & CEO" },
@@ -88,7 +118,7 @@ const companies = [
   },
   {
     name: "Rain", slug: "rain", w: 160, url: "https://www.rain.xyz",
-    img: "/images/carousel/rain.webp", category: "Fintech",
+    img: "/images/carousel/rain.webp", category: "Consumer Finance",
     desc: "Earned wage access platform helping employers offer on-demand pay to their workforce.",
     founders: [
       { name: "Farooq Malik", title: "Co-Founder & CEO" },
@@ -102,7 +132,7 @@ const companies = [
   },
   {
     name: "Super", slug: "super", w: 190, url: "https://www.super.com",
-    img: "/images/carousel/super.webp", category: "Entertainment",
+    img: "/images/carousel/super.webp", category: "Consumer Finance",
     desc: "Next-generation travel and experiences platform for the modern traveler.",
     founders: [
       { name: "Hussein Fazal", title: "Co-Founder & CEO" },
@@ -121,10 +151,31 @@ export default function EditorialPortfolioPage() {
   const serif = { fontFamily: "'Cormorant Garamond', Georgia, serif" };
   const sans = { fontFamily: "'Syne', sans-serif" };
 
-  const categoryList = ["All", "Hotels & Restaurants", "Entertainment", "Cruises & Airlines", "Real Estate", "Transportation", "Fintech"];
+  const categoryList = ["All", "Hospitality Technology", "Restaurant Technology", "Travel Distribution", "Payments & Loyalty", "Consumer Finance", "Cybersecurity & Privacy"];
   const searchParams = useSearchParams();
   const [active, setActive] = useState("All");
   const [expanded, setExpanded] = useState<string | null>(null);
+  const [expandedVisible, setExpandedVisible] = useState<string | null>(null);
+
+  const handleExpand = (slug: string | null) => {
+    if (slug) {
+      setExpanded(slug);
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          setExpandedVisible(slug);
+          const el = document.getElementById(slug);
+          if (el) {
+            setTimeout(() => {
+              el.scrollIntoView({ behavior: "smooth", block: "center" });
+            }, 100);
+          }
+        });
+      });
+    } else {
+      setExpandedVisible(null);
+      setTimeout(() => setExpanded(null), 500);
+    }
+  };
 
   useEffect(() => {
     const cat = searchParams.get("category");
@@ -137,7 +188,7 @@ export default function EditorialPortfolioPage() {
 
   const metaStats = [
     { value: "$2.8B+", label: "Portfolio Value" },
-    { value: "7", label: "Active Companies" },
+    { value: "9", label: "Active Companies" },
     { value: "6", label: "Sectors" },
     { value: "3", label: "Funds" },
   ];
@@ -156,8 +207,8 @@ export default function EditorialPortfolioPage() {
           <div className="flex flex-wrap gap-8 md:gap-16">
             {metaStats.map((s, i) => (
               <div key={i}>
-                <span className="text-[1.6rem] font-light block mb-1" style={{ ...serif, color: c.accent, fontWeight: c.statWeight }}>{s.value}</span>
-                <span className="text-[0.68rem] uppercase tracking-[0.18em]" style={{ ...sans, color: c.muted, fontWeight: c.sansWeight }}>{s.label}</span>
+                <span className="text-[2.2rem] font-light block mb-1" style={{ ...serif, color: c.accent, fontWeight: c.statWeight }}>{s.value}</span>
+                <span className="text-[0.72rem] uppercase tracking-[0.18em]" style={{ ...sans, color: c.muted, fontWeight: c.sansWeight }}>{s.label}</span>
               </div>
             ))}
           </div>
@@ -165,15 +216,21 @@ export default function EditorialPortfolioPage() {
       </section>
 
       {/* ── Portfolio List (01) ── */}
-      <section className="px-6 md:px-12 py-24 md:py-32">
+      <section id="active-investments" className="px-6 md:px-12 py-24 md:py-32 scroll-mt-20">
         <div className="max-w-7xl mx-auto">
           <SectionHeader label="Active Investments" number="01" />
           <div className="flex flex-wrap gap-2 mb-12">
             {categoryList.map((cat) => (
               <button
                 key={cat}
-                onClick={() => setActive(cat)}
-                className="text-[0.7rem] uppercase tracking-[0.16em] px-5 py-2 border transition-all duration-300 hover:bg-[rgba(196,154,69,0.1)]"
+                onClick={() => {
+                  setActive(cat);
+                  handleExpand(null);
+                  setTimeout(() => {
+                    document.getElementById("active-investments")?.scrollIntoView({ behavior: "smooth", block: "start" });
+                  }, 100);
+                }}
+                className="text-[0.7rem] uppercase tracking-[0.16em] px-2 py-2 border transition-all duration-300 hover:bg-[rgba(196,154,69,0.1)]"
                 style={{
                   borderColor: active === cat ? c.accent : c.rule,
                   color: active === cat ? c.accent : c.muted,
@@ -189,13 +246,14 @@ export default function EditorialPortfolioPage() {
           <div className="flex flex-col gap-8">
             {filtered.map((co) => {
               const isExpanded = expanded === co.slug;
+              const isVisible = expandedVisible === co.slug;
               return (
                 <div key={co.slug} id={co.slug} className="scroll-mt-24">
                   {/* Collapsed state */}
                   <div
-                    className="flex flex-col md:flex-row cursor-pointer group"
-                    onClick={() => setExpanded(isExpanded ? null : co.slug)}
-                    style={{ display: isExpanded ? "none" : undefined }}
+                    className="flex flex-col md:flex-row cursor-pointer group transition-opacity duration-500"
+                    onClick={() => handleExpand(isExpanded ? null : co.slug)}
+                    style={{ display: isExpanded ? "none" : undefined, opacity: isExpanded ? 0 : 1 }}
                   >
                     <div className="w-full md:w-1/3 aspect-[4/3] border flex items-center justify-center px-10 relative overflow-hidden shrink-0" style={{ backgroundColor: c.surface, borderColor: c.rule }}>
                       <div className="absolute inset-0 opacity-0 group-hover:opacity-100 scale-100 group-hover:scale-110 transition-all duration-700 ease-out bg-cover" style={{ backgroundImage: `url('${co.img}')`, backgroundPosition: "right center" }} />
@@ -215,7 +273,7 @@ export default function EditorialPortfolioPage() {
 
                   {/* Expanded state */}
                   {isExpanded && (
-                    <div className="flex flex-col md:flex-row">
+                    <div className="flex flex-col md:flex-row transition-opacity duration-500 ease-in-out" style={{ opacity: isVisible ? 1 : 0 }}>
                       {/* Left — photo + logo, 50% */}
                       <div
                         className="w-full md:w-1/2 relative overflow-hidden flex items-center justify-center shrink-0"
@@ -233,7 +291,7 @@ export default function EditorialPortfolioPage() {
 
                       {/* Right — content, 50% */}
                       <div className="w-full md:w-1/2 p-8 md:p-12 flex flex-col justify-center border border-l-0 relative" style={{ backgroundColor: c.surface, borderColor: c.rule }}>
-                        <button onClick={() => setExpanded(null)} className="absolute top-4 right-5 text-[1.2rem] hover:opacity-60 transition-opacity" style={{ color: c.muted }}>&times;</button>
+                        <button onClick={() => handleExpand(null)} className="absolute top-4 right-5 text-[2rem] leading-none hover:opacity-60 transition-opacity" style={{ color: c.muted }}>&times;</button>
                         <span className="text-[0.78rem] uppercase tracking-[0.2em] block mb-2" style={{ ...sans, color: c.accent, fontWeight: c.sansWeight }}>{co.category}</span>
                         <h3 className="text-[2rem] md:text-[2.5rem] font-light italic mb-4" style={{ ...serif, color: c.text, fontWeight: c.headingWeight }}>{co.name}</h3>
 
@@ -248,7 +306,7 @@ export default function EditorialPortfolioPage() {
                         </div>
 
                         {/* Story */}
-                        <p className="text-[1.5rem] leading-[1.7] mb-8" style={{ ...serif, color: c.bodyText, fontWeight: c.bodyWeight }}>
+                        <p className="text-[1.15rem] leading-[1.7] mb-8" style={{ ...sans, color: c.bodyText, fontWeight: c.sansWeight }}>
                           {co.story}
                         </p>
 
@@ -272,11 +330,11 @@ export default function EditorialPortfolioPage() {
 
                         {/* Close */}
                         <button
-                          onClick={() => setExpanded(null)}
+                          onClick={() => handleExpand(null)}
                           className="text-[0.72rem] uppercase tracking-[0.18em] mt-6 text-left hover:opacity-80 transition-colors"
                           style={{ ...sans, color: c.muted, fontWeight: c.sansWeight }}
                         >
-                          Close &rarr;
+                          Close &times;
                         </button>
                       </div>
                     </div>

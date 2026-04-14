@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
-import { Sun, Moon, Building2, Sparkles, Ship, Landmark, Car, CreditCard, ChevronLeft, ChevronRight, Pause, Play } from "lucide-react";
+import { Sun, Moon, Building2, UtensilsCrossed, Globe, CreditCard, Wallet, ShieldCheck, ChevronLeft, ChevronRight, Pause, Play } from "lucide-react";
 import { useEditorialMode, ec } from "./EditorialModeContext";
 
 /* ─── Shared Nav ─── */
@@ -145,6 +145,24 @@ const carouselSlides = [
     story: "Mews reimagined the hotel operating system from the ground up. We backed their vision to replace legacy property management with a cloud-native platform now powering hospitality worldwide.",
   },
   {
+    company: "Jetstream", slug: "jetstream", label: "Jetstream",
+    image: "",
+    founders: [
+      { name: "Raj Rajamani", title: "Founder & CEO, Jetstream" },
+      { name: "Jared Phipps", title: "Founder & COO, Jetstream" },
+    ],
+    story: "Jetstream is building the trust layer for enterprise AI. We invested because as every company deploys autonomous systems, governance isn\u2019t optional \u2014 it\u2019s the unlock that lets AI scale safely across teams and vendors.",
+  },
+  {
+    company: "Cloaked", slug: "cloaked", label: "Cloaked",
+    image: "",
+    founders: [
+      { name: "Arjun Bhatnagar", title: "Co-Founder & CEO, Cloaked" },
+      { name: "Abhijay Bhatnagar", title: "Co-Founder & CTO, Cloaked" },
+    ],
+    story: "Cloaked is making privacy infrastructure for the AI era. We invested because as AI-powered scams weaponize personal data, Cloaked gives consumers and enterprises the tools to take back control of their digital identities.",
+  },
+  {
     company: "Canary Technologies", slug: "canary-technologies", label: "Canary",
     image: "/images/carousel/canary.webp",
     founders: [
@@ -255,12 +273,12 @@ export default function EditorialHomePage() {
   ];
 
   const categories = [
-    { icon: Building2, name: "Hotels & Restaurants", desc: "Hospitality tech platforms transforming guest experiences" },
-    { icon: Sparkles, name: "Entertainment & Experiences", desc: "Immersive technologies redefining leisure and discovery" },
-    { icon: Ship, name: "Cruises & Airlines", desc: "Next-generation solutions for air and sea transportation" },
-    { icon: Landmark, name: "Real Estate", desc: "PropTech innovations in hospitality real estate" },
-    { icon: Car, name: "Ground Transportation", desc: "Mobility platforms connecting travelers seamlessly" },
-    { icon: CreditCard, name: "Financial Technology", desc: "Payments, earned wage access, and co-branded card platforms" },
+    { icon: Building2, name: "Hospitality Technology", desc: "Cloud platforms powering modern hotel operations and guest experiences" },
+    { icon: UtensilsCrossed, name: "Restaurant Technology", desc: "Back-office automation and financial intelligence for restaurant operators" },
+    { icon: Globe, name: "Travel Distribution", desc: "Infrastructure connecting travel platforms to global accommodation inventory" },
+    { icon: CreditCard, name: "Payments & Loyalty", desc: "Co-branded card programs and loyalty platforms for travel brands" },
+    { icon: Wallet, name: "Consumer Finance", desc: "Earned wage access and savings platforms for the modern workforce" },
+    { icon: ShieldCheck, name: "Cybersecurity & Privacy", desc: "AI governance, identity protection, and enterprise security infrastructure" },
   ];
 
   const testimonials = [
@@ -324,9 +342,9 @@ export default function EditorialHomePage() {
             {/* Bottom: logo, story, attribution, cards — anchored to bottom */}
             <div className="hidden md:flex flex-col pb-8 shrink-0">
               {/* Company logo — cross-fade */}
-              <div className="relative mb-10" style={{ height: 40 }}>
+              <div className="relative mb-6" style={{ height: 52 }}>
                 {carouselSlides.map((s, idx) => (
-                  <img key={idx} src={`/logos/portfolio/${s.slug}-${light ? "light" : "dark"}.svg`} alt={s.company} className="absolute left-0 top-0 object-contain transition-opacity duration-700 ease-in-out" style={{ height: 40, opacity: idx === activeSlide ? 1 : 0 }} />
+                  <img key={idx} src={`/logos/portfolio/${s.slug}-${light ? "light" : "dark"}.svg`} alt={s.company} className="absolute left-0 top-0 object-contain transition-opacity duration-700 ease-in-out" style={{ height: 52, opacity: idx === activeSlide ? 1 : 0 }} />
                 ))}
               </div>
 
@@ -335,7 +353,7 @@ export default function EditorialHomePage() {
                 {carouselSlides.map((s, idx) => (
                   <div key={idx} className="absolute inset-0 flex flex-row items-end justify-between gap-6 transition-opacity duration-700 ease-in-out" style={{ opacity: idx === activeSlide ? 1 : 0, pointerEvents: idx === activeSlide ? "auto" : "none" }}>
                     <div className="flex flex-col items-start">
-                      <p className="text-[1.5rem] leading-[1.7] max-w-lg mb-0" style={{ ...serif, color: c.bodyText, fontWeight: c.bodyWeight }}>
+                      <p className="text-[1.15rem] leading-[1.7] max-w-lg mb-0" style={{ ...sans, color: c.bodyText, fontWeight: c.sansWeight }}>
                         {s.story}
                       </p>
                     </div>
@@ -442,6 +460,8 @@ export default function EditorialHomePage() {
             {[
               { slug: "canary-technologies", name: "Canary Technologies", w: 160, url: "https://www.canarytechnologies.com", img: "/images/carousel/canary.webp", tag: "Hotel Guest Experience" },
               { slug: "mews", name: "Mews", w: 140, url: "https://www.mews.com", img: "/images/carousel/mews.webp", tag: "Cloud Hospitality Platform" },
+              { slug: "jetstream", name: "Jetstream", w: 150, url: "https://jetstream.security", img: "", tag: "AI Governance & Security" },
+              { slug: "cloaked", name: "Cloaked", w: 140, url: "https://cloaked.com", img: "", tag: "Privacy & Identity Protection" },
               { slug: "marginedge", name: "MarginEdge", w: 160, url: "https://www.marginedge.com", img: "/images/carousel/marginedge.webp", tag: "Restaurant Management" },
               { slug: "nuitee", name: "Nuit\u00e9e", w: 120, url: "https://nuitee.com", img: "/images/carousel/nuitee.webp", tag: "Hotel Distribution API" },
               { slug: "cardless", name: "Cardless", w: 160, url: "https://www.cardless.com", img: "/images/carousel/cardless.webp", tag: "Co-Branded Credit Cards" },
@@ -477,7 +497,7 @@ export default function EditorialHomePage() {
             {testimonials.map((t, i) => (
               <div key={i} className="border p-8 md:p-10 flex flex-col" style={{ borderColor: c.rule }}>
                 <span className="text-[2.5rem] leading-none mb-4" style={{ ...serif, color: c.accent }}>&ldquo;</span>
-                <p className="text-[1.5rem] leading-[1.7] font-light italic flex-1 mb-8" style={{ ...serif, color: c.bodyText, fontWeight: c.bodyWeight }}>
+                <p className="text-[1.15rem] leading-[1.7] font-light italic flex-1 mb-8" style={{ ...sans, color: c.bodyText, fontWeight: c.sansWeight }}>
                   {t.quote}
                 </p>
                 <div className="text-right">
@@ -527,13 +547,13 @@ export default function EditorialHomePage() {
               Invest in Travel.
             </h2>
             <div>
-              <p className="text-[1.5rem] leading-[1.7] mb-6" style={{ ...serif, color: c.bodyText, fontWeight: c.bodyWeight }}>
+              <p className="text-[1.15rem] leading-[1.7] mb-6" style={{ ...sans, color: c.bodyText, fontWeight: c.sansWeight }}>
                 Travel grows at the intersection of global commerce, infrastructure, and human connection
                 – it is the connective tissue of a globalized world. It breaks down barriers and brings people,
                 cultures, and ideas together. Our mission is to build a better world by identifying and investing
                 in the technology companies reshaping how people move, connect, and experience the world.
               </p>
-              <p className="text-[1.5rem] leading-[1.7] mb-8" style={{ ...serif, color: c.bodyText, fontWeight: c.bodyWeight }}>
+              <p className="text-[1.15rem] leading-[1.7] mb-8" style={{ ...sans, color: c.bodyText, fontWeight: c.sansWeight }}>
                 Thayer Investment Partners is a strategic venture capital firm focused on helping entrepreneurs navigate the dynamic,
                 complex world of travel. Our investors are global corporations, executives, operators and accomplished
                 entrepreneurs who share our belief that travel builds a better world.
@@ -559,8 +579,8 @@ export default function EditorialHomePage() {
                   onMouseEnter={() => setHoveredCat(i)} onMouseLeave={() => setHoveredCat(null)}>
                   <div className="absolute inset-0 transition-opacity duration-500" style={{ backgroundColor: "rgb(196,154,69)", opacity: hovered ? 1 : 0 }} />
                   <cat.icon className="w-8 h-8 relative z-10 transition-colors duration-500" style={{ color: hovered ? c.bg : c.accent }} />
-                  <h3 className="text-[1.5rem] leading-[1.3] text-center font-light italic relative z-10 transition-colors duration-500" style={{ ...serif, color: hovered ? "#fff" : c.text, fontWeight: c.headingWeight }}>{cat.name}</h3>
-                  <p className="text-[0.9rem] leading-[1.6] text-center relative z-10 transition-colors duration-500" style={{ ...sans, color: hovered ? "rgba(255,255,255,0.8)" : c.muted, fontWeight: c.sansWeight }}>{cat.desc}</p>
+                  <h3 className="text-[1.75rem] leading-[1.3] text-center font-light italic relative z-10 transition-colors duration-500" style={{ ...serif, color: hovered ? "#fff" : c.text, fontWeight: c.headingWeight }}>{cat.name}</h3>
+                  <p className="text-[1.15rem] leading-[1.6] text-center relative z-10 transition-colors duration-500" style={{ ...sans, color: hovered ? "rgba(255,255,255,0.8)" : c.muted, fontWeight: c.sansWeight }}>{cat.desc}</p>
                 </Link>
               );
             })}
@@ -577,7 +597,7 @@ export default function EditorialHomePage() {
               <div key={i} className="border p-8 md:p-10" style={{ borderColor: c.rule }}>
                 <span className="text-[clamp(2.2rem,4vw,3.6rem)] font-light block mb-3" style={{ ...serif, color: c.accent, fontWeight: c.statWeight }}>{s.value}</span>
                 <span className="text-[0.72rem] uppercase tracking-[0.22em] block mb-4" style={{ ...sans, color: c.text, fontWeight: c.sansWeight }}>{s.label}</span>
-                <p className="text-[1.5rem] leading-[1.7]" style={{ ...serif, color: c.muted, fontWeight: c.bodyWeight }}>{s.sub}</p>
+                <p className="text-[1.15rem] leading-[1.7]" style={{ ...sans, color: c.muted, fontWeight: c.sansWeight }}>{s.sub}</p>
               </div>
             ))}
           </div>
@@ -597,7 +617,7 @@ export default function EditorialHomePage() {
                 style={{ borderColor: c.rule }}
               >
                 <span className="text-[0.72rem] uppercase tracking-[0.18em] shrink-0 w-20" style={{ ...sans, color: c.muted, fontWeight: c.sansWeight }}>{h.date}</span>
-                <span className="text-[1.5rem] md:text-[1.5rem] font-light italic flex-1 group-hover:text-[#C49A45] transition-colors" style={{ ...serif, color: c.text, fontWeight: c.headingWeight }}>{h.title}</span>
+                <span className="text-[1.75rem] font-light italic flex-1 group-hover:text-[#C49A45] transition-colors" style={{ ...serif, color: c.text, fontWeight: c.headingWeight }}>{h.title}</span>
                 <span className="group-hover:text-[#C49A45] transition-colors shrink-0" style={{ color: c.muted }}>&rarr;</span>
               </Link>
             ))}

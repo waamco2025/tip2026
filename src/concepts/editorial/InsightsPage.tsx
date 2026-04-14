@@ -41,9 +41,12 @@ export default function EditorialInsightsPage() {
       <section className="px-6 md:px-12 py-24 md:py-40">
         <div className="max-w-7xl mx-auto">
           <span className="text-[0.72rem] uppercase tracking-[0.22em] block mb-8" style={{ ...sans, color: c.accent, fontWeight: c.sansWeight }}>Insights</span>
-          <h1 className="text-[clamp(2rem,5vw,4.5rem)] leading-[1.08] font-light italic max-w-4xl" style={{ ...serif, color: c.text }}>
+          <h1 className="text-[clamp(2rem,5vw,4.5rem)] leading-[1.08] font-light italic mb-8 max-w-4xl" style={{ ...serif, color: c.text }}>
             Perspectives on the future of travel &amp; technology.
           </h1>
+          <p className="text-[1.15rem] leading-[1.7] max-w-2xl" style={{ ...sans, color: c.bodyText, fontWeight: c.sansWeight }}>
+            News, research, and commentary from Thayer Investment Partners and our portfolio companies.
+          </p>
         </div>
       </section>
 
@@ -60,7 +63,7 @@ export default function EditorialInsightsPage() {
               <h2 className="text-[clamp(1.6rem,3vw,2.6rem)] leading-[1.15] font-light italic mb-6 group-hover:text-[#C49A45] transition-colors" style={{ ...serif, color: c.text, fontWeight: c.headingWeight }}>
                 Thayer Leads $45M Series B in TravelAI Platform
               </h2>
-              <p className="text-[1.5rem] leading-[1.7] mb-8" style={{ ...serif, color: c.bodyText, fontWeight: c.bodyWeight }}>
+              <p className="text-[1.15rem] leading-[1.7] mb-8" style={{ ...sans, color: c.bodyText, fontWeight: c.sansWeight }}>
                 TravelAI&rsquo;s generative AI platform is transforming how travel companies personalize experiences at scale.
                 The Series B will fund expansion into 14 new markets and accelerate enterprise partnerships with major hotel chains.
               </p>
@@ -89,10 +92,10 @@ export default function EditorialInsightsPage() {
                   <div className="flex items-center gap-3 mb-3">
                     <span className="text-[0.65rem] uppercase tracking-[0.2em]" style={{ ...sans, color: c.accent, fontWeight: c.sansWeight }}>{a.tag}</span>
                   </div>
-                  <h3 className="text-[1.5rem] md:text-[1.5rem] font-light italic mb-3 group-hover:text-[#C49A45] transition-colors" style={{ ...serif, color: c.text, fontWeight: c.headingWeight }}>
+                  <h3 className="text-[1.75rem] md:text-[1.5rem] font-light italic mb-3 group-hover:text-[#C49A45] transition-colors" style={{ ...serif, color: c.text, fontWeight: c.headingWeight }}>
                     {a.title}
                   </h3>
-                  <p className="text-[1.5rem] leading-[1.7]" style={{ ...serif, color: c.bodyText, fontWeight: c.bodyWeight }}>{a.excerpt}</p>
+                  <p className="text-[1.15rem] leading-[1.7]" style={{ ...sans, color: c.bodyText, fontWeight: c.sansWeight }}>{a.excerpt}</p>
                 </div>
               </Link>
             ))}
