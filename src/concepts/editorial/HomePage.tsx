@@ -146,7 +146,7 @@ const carouselSlides = [
   },
   {
     company: "Jetstream", slug: "jetstream", label: "Jetstream",
-    image: "",
+    image: "/images/carousel/jetstream.webp",
     founders: [
       { name: "Raj Rajamani", title: "Founder & CEO, Jetstream" },
       { name: "Jared Phipps", title: "Founder & COO, Jetstream" },
@@ -155,7 +155,7 @@ const carouselSlides = [
   },
   {
     company: "Cloaked", slug: "cloaked", label: "Cloaked",
-    image: "",
+    image: "/images/carousel/cloaked.webp",
     founders: [
       { name: "Arjun Bhatnagar", title: "Co-Founder & CEO, Cloaked" },
       { name: "Abhijay Bhatnagar", title: "Co-Founder & CTO, Cloaked" },
@@ -460,8 +460,8 @@ export default function EditorialHomePage() {
             {[
               { slug: "canary-technologies", name: "Canary Technologies", w: 160, url: "https://www.canarytechnologies.com", img: "/images/carousel/canary.webp", tag: "Hotel Guest Experience" },
               { slug: "mews", name: "Mews", w: 140, url: "https://www.mews.com", img: "/images/carousel/mews.webp", tag: "Cloud Hospitality Platform" },
-              { slug: "jetstream", name: "Jetstream", w: 150, url: "https://jetstream.security", img: "", tag: "AI Governance & Security" },
-              { slug: "cloaked", name: "Cloaked", w: 140, url: "https://cloaked.com", img: "", tag: "Privacy & Identity Protection" },
+              { slug: "jetstream", name: "Jetstream", w: 150, url: "https://jetstream.security", img: "/images/carousel/jetstream.webp", tag: "AI Governance & Security" },
+              { slug: "cloaked", name: "Cloaked", w: 140, url: "https://cloaked.com", img: "/images/carousel/cloaked.webp", tag: "Privacy & Identity Protection" },
               { slug: "marginedge", name: "MarginEdge", w: 160, url: "https://www.marginedge.com", img: "/images/carousel/marginedge.webp", tag: "Restaurant Management" },
               { slug: "nuitee", name: "Nuit\u00e9e", w: 120, url: "https://nuitee.com", img: "/images/carousel/nuitee.webp", tag: "Hotel Distribution API" },
               { slug: "cardless", name: "Cardless", w: 160, url: "https://www.cardless.com", img: "/images/carousel/cardless.webp", tag: "Co-Branded Credit Cards" },

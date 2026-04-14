@@ -21,7 +21,7 @@ function SectionHeader({ label, number }: { label: string; number: string }) {
 const companies = [
   {
     name: "Canary Technologies", slug: "canary-technologies", w: 220, url: "https://www.canarytechnologies.com",
-    img: "/images/carousel/canary.webp", category: "Hospitality Technology",
+    img: "/images/carousel/canary.webp", bgPos: "85% center", category: "Hospitality Technology",
     desc: "Modern hospitality technology platform powering guest management and hotel operations.",
     founders: [
       { name: "Harman Singh Narula", title: "Co-Founder & CEO" },
@@ -35,7 +35,7 @@ const companies = [
   },
   {
     name: "Mews", slug: "mews", w: 200, url: "https://www.mews.com",
-    img: "/images/carousel/mews.webp", category: "Hospitality Technology",
+    img: "/images/carousel/mews.webp", bgPos: "85% center", category: "Hospitality Technology",
     desc: "Cloud-native property management system for modern hospitality businesses worldwide.",
     founders: [
       { name: "Richard Valtr", title: "Founder" },
@@ -48,7 +48,7 @@ const companies = [
   },
   {
     name: "Jetstream", slug: "jetstream", w: 180, url: "https://jetstream.security",
-    img: "", category: "Cybersecurity & Privacy",
+    img: "/images/carousel/jetstream.webp", bgPos: "55% center", category: "Cybersecurity & Privacy",
     desc: "AI governance platform giving enterprises visibility and control over autonomous AI systems.",
     founders: [
       { name: "Raj Rajamani", title: "Founder & CEO" },
@@ -64,7 +64,7 @@ const companies = [
   },
   {
     name: "Cloaked", slug: "cloaked", w: 160, url: "https://cloaked.com",
-    img: "", category: "Cybersecurity & Privacy",
+    img: "/images/carousel/cloaked.webp", bgPos: "70% center", category: "Cybersecurity & Privacy",
     desc: "All-in-one consumer privacy and security platform protecting digital identities in the AI era.",
     founders: [
       { name: "Arjun Bhatnagar", title: "Co-Founder & CEO" },
@@ -78,7 +78,7 @@ const companies = [
   },
   {
     name: "MarginEdge", slug: "marginedge", w: 220, url: "https://www.marginedge.com",
-    img: "/images/carousel/marginedge.webp", category: "Restaurant Technology",
+    img: "/images/carousel/marginedge.webp", bgPos: "85% center", category: "Restaurant Technology",
     desc: "Restaurant management platform automating back-office operations and financial insights.",
     founders: [
       { name: "Bo Davis", title: "Co-Founder & CEO" },
@@ -91,7 +91,7 @@ const companies = [
   },
   {
     name: "Nuit\u00e9e", slug: "nuitee", w: 160, url: "https://nuitee.com",
-    img: "/images/carousel/nuitee.webp", category: "Travel Distribution",
+    img: "/images/carousel/nuitee.webp", bgPos: "85% center", category: "Travel Distribution",
     desc: "B2B hotel distribution platform connecting travel companies to global accommodation inventory.",
     founders: [
       { name: "Med Benmansour", title: "Founder & CEO" },
@@ -104,7 +104,7 @@ const companies = [
   },
   {
     name: "Cardless", slug: "cardless", w: 200, url: "https://www.cardless.com",
-    img: "/images/carousel/cardless.webp", category: "Payments & Loyalty",
+    img: "/images/carousel/cardless.webp", bgPos: "85% center", category: "Payments & Loyalty",
     desc: "Modern credit card platform enabling brands to launch and manage co-branded card programs.",
     founders: [
       { name: "Scott Kazmierowicz", title: "Co-Founder & CEO" },
@@ -118,7 +118,7 @@ const companies = [
   },
   {
     name: "Rain", slug: "rain", w: 160, url: "https://www.rain.xyz",
-    img: "/images/carousel/rain.webp", category: "Consumer Finance",
+    img: "/images/carousel/rain.webp", bgPos: "85% center", category: "Consumer Finance",
     desc: "Earned wage access platform helping employers offer on-demand pay to their workforce.",
     founders: [
       { name: "Farooq Malik", title: "Co-Founder & CEO" },
@@ -132,7 +132,7 @@ const companies = [
   },
   {
     name: "Super", slug: "super", w: 190, url: "https://www.super.com",
-    img: "/images/carousel/super.webp", category: "Consumer Finance",
+    img: "/images/carousel/super.webp", bgPos: "85% center", category: "Consumer Finance",
     desc: "Next-generation travel and experiences platform for the modern traveler.",
     founders: [
       { name: "Hussein Fazal", title: "Co-Founder & CEO" },
@@ -280,7 +280,7 @@ export default function EditorialPortfolioPage() {
                         style={{
                           backgroundImage: `url('${co.img}')`,
                           backgroundSize: "cover",
-                          backgroundPosition: "85% center",
+                          backgroundPosition: co.bgPos,
                           border: "1px solid rgb(196,154,69)",
                           minHeight: 500,
                         }}
