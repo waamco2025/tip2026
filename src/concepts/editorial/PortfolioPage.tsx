@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { EditorialNav, EditorialFooter } from "./HomePage";
 import { useEditorialMode, ec } from "./EditorialModeContext";
@@ -17,32 +18,120 @@ function SectionHeader({ label, number }: { label: string; number: string }) {
   );
 }
 
+const companies = [
+  {
+    name: "Canary Technologies", slug: "canary-technologies", w: 220, url: "https://www.canarytechnologies.com",
+    img: "/images/carousel/canary.webp", category: "Hotels & Restaurants",
+    desc: "Modern hospitality technology platform powering guest management and hotel operations.",
+    founders: [
+      { name: "Harman Singh Narula", title: "Co-Founder & CEO" },
+      { name: "SJ Sawhney", title: "Co-Founder & President" },
+    ],
+    story: "Harman Singh Narula and SJ Sawhney saw an industry stuck in the past — hotels still relying on paper forms, manual ID checks, and outdated payment systems. They built Canary Technologies to digitize the entire guest journey, from contactless check-in to dynamic upselling. We invested because their platform doesn't just modernize operations — it transforms the economics of hospitality. Today, Canary powers thousands of properties worldwide, helping hotels increase revenue while delivering the seamless experience modern travelers expect.",
+    headlines: [
+      { date: "Mar 2026", title: "Canary Technologies Raises $50M Series C to Expand Global Reach" },
+      { date: "Jan 2026", title: "Canary Partners with Major Hotel Chain for Contactless Check-In" },
+    ],
+  },
+  {
+    name: "Mews", slug: "mews", w: 200, url: "https://www.mews.com",
+    img: "/images/carousel/mews.webp", category: "Hotels & Restaurants",
+    desc: "Cloud-native property management system for modern hospitality businesses worldwide.",
+    founders: [
+      { name: "Richard Valtr", title: "Founder" },
+    ],
+    story: "Richard Valtr believed the hotel industry deserved better than decades-old software held together with workarounds. He built Mews from the ground up as a cloud-native operating system — not a digitized version of legacy tools, but a fundamentally new way to run a hotel. We backed Mews because their architecture enables what legacy systems can't: real-time automation, open integrations, and a guest experience that feels effortless. Mews now powers properties across dozens of countries, proving that modern infrastructure can reshape an entire industry.",
+    headlines: [
+      { date: "Feb 2026", title: "Mews Expands to 50 Countries with New APAC Launch" },
+      { date: "Dec 2025", title: "Mews Named Top PMS by Hotel Tech Report for Third Year" },
+    ],
+  },
+  {
+    name: "MarginEdge", slug: "marginedge", w: 220, url: "https://www.marginedge.com",
+    img: "/images/carousel/marginedge.webp", category: "Hotels & Restaurants",
+    desc: "Restaurant management platform automating back-office operations and financial insights.",
+    founders: [
+      { name: "Bo Davis", title: "Co-Founder & CEO" },
+    ],
+    story: "Bo Davis spent years watching restaurant operators drown in invoices, spreadsheets, and manual inventory counts. He built MarginEdge to eliminate the back-office burden entirely — turning stacks of paper into real-time financial intelligence. We invested because restaurants are the backbone of the hospitality ecosystem, and MarginEdge gives operators the visibility they need to thrive. The platform now automates operations for thousands of restaurants, helping them focus on what matters: the food and the guest.",
+    headlines: [
+      { date: "Mar 2026", title: "MarginEdge Surpasses 5,000 Restaurant Locations" },
+      { date: "Nov 2025", title: "MarginEdge Launches AI-Powered Inventory Forecasting" },
+    ],
+  },
+  {
+    name: "Nuit\u00e9e", slug: "nuitee", w: 160, url: "https://nuitee.com",
+    img: "/images/carousel/nuitee.webp", category: "Hotels & Restaurants",
+    desc: "B2B hotel distribution platform connecting travel companies to global accommodation inventory.",
+    founders: [
+      { name: "Med Benmansour", title: "Founder & CEO" },
+    ],
+    story: "Med Benmansour understood that hotel distribution was broken — fragmented APIs, inconsistent data, and unreliable connectivity made it nearly impossible for travel companies to access global inventory efficiently. He built Nuit\u00e9e as the infrastructure layer the industry was missing: a single API that connects travel platforms to millions of hotel rooms worldwide. We backed Nuit\u00e9e because distribution is the plumbing of travel, and Med's platform makes it work the way it always should have.",
+    headlines: [
+      { date: "Feb 2026", title: "Nuit\u00e9e API Now Powers Over 200 Travel Platforms Globally" },
+      { date: "Oct 2025", title: "Nuit\u00e9e Closes Series A to Scale Hotel Distribution Infrastructure" },
+    ],
+  },
+  {
+    name: "Cardless", slug: "cardless", w: 200, url: "https://www.cardless.com",
+    img: "/images/carousel/cardless.webp", category: "Fintech",
+    desc: "Modern credit card platform enabling brands to launch and manage co-branded card programs.",
+    founders: [
+      { name: "Scott Kazmierowicz", title: "Co-Founder & CEO" },
+      { name: "Michael Spelfogel", title: "Co-Founder & President" },
+    ],
+    story: "Scott Kazmierowicz and Michael Spelfogel recognized that co-branded credit cards were one of the most powerful tools in travel loyalty — but launching one required years of bank negotiations and millions in upfront investment. They built Cardless to change that equation entirely, enabling any brand to launch a card program in weeks instead of years. We invested because loyalty and payments sit at the heart of the travel economy, and Cardless makes this capability accessible to brands of every size.",
+    headlines: [
+      { date: "Jan 2026", title: "Cardless Partners with Major Airline for New Rewards Card" },
+      { date: "Sep 2025", title: "Cardless Platform Surpasses $1B in Annual Transaction Volume" },
+    ],
+  },
+  {
+    name: "Rain", slug: "rain", w: 160, url: "https://www.rain.xyz",
+    img: "/images/carousel/rain.webp", category: "Fintech",
+    desc: "Earned wage access platform helping employers offer on-demand pay to their workforce.",
+    founders: [
+      { name: "Farooq Malik", title: "Co-Founder & CEO" },
+      { name: "Charles Yoo-Naut", title: "Co-Founder" },
+    ],
+    story: "Farooq Malik and Charles Yoo-Naut saw that the workers powering the hospitality industry — housekeepers, servers, front desk staff — were living paycheck to paycheck while their earned wages sat locked in two-week pay cycles. They built Rain to give workers instant access to the money they've already earned. We backed Rain because the travel and hospitality workforce is the foundation of everything we invest in, and financial wellness directly impacts retention, productivity, and service quality.",
+    headlines: [
+      { date: "Mar 2026", title: "Rain Expands Earned Wage Access to 500+ Hospitality Employers" },
+      { date: "Dec 2025", title: "Rain Raises Series B to Accelerate Workforce Finance Platform" },
+    ],
+  },
+  {
+    name: "Super", slug: "super", w: 190, url: "https://www.super.com",
+    img: "/images/carousel/super.webp", category: "Entertainment",
+    desc: "Next-generation travel and experiences platform for the modern traveler.",
+    founders: [
+      { name: "Hussein Fazal", title: "Co-Founder & CEO" },
+    ],
+    story: "Hussein Fazal set out to build the app that helps everyday consumers save money on everything — starting with travel. Super.com combines discounted hotel bookings, a credit-building debit card, and exclusive savings into one platform that rewards users for spending smarter. We invested because Super.com is redefining what a travel platform can be: not just a booking engine, but a financial companion that makes travel more accessible for millions of people through one powerful platform.",
+    headlines: [
+      { date: "Feb 2026", title: "Super.com Surpasses 10 Million Users Worldwide" },
+      { date: "Nov 2025", title: "Super.com Launches Credit-Building Features for Travelers" },
+    ],
+  },
+];
+
 export default function EditorialPortfolioPage() {
   const { light } = useEditorialMode();
   const c = ec(light);
   const serif = { fontFamily: "'Cormorant Garamond', Georgia, serif" };
   const sans = { fontFamily: "'Syne', sans-serif" };
 
-  const categories = ["All", "Hotels & Restaurants", "Entertainment", "Cruises & Airlines", "Real Estate", "Transportation", "Fintech"];
+  const categoryList = ["All", "Hotels & Restaurants", "Entertainment", "Cruises & Airlines", "Real Estate", "Transportation", "Fintech"];
   const searchParams = useSearchParams();
   const [active, setActive] = useState("All");
+  const [expanded, setExpanded] = useState<string | null>(null);
 
   useEffect(() => {
     const cat = searchParams.get("category");
-    if (cat && categories.includes(cat)) {
+    if (cat && categoryList.includes(cat)) {
       setActive(cat);
     }
   }, [searchParams]);
-
-  const companies = [
-    { name: "Canary Technologies", slug: "canary-technologies", w: 220, url: "https://www.canarytechnologies.com", img: "/images/carousel/canary.webp", category: "Hotels & Restaurants", desc: "Modern hospitality technology platform powering guest management and hotel operations." },
-    { name: "Mews", slug: "mews", w: 200, url: "https://www.mews.com", img: "/images/carousel/mews.webp", category: "Hotels & Restaurants", desc: "Cloud-native property management system for modern hospitality businesses worldwide." },
-    { name: "MarginEdge", slug: "marginedge", w: 220, url: "https://www.marginedge.com", img: "/images/carousel/marginedge.webp", category: "Hotels & Restaurants", desc: "Restaurant management platform automating back-office operations and financial insights." },
-    { name: "Nuit\u00e9e", slug: "nuitee", w: 160, url: "https://nuitee.com", img: "/images/carousel/nuitee.webp", category: "Hotels & Restaurants", desc: "B2B hotel distribution platform connecting travel companies to global accommodation inventory." },
-    { name: "Cardless", slug: "cardless", w: 200, url: "https://www.cardless.com", img: "/images/carousel/cardless.webp", category: "Fintech", desc: "Modern credit card platform enabling brands to launch and manage co-branded card programs." },
-    { name: "Rain", slug: "rain", w: 160, url: "https://www.rain.xyz", img: "/images/carousel/rain.webp", category: "Fintech", desc: "Earned wage access platform helping employers offer on-demand pay to their workforce." },
-    { name: "Super", slug: "super", w: 190, url: "https://www.super.com", img: "/images/carousel/super.webp", category: "Entertainment", desc: "Next-generation travel and experiences platform for the modern traveler." },
-  ];
 
   const filtered = active === "All" ? companies : companies.filter((co) => co.category === active);
 
@@ -52,7 +141,6 @@ export default function EditorialPortfolioPage() {
     { value: "6", label: "Sectors" },
     { value: "3", label: "Funds" },
   ];
-
 
   return (
     <div className="min-h-screen transition-colors duration-500" style={{ backgroundColor: c.bg, color: c.text }}>
@@ -76,12 +164,12 @@ export default function EditorialPortfolioPage() {
         </div>
       </section>
 
-      {/* ── Portfolio Grid (01) ── */}
+      {/* ── Portfolio List (01) ── */}
       <section className="px-6 md:px-12 py-24 md:py-32">
         <div className="max-w-7xl mx-auto">
           <SectionHeader label="Active Investments" number="01" />
           <div className="flex flex-wrap gap-2 mb-12">
-            {categories.map((cat) => (
+            {categoryList.map((cat) => (
               <button
                 key={cat}
                 onClick={() => setActive(cat)}
@@ -97,22 +185,105 @@ export default function EditorialPortfolioPage() {
               </button>
             ))}
           </div>
-          <div className="grid md:grid-cols-3 gap-8 md:gap-10">
-            {filtered.map((co, i) => (
-              <div key={i} id={co.slug} className="group scroll-mt-24">
-                <a href={co.url} target="_blank" rel="noopener noreferrer" className="aspect-[4/3] border mb-5 flex items-center justify-center px-10 cursor-pointer block relative overflow-hidden" style={{ backgroundColor: c.surface, borderColor: c.rule }}>
-                  <div className="absolute inset-0 opacity-0 group-hover:opacity-100 scale-100 group-hover:scale-110 transition-all duration-700 ease-out bg-cover" style={{ backgroundImage: `url('${co.img}')`, backgroundPosition: "right center" }} />
-                  <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 ease-out" style={{ backgroundColor: "rgba(0,0,0,0.4)" }} />
-                  <img src={`/logos/portfolio/${co.slug}-${light ? "light" : "dark"}.svg`} alt={co.name} className="object-contain relative z-10 group-hover:hidden" style={{ width: co.w, maxWidth: "80%" }} />
-                  <img src={`/logos/portfolio/${co.slug}-dark.svg`} alt={co.name} className="object-contain relative z-10 hidden group-hover:block group-hover:scale-125 transition-transform duration-700 ease-out" style={{ width: co.w, maxWidth: "80%" }} />
-                </a>
-                <span className="text-[0.78rem] uppercase tracking-[0.2em] block mb-2" style={{ ...sans, color: c.accent, fontWeight: c.sansWeight }}>{co.category}</span>
-                <a href={co.url} target="_blank" rel="noopener noreferrer">
-                  <h3 className="text-[1.8rem] font-light italic mb-3 group-hover:text-[#C49A45] transition-colors" style={{ ...serif, color: c.text, fontWeight: c.headingWeight }}>{co.name}</h3>
-                </a>
-                <p className="text-[1rem] leading-[1.7]" style={{ ...sans, color: c.muted, fontWeight: c.sansWeight }}>{co.desc}</p>
-              </div>
-            ))}
+
+          <div className="flex flex-col gap-8">
+            {filtered.map((co) => {
+              const isExpanded = expanded === co.slug;
+              return (
+                <div key={co.slug} id={co.slug} className="scroll-mt-24">
+                  {/* Collapsed state */}
+                  <div
+                    className="flex flex-col md:flex-row cursor-pointer group"
+                    onClick={() => setExpanded(isExpanded ? null : co.slug)}
+                    style={{ display: isExpanded ? "none" : undefined }}
+                  >
+                    <div className="w-full md:w-1/3 aspect-[4/3] border flex items-center justify-center px-10 relative overflow-hidden shrink-0" style={{ backgroundColor: c.surface, borderColor: c.rule }}>
+                      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 scale-100 group-hover:scale-110 transition-all duration-700 ease-out bg-cover" style={{ backgroundImage: `url('${co.img}')`, backgroundPosition: "right center" }} />
+                      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 ease-out" style={{ backgroundColor: "rgba(0,0,0,0.4)" }} />
+                      <img src={`/logos/portfolio/${co.slug}-${light ? "light" : "dark"}.svg`} alt={co.name} className="object-contain relative z-10 group-hover:hidden" style={{ width: co.w, maxWidth: "80%" }} />
+                      <img src={`/logos/portfolio/${co.slug}-dark.svg`} alt={co.name} className="object-contain relative z-10 hidden group-hover:block group-hover:scale-125 transition-transform duration-700 ease-out" style={{ width: co.w, maxWidth: "80%" }} />
+                    </div>
+                    <div className="flex-1 flex flex-col justify-center pl-0 md:pl-10 pt-6 md:pt-0">
+                      <span className="text-[0.78rem] uppercase tracking-[0.2em] block mb-2" style={{ ...sans, color: c.accent, fontWeight: c.sansWeight }}>{co.category}</span>
+                      <h3 className="text-[2rem] md:text-[2.5rem] font-light italic mb-3 group-hover:text-[#C49A45] transition-colors" style={{ ...serif, color: c.text, fontWeight: c.headingWeight }}>{co.name}</h3>
+                      <p className="text-[1.1rem] leading-[1.7] mb-4" style={{ ...sans, color: c.muted, fontWeight: c.sansWeight }}>{co.desc}</p>
+                      <span className="text-[0.72rem] uppercase tracking-[0.18em] mt-2" style={{ ...sans, color: c.accent, fontWeight: c.sansWeight }}>
+                        Read More &rarr;
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Expanded state */}
+                  {isExpanded && (
+                    <div className="flex flex-col md:flex-row">
+                      {/* Left — photo + logo, 50% */}
+                      <div
+                        className="w-full md:w-1/2 relative overflow-hidden flex items-center justify-center shrink-0"
+                        style={{
+                          backgroundImage: `url('${co.img}')`,
+                          backgroundSize: "cover",
+                          backgroundPosition: "85% center",
+                          border: "1px solid rgb(196,154,69)",
+                          minHeight: 500,
+                        }}
+                      >
+                        <div className="absolute inset-0" style={{ backgroundColor: "rgba(0,0,0,0.4)" }} />
+                        <img src={`/logos/portfolio/${co.slug}-dark.svg`} alt={co.name} className="object-contain relative z-10" style={{ width: co.w * 1.5, maxWidth: "65%" }} />
+                      </div>
+
+                      {/* Right — content, 50% */}
+                      <div className="w-full md:w-1/2 p-8 md:p-12 flex flex-col justify-center border border-l-0 relative" style={{ backgroundColor: c.surface, borderColor: c.rule }}>
+                        <button onClick={() => setExpanded(null)} className="absolute top-4 right-5 text-[1.2rem] hover:opacity-60 transition-opacity" style={{ color: c.muted }}>&times;</button>
+                        <span className="text-[0.78rem] uppercase tracking-[0.2em] block mb-2" style={{ ...sans, color: c.accent, fontWeight: c.sansWeight }}>{co.category}</span>
+                        <h3 className="text-[2rem] md:text-[2.5rem] font-light italic mb-4" style={{ ...serif, color: c.text, fontWeight: c.headingWeight }}>{co.name}</h3>
+
+                        {/* Founders */}
+                        <div className="mb-6">
+                          {co.founders.map((f, i) => (
+                            <div key={i} className="mb-2">
+                              <span className="text-[1.5rem] font-light italic" style={{ ...serif, color: c.text }}>{f.name}</span>
+                              <span className="text-[0.72rem] uppercase tracking-[0.18em] block" style={{ ...sans, color: c.accent, fontWeight: c.sansWeight }}>{f.title}</span>
+                            </div>
+                          ))}
+                        </div>
+
+                        {/* Story */}
+                        <p className="text-[1.5rem] leading-[1.7] mb-8" style={{ ...serif, color: c.bodyText, fontWeight: c.bodyWeight }}>
+                          {co.story}
+                        </p>
+
+                        {/* Headlines */}
+                        <div className="border-t pt-6" style={{ borderColor: c.rule }}>
+                          <span className="text-[0.68rem] uppercase tracking-[0.22em] block mb-4" style={{ ...sans, color: c.accent, fontWeight: c.sansWeight }}>Recent Headlines</span>
+                          <div className="flex flex-col">
+                            {co.headlines.map((h, i) => (
+                              <div key={i} className="flex items-center gap-6 py-3 border-b" style={{ borderColor: c.rule }}>
+                                <span className="text-[0.72rem] uppercase tracking-[0.18em] shrink-0 w-20" style={{ ...sans, color: c.muted, fontWeight: c.sansWeight }}>{h.date}</span>
+                                <span className="text-[1.5rem] font-light italic flex-1" style={{ ...serif, color: c.text, fontWeight: c.headingWeight }}>{h.title}</span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+
+                        {/* External link */}
+                        <a href={co.url} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()} className="text-[0.72rem] uppercase tracking-[0.18em] mt-6 inline-block hover:opacity-80 transition-colors" style={{ ...sans, color: c.accent, fontWeight: c.sansWeight }}>
+                          Visit {co.name} &rarr;
+                        </a>
+
+                        {/* Close */}
+                        <button
+                          onClick={() => setExpanded(null)}
+                          className="text-[0.72rem] uppercase tracking-[0.18em] mt-6 text-left hover:opacity-80 transition-colors"
+                          style={{ ...sans, color: c.muted, fontWeight: c.sansWeight }}
+                        >
+                          Close &rarr;
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>
