@@ -55,7 +55,7 @@ export default function EditorialAboutPage() {
 
       {/* ── Hero ── */}
       <section className="relative px-6 md:px-12 py-24 md:py-40 overflow-hidden">
-        <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: "url('/images/about.webp')" }} />
+        <div className="absolute inset-0 bg-cover bg-no-repeat" style={{ backgroundImage: "url('/images/about.webp')", backgroundPosition: "center calc(50% + 80px)" }} />
         <div className="absolute inset-0 hidden md:block" style={{ background: light
           ? "linear-gradient(to right, rgba(237,233,226,0.92) 0px, rgba(237,233,226,0.92) 500px, rgba(237,233,226,0.3) 100%)"
           : "linear-gradient(to right, rgba(18,18,18,0.92) 0px, rgba(18,18,18,0.92) 500px, rgba(18,18,18,0.2) 100%)"
