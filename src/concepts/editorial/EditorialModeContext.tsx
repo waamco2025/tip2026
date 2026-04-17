@@ -38,10 +38,10 @@ export function ec(light: boolean) {
     bg: light ? "#FAF8F5" : "#0C0C0A",
     surface: light ? "#F0EDE8" : "#141410",
     text: light ? "#1A1917" : "#EAE5DB",
-    muted: light ? "#5C5549" : "#7A7568",        // darker in light mode (was #8A8578)
+    muted: light ? "#4A4338" : "#9A9588",
     accent: "#C49A45",
-    rule: light ? "rgba(0,0,0,0.12)" : "rgba(255,255,255,0.07)",  // slightly more visible in light
-    bodyText: light ? "rgba(26,25,23,0.88)" : "rgba(234,229,219,0.82)",  // higher contrast in light
+    rule: light ? "rgba(0,0,0,0.14)" : "rgba(255,255,255,0.1)",
+    bodyText: light ? "rgba(26,25,23,0.92)" : "rgba(234,229,219,0.9)",
     bodyWeight: light ? 600 : 500,
     /* Additional weights for different contexts */
     sansWeight: light ? 600 : 500,    // sans-serif labels, dates, tags

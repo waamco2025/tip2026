@@ -4,6 +4,14 @@ html {
   scroll-behavior: smooth;
 }
 
+html.portfolio-snap {
+  scroll-snap-type: y mandatory;
+  scroll-padding-top: 80px;
+}
+html.portfolio-snap body {
+  scroll-snap-type: inherit;
+}
+
 @keyframes fade-in {
   from { opacity: 0; }
   to { opacity: 1; }

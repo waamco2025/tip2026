@@ -23,6 +23,7 @@ const companies = [
     name: "Canary Technologies", slug: "canary-technologies", w: 220, url: "https://www.canarytechnologies.com",
     img: "/images/carousel/canary.webp", bgPos: "85% center", category: "Hospitality Technology",
     desc: "Modern hospitality technology platform powering guest management and hotel operations.",
+    pullQuote: "An industry stuck in the past — paper forms, manual ID checks, outdated payments.",
     founders: [
       { name: "Harman Singh Narula", title: "Co-Founder & CEO" },
       { name: "SJ Sawhney", title: "Co-Founder & President" },
@@ -37,6 +38,7 @@ const companies = [
     name: "Mews", slug: "mews", w: 200, url: "https://www.mews.com",
     img: "/images/carousel/mews.webp", bgPos: "85% center", category: "Hospitality Technology",
     desc: "Cloud-native property management system for modern hospitality businesses worldwide.",
+    pullQuote: "The hotel industry deserved better than decades-old software.",
     founders: [
       { name: "Richard Valtr", title: "Founder" },
     ],
@@ -50,6 +52,7 @@ const companies = [
     name: "Jetstream", slug: "jetstream", w: 180, url: "https://jetstream.security",
     img: "/images/carousel/jetstream.webp", bgPos: "55% center", category: "Cybersecurity & Privacy",
     desc: "AI governance platform giving enterprises visibility and control over autonomous AI systems.",
+    pullQuote: "93% of enterprises are deploying AI with no security governance.",
     founders: [
       { name: "Raj Rajamani", title: "Founder & CEO" },
       { name: "Jared Phipps", title: "Founder & COO" },
@@ -66,6 +69,7 @@ const companies = [
     name: "Cloaked", slug: "cloaked", w: 160, url: "https://cloaked.com",
     img: "/images/carousel/cloaked.webp", bgPos: "70% center", category: "Cybersecurity & Privacy",
     desc: "All-in-one consumer privacy and security platform protecting digital identities in the AI era.",
+    pullQuote: "350,000+ paying users. 10M+ identities protected. 10× year-over-year growth.",
     founders: [
       { name: "Arjun Bhatnagar", title: "Co-Founder & CEO" },
       { name: "Abhijay Bhatnagar", title: "Co-Founder & CTO" },
@@ -80,6 +84,7 @@ const companies = [
     name: "MarginEdge", slug: "marginedge", w: 220, url: "https://www.marginedge.com",
     img: "/images/carousel/marginedge.webp", bgPos: "85% center", category: "Restaurant Technology",
     desc: "Restaurant management platform automating back-office operations and financial insights.",
+    pullQuote: "Restaurant operators drowning in invoices, spreadsheets, and inventory counts.",
     founders: [
       { name: "Bo Davis", title: "Co-Founder & CEO" },
     ],
@@ -93,6 +98,7 @@ const companies = [
     name: "Nuit\u00e9e", slug: "nuitee", w: 160, url: "https://nuitee.com",
     img: "/images/carousel/nuitee.webp", bgPos: "85% center", category: "Travel Distribution",
     desc: "B2B hotel distribution platform connecting travel companies to global accommodation inventory.",
+    pullQuote: "Hotel distribution was broken — fragmented APIs, inconsistent data, unreliable connectivity.",
     founders: [
       { name: "Med Benmansour", title: "Founder & CEO" },
     ],
@@ -106,6 +112,7 @@ const companies = [
     name: "Cardless", slug: "cardless", w: 200, url: "https://www.cardless.com",
     img: "/images/carousel/cardless.webp", bgPos: "85% center", category: "Payments & Loyalty",
     desc: "Modern credit card platform enabling brands to launch and manage co-branded card programs.",
+    pullQuote: "Launch a card program in weeks, not years.",
     founders: [
       { name: "Scott Kazmierowicz", title: "Co-Founder & CEO" },
       { name: "Michael Spelfogel", title: "Co-Founder & President" },
@@ -120,6 +127,7 @@ const companies = [
     name: "Rain", slug: "rain", w: 160, url: "https://www.rain.xyz",
     img: "/images/carousel/rain.webp", bgPos: "85% center", category: "Consumer Finance",
     desc: "Earned wage access platform helping employers offer on-demand pay to their workforce.",
+    pullQuote: "Hospitality's workforce lives paycheck to paycheck while their wages sit locked.",
     founders: [
       { name: "Farooq Malik", title: "Co-Founder & CEO" },
       { name: "Charles Yoo-Naut", title: "Co-Founder" },
@@ -134,6 +142,7 @@ const companies = [
     name: "Super", slug: "super", w: 190, url: "https://www.super.com",
     img: "/images/carousel/super.webp", bgPos: "85% center", category: "Consumer Finance",
     desc: "Next-generation travel and experiences platform for the modern traveler.",
+    pullQuote: "Not just a booking engine — a financial companion for the modern traveler.",
     founders: [
       { name: "Hussein Fazal", title: "Co-Founder & CEO" },
     ],
@@ -154,28 +163,11 @@ export default function EditorialPortfolioPage() {
   const categoryList = ["All", "Hospitality Technology", "Restaurant Technology", "Travel Distribution", "Payments & Loyalty", "Consumer Finance", "Cybersecurity & Privacy"];
   const searchParams = useSearchParams();
   const [active, setActive] = useState("All");
-  const [expanded, setExpanded] = useState<string | null>(null);
-  const [expandedVisible, setExpandedVisible] = useState<string | null>(null);
 
-  const handleExpand = (slug: string | null) => {
-    if (slug) {
-      setExpanded(slug);
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          setExpandedVisible(slug);
-          const el = document.getElementById(slug);
-          if (el) {
-            setTimeout(() => {
-              el.scrollIntoView({ behavior: "smooth", block: "center" });
-            }, 100);
-          }
-        });
-      });
-    } else {
-      setExpandedVisible(null);
-      setTimeout(() => setExpanded(null), 500);
-    }
-  };
+  useEffect(() => {
+    document.documentElement.classList.add("portfolio-snap");
+    return () => document.documentElement.classList.remove("portfolio-snap");
+  }, []);
 
   useEffect(() => {
     const cat = searchParams.get("category");
@@ -198,7 +190,7 @@ export default function EditorialPortfolioPage() {
       <EditorialNav active="portfolio" />
 
       {/* ── Hero ── */}
-      <section className="px-6 md:px-12 py-24 md:py-40">
+      <section className="px-6 md:px-12 py-24 md:py-40 snap-start">
         <div className="max-w-7xl mx-auto">
           <span className="text-[0.72rem] uppercase tracking-[0.22em] block mb-8" style={{ ...sans, color: c.accent, fontWeight: c.sansWeight }}>Portfolio</span>
           <h1 className="text-[clamp(2rem,5vw,4.5rem)] leading-[1.08] font-light italic mb-12 max-w-4xl" style={{ ...serif, color: c.text }}>
@@ -215,138 +207,130 @@ export default function EditorialPortfolioPage() {
         </div>
       </section>
 
-      {/* ── Portfolio List (01) ── */}
-      <section id="active-investments" className="px-6 md:px-12 py-24 md:py-32 scroll-mt-20">
+      {/* ── Portfolio Header + Filters ── */}
+      <section id="active-investments" className="px-6 md:px-12 pt-16 md:pt-24 pb-8 snap-start">
         <div className="max-w-7xl mx-auto">
           <SectionHeader label="Active Investments" number="01" />
-          <div className="flex flex-wrap gap-2 mb-12">
+          <div className="flex flex-wrap gap-2">
             {categoryList.map((cat) => (
               <button
                 key={cat}
                 onClick={() => {
                   setActive(cat);
-                  handleExpand(null);
                   setTimeout(() => {
                     document.getElementById("active-investments")?.scrollIntoView({ behavior: "smooth", block: "start" });
-                  }, 100);
+                  }, 50);
                 }}
-                className="text-[0.7rem] uppercase tracking-[0.16em] px-2 py-2 border transition-all duration-300 hover:bg-[rgba(196,154,69,0.1)]"
+                className="text-[0.7rem] uppercase tracking-[0.16em] px-2 py-2 border transition-all duration-300 hover:bg-[rgba(196,154,69,0.1)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
                 style={{
                   borderColor: active === cat ? c.accent : c.rule,
                   color: active === cat ? c.accent : c.muted,
                   backgroundColor: active === cat ? "rgba(196,154,69,0.1)" : undefined,
                   fontWeight: c.sansWeight,
+                  outlineColor: c.accent,
                 }}
               >
                 {cat}
               </button>
             ))}
           </div>
-
-          <div className="flex flex-col gap-8">
-            {filtered.map((co) => {
-              const isExpanded = expanded === co.slug;
-              const isVisible = expandedVisible === co.slug;
-              return (
-                <div key={co.slug} id={co.slug} className="scroll-mt-24">
-                  {/* Collapsed state */}
-                  <div
-                    className="flex flex-col md:flex-row cursor-pointer group transition-opacity duration-500"
-                    onClick={() => handleExpand(isExpanded ? null : co.slug)}
-                    style={{ display: isExpanded ? "none" : undefined, opacity: isExpanded ? 0 : 1 }}
-                  >
-                    <div className="w-full md:w-1/3 aspect-[4/3] border flex items-center justify-center px-10 relative overflow-hidden shrink-0" style={{ backgroundColor: c.surface, borderColor: c.rule }}>
-                      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 scale-100 group-hover:scale-110 transition-all duration-700 ease-out bg-cover" style={{ backgroundImage: `url('${co.img}')`, backgroundPosition: "right center" }} />
-                      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 ease-out" style={{ backgroundColor: "rgba(0,0,0,0.4)" }} />
-                      <img src={`/logos/portfolio/${co.slug}-${light ? "light" : "dark"}.svg`} alt={co.name} className="object-contain relative z-10 group-hover:hidden" style={{ width: co.w, maxWidth: "80%" }} />
-                      <img src={`/logos/portfolio/${co.slug}-dark.svg`} alt={co.name} className="object-contain relative z-10 hidden group-hover:block group-hover:scale-125 transition-transform duration-700 ease-out" style={{ width: co.w, maxWidth: "80%" }} />
-                    </div>
-                    <div className="flex-1 flex flex-col justify-center pl-0 md:pl-10 pt-6 md:pt-0">
-                      <span className="text-[0.78rem] uppercase tracking-[0.2em] block mb-2" style={{ ...sans, color: c.accent, fontWeight: c.sansWeight }}>{co.category}</span>
-                      <h3 className="text-[2rem] md:text-[2.5rem] font-light italic mb-3 group-hover:text-[#C49A45] transition-colors" style={{ ...serif, color: c.text, fontWeight: c.headingWeight }}>{co.name}</h3>
-                      <p className="text-[1.1rem] leading-[1.7] mb-4" style={{ ...sans, color: c.muted, fontWeight: c.sansWeight }}>{co.desc}</p>
-                      <span className="text-[0.72rem] uppercase tracking-[0.18em] mt-2" style={{ ...sans, color: c.accent, fontWeight: c.sansWeight }}>
-                        Read More &rarr;
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Expanded state */}
-                  {isExpanded && (
-                    <div className="flex flex-col md:flex-row transition-opacity duration-500 ease-in-out" style={{ opacity: isVisible ? 1 : 0 }}>
-                      {/* Left — photo + logo, 50% */}
-                      <div
-                        className="w-full md:w-1/2 relative overflow-hidden flex items-center justify-center shrink-0"
-                        style={{
-                          backgroundImage: `url('${co.img}')`,
-                          backgroundSize: "cover",
-                          backgroundPosition: co.bgPos,
-                          border: "1px solid rgb(196,154,69)",
-                          minHeight: 500,
-                        }}
-                      >
-                        <div className="absolute inset-0" style={{ backgroundColor: "rgba(0,0,0,0.4)" }} />
-                        <img src={`/logos/portfolio/${co.slug}-dark.svg`} alt={co.name} className="object-contain relative z-10" style={{ width: co.w * 1.5, maxWidth: "65%" }} />
-                      </div>
-
-                      {/* Right — content, 50% */}
-                      <div className="w-full md:w-1/2 p-8 md:p-12 flex flex-col justify-center border border-l-0 relative" style={{ backgroundColor: c.surface, borderColor: c.rule }}>
-                        <button onClick={() => handleExpand(null)} className="absolute top-4 right-5 text-[2rem] leading-none hover:opacity-60 transition-opacity" style={{ color: c.muted }}>&times;</button>
-                        <span className="text-[0.78rem] uppercase tracking-[0.2em] block mb-2" style={{ ...sans, color: c.accent, fontWeight: c.sansWeight }}>{co.category}</span>
-                        <h3 className="text-[2rem] md:text-[2.5rem] font-light italic mb-4" style={{ ...serif, color: c.text, fontWeight: c.headingWeight }}>{co.name}</h3>
-
-                        {/* Founders */}
-                        <div className="mb-6">
-                          {co.founders.map((f, i) => (
-                            <div key={i} className="mb-2">
-                              <span className="text-[1.5rem] font-light italic" style={{ ...serif, color: c.text }}>{f.name}</span>
-                              <span className="text-[0.72rem] uppercase tracking-[0.18em] block" style={{ ...sans, color: c.accent, fontWeight: c.sansWeight }}>{f.title}</span>
-                            </div>
-                          ))}
-                        </div>
-
-                        {/* Story */}
-                        <p className="text-[1.15rem] leading-[1.7] mb-8" style={{ ...sans, color: c.bodyText, fontWeight: c.sansWeight }}>
-                          {co.story}
-                        </p>
-
-                        {/* Headlines */}
-                        <div className="border-t pt-6" style={{ borderColor: c.rule }}>
-                          <span className="text-[0.68rem] uppercase tracking-[0.22em] block mb-4" style={{ ...sans, color: c.accent, fontWeight: c.sansWeight }}>Recent Headlines</span>
-                          <div className="flex flex-col">
-                            {co.headlines.map((h, i) => (
-                              <div key={i} className="flex items-center gap-6 py-3 border-b" style={{ borderColor: c.rule }}>
-                                <span className="text-[0.72rem] uppercase tracking-[0.18em] shrink-0 w-20" style={{ ...sans, color: c.muted, fontWeight: c.sansWeight }}>{h.date}</span>
-                                <span className="text-[1.5rem] font-light italic flex-1" style={{ ...serif, color: c.text, fontWeight: c.headingWeight }}>{h.title}</span>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-
-                        {/* External link */}
-                        <a href={co.url} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()} className="text-[0.72rem] uppercase tracking-[0.18em] mt-6 inline-block hover:opacity-80 transition-colors" style={{ ...sans, color: c.accent, fontWeight: c.sansWeight }}>
-                          Visit {co.name} &rarr;
-                        </a>
-
-                        {/* Close */}
-                        <button
-                          onClick={() => handleExpand(null)}
-                          className="text-[0.72rem] uppercase tracking-[0.18em] mt-6 text-left hover:opacity-80 transition-colors"
-                          style={{ ...sans, color: c.muted, fontWeight: c.sansWeight }}
-                        >
-                          Close &times;
-                        </button>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              );
-            })}
-          </div>
         </div>
       </section>
 
-      <EditorialFooter />
+      {/* ── Portfolio Slides ── */}
+      <div className="flex flex-col">
+        {filtered.map((co, idx) => (
+          <section
+            key={co.slug}
+            id={co.slug}
+            className="min-h-[calc(100vh-80px)] snap-start flex flex-col md:flex-row border-t"
+            style={{ borderColor: c.rule }}
+          >
+            {/* Left — founder photo + logo */}
+            <div
+              className="w-full md:w-1/2 relative overflow-hidden flex items-center justify-center min-h-[50vh] md:min-h-[calc(100vh-80px)]"
+              style={{
+                backgroundImage: `url('${co.img}')`,
+                backgroundSize: "cover",
+                backgroundPosition: co.bgPos,
+              }}
+            >
+              <div className="absolute inset-0" style={{ backgroundColor: "rgba(0,0,0,0.45)" }} />
+              <img
+                src={`/logos/portfolio/${co.slug}-dark.svg`}
+                alt={`${co.name} logo`}
+                className="object-contain relative z-10"
+                style={{ width: co.w * 1.5, maxWidth: "60%" }}
+              />
+              <span
+                className="absolute top-6 right-6 text-[0.68rem] uppercase tracking-[0.22em] z-10"
+                style={{ ...sans, color: "rgba(255,255,255,0.7)", fontWeight: 500 }}
+              >
+                {String(idx + 1).padStart(2, "0")} / {String(filtered.length).padStart(2, "0")}
+              </span>
+            </div>
+
+            {/* Right — story */}
+            <div
+              className="w-full md:w-1/2 p-8 md:p-14 lg:p-16 flex flex-col justify-center"
+              style={{ backgroundColor: c.surface }}
+            >
+              <span className="text-[0.78rem] uppercase tracking-[0.2em] block mb-3" style={{ ...sans, color: c.accent, fontWeight: c.sansWeight }}>{co.category}</span>
+              <h3 className="text-[2rem] md:text-[2.75rem] font-light italic mb-5" style={{ ...serif, color: c.text, fontWeight: c.headingWeight }}>{co.name}</h3>
+
+              {/* Founders */}
+              <div className="mb-6">
+                {co.founders.map((f, i) => (
+                  <div key={i} className="mb-2">
+                    <span className="text-[1.4rem] md:text-[1.5rem] font-light italic" style={{ ...serif, color: c.text }}>{f.name}</span>
+                    <span className="text-[0.7rem] uppercase tracking-[0.18em] block" style={{ ...sans, color: c.accent, fontWeight: c.sansWeight }}>{f.title}</span>
+                  </div>
+                ))}
+              </div>
+
+              {/* Gold pull-quote */}
+              <blockquote
+                className="text-[1.4rem] md:text-[1.6rem] leading-[1.3] font-light italic mb-6 pl-5 border-l-2"
+                style={{ ...serif, color: c.accent, borderColor: c.accent }}
+              >
+                {co.pullQuote}
+              </blockquote>
+
+              {/* Story */}
+              <p className="text-[1.05rem] md:text-[1.1rem] leading-[1.7] mb-6" style={{ ...sans, color: c.bodyText, fontWeight: c.sansWeight }}>
+                {co.story}
+              </p>
+
+              {/* Headlines */}
+              <div className="border-t pt-5" style={{ borderColor: c.rule }}>
+                <span className="text-[0.66rem] uppercase tracking-[0.22em] block mb-3" style={{ ...sans, color: c.accent, fontWeight: c.sansWeight }}>Recent Headlines</span>
+                <div className="flex flex-col">
+                  {co.headlines.map((h, i) => (
+                    <div key={i} className="flex items-start gap-6 py-2.5 border-b" style={{ borderColor: c.rule }}>
+                      <span className="text-[0.72rem] uppercase tracking-[0.18em] shrink-0 w-20 pt-1" style={{ ...sans, color: c.muted, fontWeight: c.sansWeight }}>{h.date}</span>
+                      <span className="text-[1.1rem] md:text-[1.2rem] font-light italic flex-1" style={{ ...serif, color: c.text, fontWeight: c.headingWeight }}>{h.title}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <a
+                href={co.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[0.72rem] uppercase tracking-[0.18em] mt-6 inline-block hover:opacity-80 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 self-start"
+                style={{ ...sans, color: c.accent, fontWeight: c.sansWeight, outlineColor: c.accent }}
+              >
+                Visit {co.name} &rarr;
+              </a>
+            </div>
+          </section>
+        ))}
+      </div>
+
+      <div className="snap-start">
+        <EditorialFooter />
+      </div>
     </div>
   );
 }

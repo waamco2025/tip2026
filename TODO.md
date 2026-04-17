@@ -64,3 +64,34 @@
 - [ ] Video clips or multi-photo slideshows for expanded portfolio company profiles
 - [ ] Mobile carousel UX improvements (currently simplified for small viewports)
 - [ ] Real-time stock widget data verification on IR page
+
+
+
+
+
+
+
+
+Tyler feedback, April 14, 2026:
+
+- Is there a way to not make the founders the entire translucent back?  Keep it in scroll bar form? Maybe vertical on the right of the page? 
+
+- Try to fit this copy back into the home page hero panel, instead of the Mission section: "Thayer Investment Partners is a strategic venture capital firm focused on helping entrepreneurs navigate the dynamic, complex world of travel. Our investors are global corporations, executives, operators and accomplished entrepreneurs who share our belief that travel builds a better world."
+
+- Remove the ticker/marquee below the hero panel
+
+- Remove the Portfolio section
+
+- Change "Our Mission" section title (and labels in code) to "Our Philosophy" and update the copy to: "Travel is more than airlines and accommodations – it is how and why people leave home and what shapes where and how they choose to live in the first place. We invest on behalf of the travel industry. From horizontal platforms—payments, cybersecurity, and workforce management—to vertical solutions across loyalty, distribution, and critical operating systems, we back both industry outsiders and seasoned operators. We connect dots and open doors across the largest and most dynamic industry in the world: hotels, transportation, airlines, cruise, agencies, restaurants, events, sports, entertainment, and experiences."
+
+- Kill Investment Focus section
+
+- Kill Opportunity section
+
+- Kill Our Club section at the very end
+
+
+
+
+
+Pause button... quote italics... recommendations 
