@@ -1,5 +1,7 @@
 import EditorialInsights from "@/concepts/editorial/InsightsPage";
+import { getAllArticles } from "@/lib/articles";
 
 export default function NewsPage() {
-  return <EditorialInsights />;
+  const articles = getAllArticles();
+  return <EditorialInsights articles={articles} />;
 }

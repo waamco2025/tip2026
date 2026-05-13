@@ -4,6 +4,8 @@ import React from "react";
 import Link from "next/link";
 import { EditorialNav, EditorialFooter } from "./HomePage";
 import { useEditorialMode, ec } from "./EditorialModeContext";
+import type { Article } from "@/lib/article-types";
+import { formatDate } from "@/lib/article-types";
 
 function SectionHeader({ label, number }: { label: string; number: string }) {
   const { light } = useEditorialMode();
@@ -17,21 +19,14 @@ function SectionHeader({ label, number }: { label: string; number: string }) {
   );
 }
 
-export default function EditorialInsightsPage() {
+export default function EditorialInsightsPage({ articles }: { articles: Article[] }) {
   const { light } = useEditorialMode();
   const c = ec(light);
   const serif = { fontFamily: "'Cormorant Garamond', Georgia, serif" };
   const sans = { fontFamily: "'Syne', sans-serif" };
 
-  const articles = [
-    { date: "Feb 18, 2026", tag: "Investment", title: "Portfolio Company StaySync Closes $28M Series A", excerpt: "StaySync\u2019s dynamic pricing platform for boutique hotels has demonstrated exceptional product-market fit, growing revenue 340% year-over-year." },
-    { date: "Feb 04, 2026", tag: "Industry", title: "The Rise of AI-Powered Travel Planning", excerpt: "How artificial intelligence is fundamentally reshaping the way travelers discover, plan, and book their journeys across global markets." },
-    { date: "Jan 22, 2026", tag: "Fund News", title: "Thayer Fund III Announces Final Close at $150M", excerpt: "The firm\u2019s third fund exceeded its target, reflecting strong LP demand for dedicated travel technology venture capital strategies." },
-    { date: "Jan 10, 2026", tag: "Research", title: "2026 Travel Technology Outlook: Five Themes to Watch", excerpt: "From generative AI concierges to sustainable aviation technology, the trends that will define the next wave of travel innovation." },
-    { date: "Dec 15, 2025", tag: "Portfolio", title: "ExperienceHub Reaches 10 Million Active Users", excerpt: "The experiences marketplace has achieved significant scale, with travelers booking over $500M in tours and activities annually." },
-    { date: "Nov 28, 2025", tag: "Opinion", title: "Why Travel Technology Remains Underfunded", excerpt: "Despite representing a $15 trillion global industry, travel technology receives a fraction of the venture capital flowing into other sectors." },
-    { date: "Nov 12, 2025", tag: "Industry", title: "Sustainability and the Future of Hospitality", excerpt: "How technology is enabling hotels and travel companies to reduce their environmental footprint while improving guest experiences." },
-  ];
+  const featured = articles[0];
+  const rest = articles.slice(1);
 
   return (
     <div className="min-h-screen transition-colors duration-500" style={{ backgroundColor: c.bg, color: c.text }}>
@@ -51,57 +46,71 @@ export default function EditorialInsightsPage() {
       </section>
 
       {/* ── Featured Article (01) ── */}
-      <section className="px-6 md:px-12 py-24 md:py-32 border-t" style={{ borderColor: c.rule }}>
-        <div className="max-w-7xl mx-auto">
-          <SectionHeader label="Featured" number="01" />
-          <Link href="/news/thayer-travelai-series-b" className="group grid md:grid-cols-2 gap-8 md:gap-16">
-            <div className="aspect-[4/3] border flex items-end p-6 group-hover:border-[#C49A45]/30 transition-colors" style={{ backgroundColor: c.surface, borderColor: c.rule }}>
-              <span className="text-[0.65rem] uppercase tracking-[0.2em]" style={{ ...sans, color: c.muted, fontWeight: c.sansWeight }}>Featured Image</span>
-            </div>
-            <div className="flex flex-col justify-center">
-              <span className="text-[0.65rem] uppercase tracking-[0.2em] block mb-4" style={{ ...sans, color: c.accentText, fontWeight: c.sansWeight }}>Mar 05, 2026 &middot; Investment</span>
-              <h2 className="text-[clamp(1.6rem,3vw,2.6rem)] leading-[1.15] font-light italic mb-6 group-hover:text-[#C49A45] transition-colors" style={{ ...serif, color: c.text, fontWeight: c.headingWeight }}>
-                Thayer Leads $45M Series B in TravelAI Platform
-              </h2>
-              <p className="text-[1.15rem] leading-[1.7] mb-8" style={{ ...sans, color: c.bodyText, fontWeight: c.sansWeight }}>
-                TravelAI&rsquo;s generative AI platform is transforming how travel companies personalize experiences at scale.
-                The Series B will fund expansion into 14 new markets and accelerate enterprise partnerships with major hotel chains.
-              </p>
-              <span className="text-[0.72rem] uppercase tracking-[0.18em] group-hover:text-[#C49A45] transition-colors" style={{ ...sans, color: c.muted, fontWeight: c.sansWeight }}>
-                Read Article &rarr;
-              </span>
-            </div>
-          </Link>
-        </div>
-      </section>
+      {featured && (
+        <section className="px-6 md:px-12 py-24 md:py-32 border-t" style={{ borderColor: c.rule }}>
+          <div className="max-w-7xl mx-auto">
+            <SectionHeader label="Featured" number="01" />
+            <Link href={`/news/${featured.slug}`} className="group grid md:grid-cols-2 gap-8 md:gap-16">
+              <div
+                className="aspect-[4/3] border flex items-end p-6 group-hover:border-[#C49A45]/30 transition-colors overflow-hidden relative"
+                style={{ backgroundColor: c.surface, borderColor: c.rule }}
+              >
+                {featured.heroImage ? (
+                  <img
+                    src={featured.heroImage}
+                    alt={featured.heroImageAlt}
+                    className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+                  />
+                ) : (
+                  <span className="text-[0.65rem] uppercase tracking-[0.2em]" style={{ ...sans, color: c.muted, fontWeight: c.sansWeight }}>Featured Image</span>
+                )}
+              </div>
+              <div className="flex flex-col justify-center">
+                <span className="text-[0.65rem] uppercase tracking-[0.2em] block mb-4" style={{ ...sans, color: c.accentText, fontWeight: c.sansWeight }}>{formatDate(featured.date)} &middot; {featured.category}</span>
+                <h2 className="text-[clamp(1.6rem,3vw,2.6rem)] leading-[1.15] font-light italic mb-6 group-hover:text-[#C49A45] transition-colors" style={{ ...serif, color: c.text, fontWeight: c.headingWeight }}>
+                  {featured.title}
+                </h2>
+                <p className="text-[1.15rem] leading-[1.7] mb-8" style={{ ...sans, color: c.bodyText, fontWeight: c.sansWeight }}>
+                  {featured.subhead}
+                </p>
+                <span className="text-[0.72rem] uppercase tracking-[0.18em] group-hover:text-[#C49A45] transition-colors" style={{ ...sans, color: c.muted, fontWeight: c.sansWeight }}>
+                  Read Article &rarr;
+                </span>
+              </div>
+            </Link>
+          </div>
+        </section>
+      )}
 
       {/* ── Recent Articles (02) ── */}
-      <section className="px-6 md:px-12 py-24 md:py-32">
-        <div className="max-w-7xl mx-auto">
-          <SectionHeader label="Recent Articles" number="02" />
-          <div className="flex flex-col">
-            {articles.map((a, i) => (
-              <Link
-                key={i}
-                href="/news/thayer-travelai-series-b"
-                className="group grid md:grid-cols-[140px_1fr] gap-4 md:gap-10 py-8 border-b transition-colors"
-                style={{ borderColor: c.rule }}
-              >
-                <span className="text-[0.7rem] uppercase tracking-[0.16em] pt-1" style={{ ...sans, color: c.muted, fontWeight: c.sansWeight }}>{a.date}</span>
-                <div>
-                  <div className="flex items-center gap-3 mb-3">
-                    <span className="text-[0.65rem] uppercase tracking-[0.2em]" style={{ ...sans, color: c.accentText, fontWeight: c.sansWeight }}>{a.tag}</span>
+      {rest.length > 0 && (
+        <section className="px-6 md:px-12 py-24 md:py-32">
+          <div className="max-w-7xl mx-auto">
+            <SectionHeader label="Recent Articles" number="02" />
+            <div className="flex flex-col">
+              {rest.map((a) => (
+                <Link
+                  key={a.slug}
+                  href={`/news/${a.slug}`}
+                  className="group grid md:grid-cols-[140px_1fr] gap-4 md:gap-10 py-8 border-b transition-colors"
+                  style={{ borderColor: c.rule }}
+                >
+                  <span className="text-[0.7rem] uppercase tracking-[0.16em] pt-1" style={{ ...sans, color: c.muted, fontWeight: c.sansWeight }}>{formatDate(a.date)}</span>
+                  <div>
+                    <div className="flex items-center gap-3 mb-3">
+                      <span className="text-[0.65rem] uppercase tracking-[0.2em]" style={{ ...sans, color: c.accentText, fontWeight: c.sansWeight }}>{a.category}</span>
+                    </div>
+                    <h3 className="text-[1.75rem] md:text-[1.5rem] font-light italic mb-3 group-hover:text-[#C49A45] transition-colors" style={{ ...serif, color: c.text, fontWeight: c.headingWeight }}>
+                      {a.title}
+                    </h3>
+                    <p className="text-[1.15rem] leading-[1.7]" style={{ ...sans, color: c.bodyText, fontWeight: c.sansWeight }}>{a.subhead}</p>
                   </div>
-                  <h3 className="text-[1.75rem] md:text-[1.5rem] font-light italic mb-3 group-hover:text-[#C49A45] transition-colors" style={{ ...serif, color: c.text, fontWeight: c.headingWeight }}>
-                    {a.title}
-                  </h3>
-                  <p className="text-[1.15rem] leading-[1.7]" style={{ ...sans, color: c.bodyText, fontWeight: c.sansWeight }}>{a.excerpt}</p>
-                </div>
-              </Link>
-            ))}
+                </Link>
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       <EditorialFooter />
     </div>
