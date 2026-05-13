@@ -10,7 +10,7 @@ function SectionHeader({ label, number }: { label: string; number: string }) {
   const c = ec(light);
   return (
     <div className="flex items-center gap-6 mb-16 md:mb-20">
-      <span className="text-[0.72rem] uppercase tracking-[0.22em] shrink-0" style={{ fontFamily: "'Syne', sans-serif", color: c.accent, fontWeight: c.sansWeight }}>{label}</span>
+      <span className="text-[0.72rem] uppercase tracking-[0.22em] shrink-0" style={{ fontFamily: "'Syne', sans-serif", color: c.accentText, fontWeight: c.sansWeight }}>{label}</span>
       <div className="flex-1 h-px" style={{ backgroundColor: c.rule }} />
       <span className="text-[0.72rem] uppercase tracking-[0.22em] shrink-0" style={{ fontFamily: "'Syne', sans-serif", color: c.muted, fontWeight: c.sansWeight }}>{number}</span>
     </div>
@@ -43,7 +43,7 @@ export default function EditorialInvestorRelationsPage() {
       <section className="px-6 md:px-12 py-24 md:py-40 border-b" style={{ borderColor: c.rule }}>
         <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 md:gap-20">
           <div>
-            <span className="text-[0.72rem] uppercase tracking-[0.22em] block mb-8" style={{ ...sans, color: c.accent, fontWeight: c.sansWeight }}>Investor Relations</span>
+            <span className="text-[0.72rem] uppercase tracking-[0.22em] block mb-8" style={{ ...sans, color: c.accentText, fontWeight: c.sansWeight }}>Investor Relations</span>
             <h1 className="text-[clamp(2rem,4.5vw,4rem)] leading-[1.08] font-light italic mb-6" style={{ ...serif, color: c.text }}>
               Documents, filings, and market data.
             </h1>
@@ -53,7 +53,7 @@ export default function EditorialInvestorRelationsPage() {
             </p>
           </div>
           <div className="border p-8 md:p-10 self-start" style={{ borderColor: c.rule }}>
-            <span className="text-[0.65rem] uppercase tracking-[0.2em] block mb-4" style={{ ...sans, color: c.accent, fontWeight: c.sansWeight }}>Important Disclaimer</span>
+            <span className="text-[0.65rem] uppercase tracking-[0.2em] block mb-4" style={{ ...sans, color: c.accentText, fontWeight: c.sansWeight }}>Important Disclaimer</span>
             <p className="text-[1.15rem] leading-[1.7]" style={{ ...sans, color: c.bodyText, fontWeight: c.sansWeight }}>
               The information contained herein is for informational purposes only and does not constitute an offer to sell
               or a solicitation of an offer to buy any securities. Past performance is not indicative of future results.
@@ -78,7 +78,7 @@ export default function EditorialInvestorRelationsPage() {
                       ? "border-[#7A7568]/30"
                       : "text-[#4a8c6a] border-[#4a8c6a]/30"
                   }`}
-                  style={{ ...sans, color: d.type === "PDF" ? c.accent : d.type === "SEC" ? c.muted : "#4a8c6a", fontWeight: c.sansWeight }}
+                  style={{ ...sans, color: d.type === "PDF" ? c.accentText : d.type === "SEC" ? c.muted : "#4a8c6a", fontWeight: c.sansWeight }}
                 >
                   {d.type}
                 </span>
@@ -118,7 +118,7 @@ export default function EditorialInvestorRelationsPage() {
                     className="text-[0.6rem] uppercase tracking-[0.16em] px-3 py-1 border"
                     style={{
                       ...sans,
-                      color: f.status === "Deploying" ? c.accent : c.muted,
+                      color: f.status === "Deploying" ? c.accentText : c.muted,
                       borderColor: f.status === "Deploying" ? "rgba(196,154,69,0.3)" : "rgba(122,117,104,0.3)",
                       fontWeight: c.sansWeight,
                     }}
@@ -147,7 +147,7 @@ export default function EditorialInvestorRelationsPage() {
           <SectionHeader label="Contact" number="04" />
           <div className="grid md:grid-cols-2 gap-8 md:gap-12">
             <div className="border p-8 md:p-10" style={{ borderColor: c.rule }}>
-              <span className="text-[0.78rem] uppercase tracking-[0.22em] block mb-5" style={{ ...sans, color: c.accent, fontWeight: c.sansWeight }}>LP Inquiries</span>
+              <span className="text-[0.78rem] uppercase tracking-[0.22em] block mb-5" style={{ ...sans, color: c.accentText, fontWeight: c.sansWeight }}>LP Inquiries</span>
               <h3 className="text-[1.75rem] font-light italic mb-4" style={{ ...serif, color: c.text, fontWeight: c.headingWeight }}>Limited Partner Relations</h3>
               <p className="text-[1.15rem] leading-[1.7] mb-6" style={{ ...sans, color: c.bodyText, fontWeight: c.sansWeight }}>
                 For existing limited partners with questions about fund performance, capital calls,
@@ -159,7 +159,7 @@ export default function EditorialInvestorRelationsPage() {
               </div>
             </div>
             <div className="border p-8 md:p-10" style={{ borderColor: c.rule }}>
-              <span className="text-[0.78rem] uppercase tracking-[0.22em] block mb-5" style={{ ...sans, color: c.accent, fontWeight: c.sansWeight }}>Fund Administration</span>
+              <span className="text-[0.78rem] uppercase tracking-[0.22em] block mb-5" style={{ ...sans, color: c.accentText, fontWeight: c.sansWeight }}>Fund Administration</span>
               <h3 className="text-[1.75rem] font-light italic mb-4" style={{ ...serif, color: c.text, fontWeight: c.headingWeight }}>Operations & Compliance</h3>
               <p className="text-[1.15rem] leading-[1.7] mb-6" style={{ ...sans, color: c.bodyText, fontWeight: c.sansWeight }}>
                 For questions related to fund administration, tax documents,

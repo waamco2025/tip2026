@@ -32,7 +32,7 @@ export default function EditorialArticlePage() {
         <div className="max-w-7xl mx-auto grid md:grid-cols-[1fr_280px] gap-12 md:gap-20">
           <div>
             <div className="flex items-center gap-4 mb-8">
-              <span className="text-[0.65rem] uppercase tracking-[0.2em]" style={{ ...sans, color: c.accent, fontWeight: c.sansWeight }}>Investment</span>
+              <span className="text-[0.65rem] uppercase tracking-[0.2em]" style={{ ...sans, color: c.accentText, fontWeight: c.sansWeight }}>Investment</span>
               <div className="w-8 h-px" style={{ backgroundColor: c.rule }} />
               <span className="text-[0.65rem] uppercase tracking-[0.18em]" style={{ ...sans, color: c.muted, fontWeight: c.sansWeight }}>Mar 05, 2026</span>
             </div>
@@ -84,7 +84,7 @@ export default function EditorialArticlePage() {
               The platform&rsquo;s ability to synthesize vast amounts of travel data into actionable, personalized
               experiences is truly transformative.&rdquo;
             </p>
-            <cite className="block mt-4 not-italic text-[0.7rem] uppercase tracking-[0.18em]" style={{ ...sans, color: c.accent, fontWeight: c.sansWeight }}>
+            <cite className="block mt-4 not-italic text-[0.7rem] uppercase tracking-[0.18em]" style={{ ...sans, color: c.accentText, fontWeight: c.sansWeight }}>
               &mdash; Chris Hemmeter, Managing Partner, Thayer Investment Partners
             </cite>
           </blockquote>
@@ -114,7 +114,7 @@ export default function EditorialArticlePage() {
               Their team understands our market better than any other venture firm, and their operational support
               has been instrumental in our growth.&rdquo;
             </p>
-            <cite className="block mt-4 not-italic text-[0.7rem] uppercase tracking-[0.18em]" style={{ ...sans, color: c.accent, fontWeight: c.sansWeight }}>
+            <cite className="block mt-4 not-italic text-[0.7rem] uppercase tracking-[0.18em]" style={{ ...sans, color: c.accentText, fontWeight: c.sansWeight }}>
               &mdash; CEO, TravelAI
             </cite>
           </blockquote>
@@ -132,7 +132,7 @@ export default function EditorialArticlePage() {
       {/* ── Related Articles ── */}
       <section className="px-6 md:px-12 py-16 md:py-20 border-t" style={{ borderColor: c.rule }}>
         <div className="max-w-5xl mx-auto">
-          <span className="text-[0.72rem] uppercase tracking-[0.22em] block mb-10" style={{ ...sans, color: c.accent, fontWeight: c.sansWeight }}>Related Articles</span>
+          <span className="text-[0.72rem] uppercase tracking-[0.22em] block mb-10" style={{ ...sans, color: c.accentText, fontWeight: c.sansWeight }}>Related Articles</span>
           <div className="flex flex-col">
             {related.map((r, i) => (
               <Link

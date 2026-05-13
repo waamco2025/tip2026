@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
-import { EditorialNav, EditorialFooter } from "./HomePage";
+import { ChevronDown } from "lucide-react";
+import { EditorialNav, EditorialFooter, EditorialHeadlines } from "./HomePage";
 import { useEditorialMode, ec } from "./EditorialModeContext";
 
 function SectionHeader({ label, number }: { label: string; number: string }) {
@@ -9,7 +10,7 @@ function SectionHeader({ label, number }: { label: string; number: string }) {
   const c = ec(light);
   return (
     <div className="flex items-center gap-6 mb-16 md:mb-20">
-      <span className="text-[0.72rem] uppercase tracking-[0.22em] shrink-0" style={{ fontFamily: "'Syne', sans-serif", color: c.accent, fontWeight: c.sansWeight }}>{label}</span>
+      <span className="text-[0.72rem] uppercase tracking-[0.22em] shrink-0" style={{ fontFamily: "'Syne', sans-serif", color: c.accentText, fontWeight: c.sansWeight }}>{label}</span>
       <div className="flex-1 h-px" style={{ backgroundColor: c.rule }} />
       <span className="text-[0.72rem] uppercase tracking-[0.22em] shrink-0" style={{ fontFamily: "'Syne', sans-serif", color: c.muted, fontWeight: c.sansWeight }}>{number}</span>
     </div>
@@ -22,18 +23,10 @@ export default function EditorialAboutPage() {
   const serif = { fontFamily: "'Cormorant Garamond', Georgia, serif" };
   const sans = { fontFamily: "'Syne', sans-serif" };
 
-  const milestones = [
-    { year: "2008", title: "Foundation", desc: "Thayer Investment Partners founded by hospitality industry veterans with a vision to invest exclusively in travel technology." },
-    { year: "2012", title: "Fund I Fully Deployed", desc: "First fund of $48M fully deployed across early-stage travel technology companies, establishing the firm\u2019s track record." },
-    { year: "2018", title: "Expansion & Fund II", desc: "Launched Fund II at $82M, expanding into airlines, mobility platforms, and entertainment technology." },
-    { year: "2022", title: "Portfolio Milestones", desc: "Portfolio companies surpass $2.8B in combined valuation. Multiple successful exits validate the travel-focused thesis." },
-    { year: "2025", title: "Fund III Launch", desc: "Announced Fund III at $150M to capitalize on post-pandemic travel technology acceleration and AI-driven innovation." },
-  ];
-
   const philosophies = [
-    { title: "Conviction", desc: "We believe all businesses can be travel companies. All organizations sell to, partner with, or consume travel. Travel is more than airlines and accommodations \u2013 it is how and why people leave home and what shapes where and how they choose to live." },
-    { title: "Network", desc: "We connect dots and open doors across the largest and most dynamic industry in the world: hotels, transportation, airlines, cruise, agencies, restaurants, events, sports, entertainment, and experiences." },
-    { title: "Partnership", desc: "We invest on behalf of the travel industry. From horizontal platforms\u2014payments, cybersecurity, and workforce management\u2014to vertical solutions across loyalty, distribution, and critical operating systems, we back both industry outsiders and seasoned operators." },
+    { title: "Conviction", desc: "While Travel and Tourism is one of the largest industries on earth contributing roughly 10% of global GDP, it has historically underinvested in modern technology compared to other sectors of similar size." },
+    { title: "Network", desc: "Founded in 2008, Thayer was created to spur innovation in travel and help entrepreneurs navigate its complex web of stakeholders. Over the past 15+ years, we have invested in over 100 companies that have had a huge impact in advancing the travel industry." },
+    { title: "Partnership", desc: "Today we are focused on being the bridge between silicon valley and the global travel industry. We help all companies unlock the travel industry and drive sales, strategy and partnership for our portfolio. All businesses will sell to, partner with or consume travel and Thayer is the strategic co-pilot." },
   ];
 
   const team = [
@@ -69,7 +62,7 @@ export default function EditorialAboutPage() {
           : "linear-gradient(to top, rgba(18,18,18,0.8) 0%, rgba(18,18,18,0) 100%)"
         }} />
         <div className="relative max-w-7xl mx-auto z-10">
-          <span className="text-[0.72rem] uppercase tracking-[0.22em] block mb-8" style={{ ...sans, color: c.accent, fontWeight: c.sansWeight }}>About the Firm</span>
+          <span className="text-[0.72rem] uppercase tracking-[0.22em] block mb-8" style={{ ...sans, color: c.accentText, fontWeight: c.sansWeight }}>About the Firm</span>
           <h1 className="text-[clamp(2.2rem,5.5vw,5rem)] leading-[1.08] font-light italic mb-8 max-w-4xl" style={{ ...serif, color: c.text }}>
             A History of Innovation in Travel.
           </h1>
@@ -96,20 +89,48 @@ export default function EditorialAboutPage() {
         </div>
       </section>
 
-      {/* ── Timeline (02) ── */}
+      {/* ── Team (02) ── */}
       <section className="px-6 md:px-12 py-24 md:py-32">
         <div className="max-w-7xl mx-auto">
-          <SectionHeader label="Our Journey" number="02" />
-          <div className="flex flex-col gap-0">
-            {milestones.map((m, i) => (
-              <div key={i} className="grid md:grid-cols-[120px_1fr] gap-4 md:gap-12 py-10 border-b" style={{ borderColor: c.rule }}>
-                <span className="text-[1.8rem] font-light" style={{ ...serif, color: c.accent, fontWeight: c.statWeight }}>{m.year}</span>
-                <div>
-                  <h3 className="text-[1.75rem] font-light italic mb-3" style={{ ...serif, color: c.text, fontWeight: c.headingWeight }}>{m.title}</h3>
-                  <p className="text-[1.15rem] leading-[1.7]" style={{ ...sans, color: c.bodyText, fontWeight: c.sansWeight }}>{m.desc}</p>
+          <SectionHeader label="The Team" number="02" />
+          <div className="flex flex-col border-t" style={{ borderColor: c.rule }}>
+            {team.map((t, i) => {
+              const expanded = expandedMember === i;
+              return (
+                <div key={i} className="border-b" style={{ borderColor: c.rule }}>
+                  <button
+                    type="button"
+                    onClick={() => setExpandedMember(expanded ? null : i)}
+                    aria-expanded={expanded}
+                    className="w-full flex items-center justify-between gap-6 py-6 md:py-8 text-left transition-colors hover:text-[#C49A45] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4"
+                    style={{ color: c.text, outlineColor: c.accent }}
+                  >
+                    <div className="flex flex-col md:flex-row md:items-baseline gap-2 md:gap-6 flex-1 min-w-0">
+                      <h3 className="text-[1.6rem] md:text-[2rem] font-light italic leading-[1.15]" style={{ ...serif, fontWeight: c.headingWeight }}>{t.name}</h3>
+                      <span className="text-[0.7rem] uppercase tracking-[0.18em]" style={{ ...sans, color: c.accentText, fontWeight: c.sansWeight }}>{t.role}</span>
+                    </div>
+                    <ChevronDown
+                      className="w-5 h-5 shrink-0 transition-transform duration-300"
+                      style={{ color: c.muted, transform: expanded ? "rotate(180deg)" : "none" }}
+                    />
+                  </button>
+                  <div className={`grid transition-all duration-500 ease-in-out ${expanded ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"}`}>
+                    <div className="overflow-hidden">
+                      <div className="pb-8 md:pb-10 grid md:grid-cols-[260px_1fr] gap-6 md:gap-10">
+                        {t.photo ? (
+                          <div className="aspect-[3/4] border bg-cover bg-top bg-no-repeat" style={{ borderColor: c.rule, backgroundImage: `url('${t.photo}')` }} />
+                        ) : (
+                          <div className="aspect-[3/4] border flex items-end p-6" style={{ backgroundColor: c.surface, borderColor: c.rule }}>
+                            <span className="text-[0.65rem] uppercase tracking-[0.2em]" style={{ ...sans, color: c.muted, fontWeight: c.sansWeight }}>Portrait</span>
+                          </div>
+                        )}
+                        <p className="text-[1.05rem] md:text-[1.15rem] leading-[1.7]" style={{ ...sans, color: c.bodyText, fontWeight: c.sansWeight }}>{t.bio}</p>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>
@@ -146,35 +167,7 @@ export default function EditorialAboutPage() {
         </div>
       </section>
 
-      {/* ── Team (04) ── */}
-      <section className="px-6 md:px-12 py-24 md:py-32">
-        <div className="max-w-7xl mx-auto">
-          <SectionHeader label="The Team" number="04" />
-          <div className="grid md:grid-cols-3 gap-8 md:gap-10">
-            {team.map((t, i) => {
-              const expanded = expandedMember === i;
-              return (
-                <div key={i} className="group cursor-pointer" onClick={() => setExpandedMember(expanded ? null : i)}>
-                  <div className="aspect-[3/4] border mb-5 flex items-end p-6 transition-colors duration-500 bg-cover bg-top bg-no-repeat" style={{ backgroundColor: c.surface, borderColor: c.rule, backgroundImage: t.photo ? `url('${t.photo}')` : undefined }}>
-                    {!t.photo && <span className="text-[0.65rem] uppercase tracking-[0.2em]" style={{ ...sans, color: c.muted, fontWeight: c.sansWeight }}>Portrait</span>}
-                  </div>
-                  <h3 className="text-[1.75rem] font-light italic mb-1" style={{ ...serif, color: c.text, fontWeight: c.headingWeight }}>{t.name}</h3>
-                  <span className="text-[0.7rem] uppercase tracking-[0.18em] block mb-3" style={{ ...sans, color: c.accent, fontWeight: c.sansWeight }}>{t.role}</span>
-                  <div className={`overflow-hidden transition-all duration-500 ${expanded ? "max-h-[500px]" : "max-h-0"}`}>
-                    <p className="text-[1.15rem] leading-[1.7] mb-3" style={{ ...sans, color: c.bodyText, fontWeight: c.sansWeight }}>{t.bio}</p>
-                  </div>
-                  <span
-                    className="text-[0.68rem] uppercase tracking-[0.18em] mt-3 inline-block hover:opacity-80 transition-colors"
-                    style={{ ...sans, color: c.muted, fontWeight: c.sansWeight }}
-                  >
-                    {expanded ? "Read Less" : "Read More"}
-                  </span>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
+      <EditorialHeadlines number="04" />
 
       <EditorialFooter />
     </div>

@@ -115,10 +115,45 @@ function SectionHeader({ label, number }: { label: string; number: string }) {
   const c = ec(light);
   return (
     <div className="flex items-center gap-6 mb-16 md:mb-20">
-      <span className="text-[0.72rem] uppercase tracking-[0.22em] shrink-0" style={{ fontFamily: "'Syne', sans-serif", color: c.accent, fontWeight: c.sansWeight }}>{label}</span>
+      <span className="text-[0.72rem] uppercase tracking-[0.22em] shrink-0" style={{ fontFamily: "'Syne', sans-serif", color: c.accentText, fontWeight: c.sansWeight }}>{label}</span>
       <div className="flex-1 h-px" style={{ backgroundColor: c.rule }} />
       <span className="text-[0.72rem] uppercase tracking-[0.22em] shrink-0" style={{ fontFamily: "'Syne', sans-serif", color: c.muted, fontWeight: c.sansWeight }}>{number}</span>
     </div>
+  );
+}
+
+/* ─── Shared Recent Headlines ─── */
+const recentHeadlines = [
+  { date: "Mar 2026", title: "Thayer Leads $45M Series B in TravelAI Platform" },
+  { date: "Feb 2026", title: "Portfolio Company CloudHotel Expands to 42 Countries" },
+  { date: "Jan 2026", title: "Thayer Fund III Announces Final Close at $150M" },
+];
+
+export function EditorialHeadlines({ number }: { number: string }) {
+  const { light } = useEditorialMode();
+  const c = ec(light);
+  const serif = { fontFamily: "'Cormorant Garamond', Georgia, serif" };
+  const sans = { fontFamily: "'Syne', sans-serif" };
+  return (
+    <section className="px-6 md:px-12 py-24 md:py-32 snap-start">
+      <div className="max-w-7xl mx-auto">
+        <SectionHeader label="Recent Headlines" number={number} />
+        <div className="flex flex-col">
+          {recentHeadlines.map((h, i) => (
+            <Link
+              key={i}
+              href="/news"
+              className="group flex items-center gap-6 md:gap-10 py-6 border-b transition-colors"
+              style={{ borderColor: c.rule }}
+            >
+              <span className="text-[0.72rem] uppercase tracking-[0.18em] shrink-0 w-20" style={{ ...sans, color: c.muted, fontWeight: c.sansWeight }}>{h.date}</span>
+              <span className="text-[1.75rem] font-light italic flex-1 group-hover:text-[#C49A45] transition-colors" style={{ ...serif, color: c.text, fontWeight: c.headingWeight }}>{h.title}</span>
+              <span className="group-hover:text-[#C49A45] transition-colors shrink-0" style={{ color: c.muted }}>&rarr;</span>
+            </Link>
+          ))}
+        </div>
+      </div>
+    </section>
   );
 }
 
@@ -139,22 +174,13 @@ const marqueeCSS = `
 const carouselSlides = [
   {
     company: "Mews", slug: "mews", label: "Mews",
-    image: "/images/carousel/mews.webp", mobileBgPos: "calc(50% - 248px) center",
+    image: "/images/carousel/mews.webp", mobileBgPos: "calc(50% - 348px) center",
     founders: [{ name: "Richard Valtr", title: "Founder, Mews" }],
     story: "Mews reimagined the hotel operating system from the ground up. We backed their vision to replace legacy property management with a cloud-native platform now powering hospitality worldwide.",
   },
   {
-    company: "Jetstream", slug: "jetstream", label: "Jetstream",
-    image: "/images/carousel/jetstream.webp", mobileBgPos: "calc(50% - 140px) center",
-    founders: [
-      { name: "Raj Rajamani", title: "Founder & CEO, Jetstream" },
-      { name: "Jared Phipps", title: "Founder & COO, Jetstream" },
-    ],
-    story: "Jetstream is building the trust layer for enterprise AI. We invested because as every company deploys autonomous systems, governance isn\u2019t optional \u2014 it\u2019s the unlock that lets AI scale safely across teams and vendors.",
-  },
-  {
     company: "Cloaked", slug: "cloaked", label: "Cloaked",
-    image: "/images/carousel/cloaked.webp", mobileBgPos: "calc(50% - 74px) center",
+    image: "/images/carousel/cloaked.webp", mobileBgPos: "calc(50% - 174px) center",
     founders: [
       { name: "Arjun Bhatnagar", title: "Co-Founder & CEO, Cloaked" },
       { name: "Abhijay Bhatnagar", title: "Co-Founder & CTO, Cloaked" },
@@ -163,7 +189,7 @@ const carouselSlides = [
   },
   {
     company: "Canary Technologies", slug: "canary-technologies", label: "Canary",
-    image: "/images/carousel/canary.webp", mobileBgPos: "calc(50% - 214px) center",
+    image: "/images/carousel/canary.webp", mobileBgPos: "calc(50% - 314px) center",
     founders: [
       { name: "Harman Singh Narula", title: "Co-Founder & CEO, Canary Technologies" },
       { name: "SJ Sawhney", title: "Co-Founder & President, Canary Technologies" },
@@ -172,19 +198,19 @@ const carouselSlides = [
   },
   {
     company: "MarginEdge", slug: "marginedge", label: "MarginEdge",
-    image: "/images/carousel/marginedge.webp", mobileBgPos: "calc(50% - 248px) center",
+    image: "/images/carousel/marginedge.webp", mobileBgPos: "calc(50% - 348px) center",
     founders: [{ name: "Bo Davis", title: "Co-Founder & CEO, MarginEdge" }],
     story: "MarginEdge is eliminating the back-office burden for restaurants. We backed their platform to automate invoicing, inventory, and financial insights for operators everywhere.",
   },
   {
     company: "Nuitée", slug: "nuitee", label: "Nuitée",
-    image: "/images/carousel/nuitee.webp", mobileBgPos: "calc(50% - 248px) center",
+    image: "/images/carousel/nuitee.webp", mobileBgPos: "calc(50% - 348px) center",
     founders: [{ name: "Med Benmansour", title: "Founder & CEO, Nuitée" }],
     story: "Nuitée is building the infrastructure layer for global hotel distribution. We backed their API-first platform connecting travel companies to accommodation inventory worldwide.",
   },
   {
     company: "Cardless", slug: "cardless", label: "Cardless",
-    image: "/images/carousel/cardless.webp", mobileBgPos: "calc(50% - 200px) center",
+    image: "/images/carousel/cardless.webp", mobileBgPos: "calc(50% - 300px) center",
     founders: [
       { name: "Scott Kazmierowicz", title: "Co-Founder & CEO, Cardless" },
       { name: "Michael Spelfogel", title: "Co-Founder & President, Cardless" },
@@ -193,7 +219,7 @@ const carouselSlides = [
   },
   {
     company: "Rain", slug: "rain", label: "Rain",
-    image: "/images/carousel/rain.webp", mobileBgPos: "calc(50% - 248px) center",
+    image: "/images/carousel/rain.webp", mobileBgPos: "calc(50% - 408px) center",
     founders: [
       { name: "Farooq Malik", title: "Co-Founder & CEO, Rain" },
       { name: "Charles Yoo-Naut", title: "Co-Founder, Rain" },
@@ -202,7 +228,7 @@ const carouselSlides = [
   },
   {
     company: "Super.com", slug: "super", label: "Super",
-    image: "/images/carousel/super.webp", mobileBgPos: "calc(50% - 248px) center",
+    image: "/images/carousel/super.webp", mobileBgPos: "calc(50% - 348px) center",
     founders: [{ name: "Hussein Fazal", title: "Co-Founder & CEO, Super.com" }],
     story: "Super.com is building the everyday super app for savings. We invested in their vision to help millions save on travel, finances, and daily spending through one powerful platform.",
   },
@@ -281,15 +307,9 @@ export default function EditorialHomePage() {
   ];
 
   const testimonials = [
-    { quote: "Thayer doesn\u2019t just write checks\u2014they build companies. Their operational expertise in travel technology is unmatched in the venture landscape.", author: "CEO, Portfolio Company", role: "Hotels & Hospitality" },
-    { quote: "The depth of industry knowledge and network that Thayer brings has been transformative for our growth trajectory across international markets.", author: "Founder, Portfolio Company", role: "Airlines & Mobility" },
-    { quote: "Working with Thayer has given us access to partnerships and insights that would have taken years to develop independently. They are true partners.", author: "CTO, Portfolio Company", role: "Travel Technology" },
-  ];
-
-  const headlines = [
-    { date: "Mar 2026", title: "Thayer Leads $45M Series B in TravelAI Platform" },
-    { date: "Feb 2026", title: "Portfolio Company CloudHotel Expands to 42 Countries" },
-    { date: "Jan 2026", title: "Thayer Fund III Announces Final Close at $150M" },
+    { quote: "Working with Thayer is like having an experienced strategic operator on our side, not just another tech investor.", author: "Richard Valtr", role: "Founder, Mews" },
+    { quote: "I never would have considered us a travel company, but Thayer has proven otherwise. Their team helped unlock a massive category for us.", author: "Farooq Malik", role: "Co-Founder & CEO, Rain" },
+    { quote: "Every investor claims to be value-add, Thayer is at the top of the list of those who actually are! Their unique ability to drive high-value partnerships in the travel industry is unparalleled.", author: "Pierre-Olivier Lepage", role: "CEO, Cruisebound" },
   ];
 
   return (
@@ -298,33 +318,49 @@ export default function EditorialHomePage() {
       <EditorialNav active="home" />
 
       {/* ── Hero ── */}
-      <div className="flex flex-col md:flex-row" style={{ height: "calc(100vh - 73px)" }}>
-        {/* Left panel — 40% — text content */}
-        <div className="relative flex flex-col justify-center w-full md:w-[40%] px-6 md:px-12 py-12 md:py-0 z-10 shrink-0" style={{ backgroundColor: c.bg }}>
-          <span className="hidden md:block text-[0.72rem] uppercase tracking-[0.22em] mb-8" style={{ ...sans, color: c.accent, fontWeight: c.sansWeight }}>
+      <div className="flex flex-col md:flex-row md:h-[calc(100vh-73px)]">
+        {/* Left panel — full viewport on mobile, 40% on desktop */}
+        <div className="relative flex flex-col justify-center w-full md:w-[40%] px-6 md:px-12 py-12 md:py-0 z-10 shrink-0 min-h-[calc(100vh-73px)] md:min-h-0" style={{ backgroundColor: c.bg }}>
+          <span className="hidden md:block text-[0.72rem] uppercase tracking-[0.22em] mb-8" style={{ ...sans, color: c.accentText, fontWeight: c.sansWeight }}>
             Pioneers in Travel Technology &middot; Est. 2008
           </span>
           <h1
             className="text-[clamp(2.6rem,5vw,4rem)] leading-[1.08] font-light italic mb-6"
             style={{ ...serif, color: c.text }}
           >
-            Investing in the Technology Powering the Global Travel Industry.
+            Investing in the Entrepreneurs Shaping the Global Travel Industry.
           </h1>
-          <p className="hidden md:block text-[1.15rem] leading-[1.7] mb-8" style={{ ...sans, color: c.bodyText, fontWeight: c.sansWeight }}>
+          <p className="text-[1.05rem] md:text-[1.15rem] leading-[1.65] md:leading-[1.7] mb-8" style={{ ...sans, color: c.bodyText, fontWeight: c.sansWeight }}>
             Thayer Investment Partners is a strategic venture capital firm focused on helping entrepreneurs navigate the dynamic, complex world of travel. Our investors are global corporations, executives, operators and accomplished entrepreneurs who share our belief that travel builds a better world.
           </p>
 
         </div>
 
-        {/* Right panel — 60% — photo carousel */}
-        <section className="relative flex-1 min-h-[400px] md:min-h-0 overflow-hidden">
-          {/* Photo images — cross-fade, per-slide bg-position */}
+        {/* Right panel — full viewport on mobile, 60% on desktop */}
+        <section className="relative flex-1 min-h-[calc(100vh-73px)] md:min-h-0 overflow-hidden">
+          {/* Photo slides — blurred backfill behind, contained crisp photo on top, cross-fade */}
           {carouselSlides.map((s, i) => (
             s.image ? (
-              <React.Fragment key={i}>
-                <div className="absolute inset-0 bg-cover hidden md:block transition-opacity duration-1000 ease-in-out" style={{ backgroundImage: `url('${s.image}')`, backgroundPosition: "right center", opacity: i === activeSlide ? 1 : 0 }} />
-                <div className="absolute inset-0 bg-cover md:hidden transition-opacity duration-1000 ease-in-out" style={{ backgroundImage: `url('${s.image}')`, backgroundPosition: s.mobileBgPos || "right center", opacity: i === activeSlide ? 1 : 0 }} />
-              </React.Fragment>
+              <div
+                key={i}
+                className="absolute inset-0 transition-opacity duration-1000 ease-in-out"
+                style={{ opacity: i === activeSlide ? 1 : 0 }}
+              >
+                {/* Blurred wallpaper backfill (covers panel, no crop matters) */}
+                <div
+                  className="absolute inset-0 bg-cover bg-center"
+                  style={{
+                    backgroundImage: `url('${s.image}')`,
+                    filter: "blur(36px) saturate(0.85) brightness(0.55)",
+                    transform: "scale(1.15)",
+                  }}
+                />
+                {/* Crisp photo — mobile: 120% width top-aligned; desktop: contained + centered */}
+                <div
+                  className="absolute inset-0 bg-no-repeat bg-[length:120%_auto] bg-top md:bg-contain md:bg-center"
+                  style={{ backgroundImage: `url('${s.image}')` }}
+                />
+              </div>
             ) : (
               <div key={i} className="absolute inset-0 transition-opacity duration-1000 ease-in-out" style={{ backgroundColor: light ? "#d8d4cc" : "#1a1a1a", opacity: i === activeSlide ? 1 : 0 }} />
             )
@@ -386,7 +422,7 @@ export default function EditorialHomePage() {
               </button>
             </div>
 
-            <Link href="/portfolio" className="text-[0.72rem] uppercase tracking-[0.18em] hover:opacity-80 transition-colors" style={{ ...sans, color: c.accent, fontWeight: c.sansWeight }}>
+            <Link href="/portfolio" className="text-[0.72rem] uppercase tracking-[0.18em] hover:opacity-80 transition-colors" style={{ ...sans, color: c.accentText, fontWeight: c.sansWeight }}>
               View Portfolio &rarr;
             </Link>
           </div>
@@ -427,7 +463,7 @@ export default function EditorialHomePage() {
           <SectionHeader label="What Partners Say" number="01" />
           <div className="grid md:grid-cols-3 gap-8 md:gap-12">
             {testimonials.map((t, i) => (
-              <div key={i} className="border p-8 md:p-10 flex flex-col" style={{ borderColor: c.rule }}>
+              <div key={i} className="border p-8 md:p-10 flex flex-col transition-colors duration-500 hover:bg-[rgba(196,154,69,0.06)]" style={{ borderColor: c.rule }}>
                 <span className="text-[2.5rem] leading-none mb-4" style={{ ...serif, color: c.accent }}>&ldquo;</span>
                 <p className="text-[1.15rem] leading-[1.7] font-light flex-1 mb-8" style={{ ...sans, color: c.bodyText, fontWeight: c.sansWeight }}>
                   {t.quote}
@@ -458,48 +494,14 @@ export default function EditorialHomePage() {
               </p>
               <div className="flex items-center gap-4">
                 <div className="w-12 h-px" style={{ backgroundColor: c.accent }} />
-                <span className="text-[0.72rem] uppercase tracking-[0.22em]" style={{ ...sans, color: c.accent, fontWeight: c.sansWeight }}>Since 2008</span>
+                <span className="text-[0.72rem] uppercase tracking-[0.22em]" style={{ ...sans, color: c.accentText, fontWeight: c.sansWeight }}>Since 2008</span>
               </div>
             </div>
           </div>
-
-          {/* Stats band */}
-          <div className="mt-16 md:mt-20 pt-12 border-t grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12" style={{ borderColor: c.rule }}>
-            {[
-              { value: "$2.8B+", label: "Portfolio Value" },
-              { value: "9", label: "Active Companies" },
-              { value: "6", label: "Sectors" },
-              { value: "17", label: "Years Investing" },
-            ].map((s, i) => (
-              <div key={i}>
-                <span className="text-[clamp(2.5rem,5vw,4rem)] font-light block mb-2 leading-none" style={{ ...serif, color: c.accent, fontWeight: c.statWeight }}>{s.value}</span>
-                <span className="text-[0.7rem] uppercase tracking-[0.22em]" style={{ ...sans, color: c.muted, fontWeight: c.sansWeight }}>{s.label}</span>
-              </div>
-            ))}
-          </div>
         </div>
       </section>
 
-      {/* ── Recent Headlines (03) ── */}
-      <section className="px-6 md:px-12 py-24 md:py-32">
-        <div className="max-w-7xl mx-auto">
-          <SectionHeader label="Recent Headlines" number="03" />
-          <div className="flex flex-col">
-            {headlines.map((h, i) => (
-              <Link
-                key={i}
-                href="/news"
-                className="group flex items-center gap-6 md:gap-10 py-6 border-b transition-colors"
-                style={{ borderColor: c.rule }}
-              >
-                <span className="text-[0.72rem] uppercase tracking-[0.18em] shrink-0 w-20" style={{ ...sans, color: c.muted, fontWeight: c.sansWeight }}>{h.date}</span>
-                <span className="text-[1.75rem] font-light italic flex-1 group-hover:text-[#C49A45] transition-colors" style={{ ...serif, color: c.text, fontWeight: c.headingWeight }}>{h.title}</span>
-                <span className="group-hover:text-[#C49A45] transition-colors shrink-0" style={{ color: c.muted }}>&rarr;</span>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
+      <EditorialHeadlines number="03" />
 
       <EditorialFooter />
     </div>

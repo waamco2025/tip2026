@@ -35,13 +35,14 @@ export function useEditorialMode() {
 /* Color mappings */
 export function ec(light: boolean) {
   return {
-    bg: light ? "#FAF8F5" : "#0C0C0A",
+    bg: light ? "#F4F1EC" : "#0C0C0A",
     surface: light ? "#F0EDE8" : "#141410",
     text: light ? "#1A1917" : "#EAE5DB",
     muted: light ? "#4A4338" : "#9A9588",
     accent: "#C49A45",
+    accentText: light ? "#8B6B25" : "#C49A45",
     rule: light ? "rgba(0,0,0,0.14)" : "rgba(255,255,255,0.1)",
-    bodyText: light ? "rgba(26,25,23,0.92)" : "rgba(234,229,219,0.9)",
+    bodyText: light ? "rgba(26,25,23,0.78)" : "rgba(234,229,219,0.9)",
     bodyWeight: light ? 600 : 500,
     /* Additional weights for different contexts */
     sansWeight: light ? 600 : 500,    // sans-serif labels, dates, tags

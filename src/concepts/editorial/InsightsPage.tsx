@@ -10,7 +10,7 @@ function SectionHeader({ label, number }: { label: string; number: string }) {
   const c = ec(light);
   return (
     <div className="flex items-center gap-6 mb-16 md:mb-20">
-      <span className="text-[0.72rem] uppercase tracking-[0.22em] shrink-0" style={{ fontFamily: "'Syne', sans-serif", color: c.accent, fontWeight: c.sansWeight }}>{label}</span>
+      <span className="text-[0.72rem] uppercase tracking-[0.22em] shrink-0" style={{ fontFamily: "'Syne', sans-serif", color: c.accentText, fontWeight: c.sansWeight }}>{label}</span>
       <div className="flex-1 h-px" style={{ backgroundColor: c.rule }} />
       <span className="text-[0.72rem] uppercase tracking-[0.22em] shrink-0" style={{ fontFamily: "'Syne', sans-serif", color: c.muted, fontWeight: c.sansWeight }}>{number}</span>
     </div>
@@ -40,7 +40,7 @@ export default function EditorialInsightsPage() {
       {/* ── Hero ── */}
       <section className="px-6 md:px-12 py-24 md:py-40">
         <div className="max-w-7xl mx-auto">
-          <span className="text-[0.72rem] uppercase tracking-[0.22em] block mb-8" style={{ ...sans, color: c.accent, fontWeight: c.sansWeight }}>Insights</span>
+          <span className="text-[0.72rem] uppercase tracking-[0.22em] block mb-8" style={{ ...sans, color: c.accentText, fontWeight: c.sansWeight }}>Insights</span>
           <h1 className="text-[clamp(2rem,5vw,4.5rem)] leading-[1.08] font-light italic mb-8 max-w-4xl" style={{ ...serif, color: c.text }}>
             Perspectives on the future of travel &amp; technology.
           </h1>
@@ -59,7 +59,7 @@ export default function EditorialInsightsPage() {
               <span className="text-[0.65rem] uppercase tracking-[0.2em]" style={{ ...sans, color: c.muted, fontWeight: c.sansWeight }}>Featured Image</span>
             </div>
             <div className="flex flex-col justify-center">
-              <span className="text-[0.65rem] uppercase tracking-[0.2em] block mb-4" style={{ ...sans, color: c.accent, fontWeight: c.sansWeight }}>Mar 05, 2026 &middot; Investment</span>
+              <span className="text-[0.65rem] uppercase tracking-[0.2em] block mb-4" style={{ ...sans, color: c.accentText, fontWeight: c.sansWeight }}>Mar 05, 2026 &middot; Investment</span>
               <h2 className="text-[clamp(1.6rem,3vw,2.6rem)] leading-[1.15] font-light italic mb-6 group-hover:text-[#C49A45] transition-colors" style={{ ...serif, color: c.text, fontWeight: c.headingWeight }}>
                 Thayer Leads $45M Series B in TravelAI Platform
               </h2>
@@ -90,7 +90,7 @@ export default function EditorialInsightsPage() {
                 <span className="text-[0.7rem] uppercase tracking-[0.16em] pt-1" style={{ ...sans, color: c.muted, fontWeight: c.sansWeight }}>{a.date}</span>
                 <div>
                   <div className="flex items-center gap-3 mb-3">
-                    <span className="text-[0.65rem] uppercase tracking-[0.2em]" style={{ ...sans, color: c.accent, fontWeight: c.sansWeight }}>{a.tag}</span>
+                    <span className="text-[0.65rem] uppercase tracking-[0.2em]" style={{ ...sans, color: c.accentText, fontWeight: c.sansWeight }}>{a.tag}</span>
                   </div>
                   <h3 className="text-[1.75rem] md:text-[1.5rem] font-light italic mb-3 group-hover:text-[#C49A45] transition-colors" style={{ ...serif, color: c.text, fontWeight: c.headingWeight }}>
                     {a.title}

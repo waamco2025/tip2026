@@ -1,9 +1,8 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { EditorialNav, EditorialFooter } from "./HomePage";
+import { EditorialNav, EditorialFooter, EditorialHeadlines } from "./HomePage";
 import { useEditorialMode, ec } from "./EditorialModeContext";
 
 function SectionHeader({ label, number }: { label: string; number: string }) {
@@ -11,7 +10,7 @@ function SectionHeader({ label, number }: { label: string; number: string }) {
   const c = ec(light);
   return (
     <div className="flex items-center gap-6 mb-16 md:mb-20">
-      <span className="text-[0.72rem] uppercase tracking-[0.22em] shrink-0" style={{ fontFamily: "'Syne', sans-serif", color: c.accent, fontWeight: c.sansWeight }}>{label}</span>
+      <span className="text-[0.72rem] uppercase tracking-[0.22em] shrink-0" style={{ fontFamily: "'Syne', sans-serif", color: c.accentText, fontWeight: c.sansWeight }}>{label}</span>
       <div className="flex-1 h-px" style={{ backgroundColor: c.rule }} />
       <span className="text-[0.72rem] uppercase tracking-[0.22em] shrink-0" style={{ fontFamily: "'Syne', sans-serif", color: c.muted, fontWeight: c.sansWeight }}>{number}</span>
     </div>
@@ -19,139 +18,15 @@ function SectionHeader({ label, number }: { label: string; number: string }) {
 }
 
 const companies = [
-  {
-    name: "Canary Technologies", slug: "canary-technologies", w: 220, url: "https://www.canarytechnologies.com",
-    img: "/images/carousel/canary.webp", bgPos: "85% center", category: "Hospitality Technology",
-    desc: "Modern hospitality technology platform powering guest management and hotel operations.",
-    pullQuote: "An industry stuck in the past — paper forms, manual ID checks, outdated payments.",
-    founders: [
-      { name: "Harman Singh Narula", title: "Co-Founder & CEO" },
-      { name: "SJ Sawhney", title: "Co-Founder & President" },
-    ],
-    story: "Harman Singh Narula and SJ Sawhney saw an industry stuck in the past — hotels still relying on paper forms, manual ID checks, and outdated payment systems. They built Canary Technologies to digitize the entire guest journey, from contactless check-in to dynamic upselling. We invested because their platform doesn't just modernize operations — it transforms the economics of hospitality. Today, Canary powers thousands of properties worldwide, helping hotels increase revenue while delivering the seamless experience modern travelers expect.",
-    headlines: [
-      { date: "Mar 2026", title: "Canary Technologies Raises $50M Series C to Expand Global Reach" },
-      { date: "Jan 2026", title: "Canary Partners with Major Hotel Chain for Contactless Check-In" },
-    ],
-  },
-  {
-    name: "Mews", slug: "mews", w: 200, url: "https://www.mews.com",
-    img: "/images/carousel/mews.webp", bgPos: "85% center", category: "Hospitality Technology",
-    desc: "Cloud-native property management system for modern hospitality businesses worldwide.",
-    pullQuote: "The hotel industry deserved better than decades-old software.",
-    founders: [
-      { name: "Richard Valtr", title: "Founder" },
-    ],
-    story: "Richard Valtr believed the hotel industry deserved better than decades-old software held together with workarounds. He built Mews from the ground up as a cloud-native operating system — not a digitized version of legacy tools, but a fundamentally new way to run a hotel. We backed Mews because their architecture enables what legacy systems can't: real-time automation, open integrations, and a guest experience that feels effortless. Mews now powers properties across dozens of countries, proving that modern infrastructure can reshape an entire industry.",
-    headlines: [
-      { date: "Feb 2026", title: "Mews Expands to 50 Countries with New APAC Launch" },
-      { date: "Dec 2025", title: "Mews Named Top PMS by Hotel Tech Report for Third Year" },
-    ],
-  },
-  {
-    name: "Jetstream", slug: "jetstream", w: 180, url: "https://jetstream.security",
-    img: "/images/carousel/jetstream.webp", bgPos: "55% center", category: "Cybersecurity & Privacy",
-    desc: "AI governance platform giving enterprises visibility and control over autonomous AI systems.",
-    pullQuote: "93% of enterprises are deploying AI with no security governance.",
-    founders: [
-      { name: "Raj Rajamani", title: "Founder & CEO" },
-      { name: "Jared Phipps", title: "Founder & COO" },
-      { name: "Venu Vissamsetty", title: "Founder & Chief Architect" },
-      { name: "Jatheen Anand", title: "Founder & CTO" },
-    ],
-    story: "Raj Rajamani, Jared Phipps, Venu Vissamsetty, and Jatheen Anand are security veterans who held senior leadership roles at CrowdStrike, SentinelOne, and Cohesity. They saw enterprises racing to deploy AI without guardrails — 93% lacking any AI security governance. They built Jetstream to be the trust layer that lets organizations scale AI safely, providing visibility across teams and vendors, agentic identity management, and runtime control. We invested because as AI becomes critical infrastructure across travel and every other industry, governance isn\u2019t a nice-to-have — it\u2019s the prerequisite for trust.",
-    headlines: [
-      { date: "Apr 2026", title: "Jetstream Emerges from Stealth with $34M Seed Led by Redpoint Ventures" },
-      { date: "Mar 2026", title: "Jetstream Launches AI Governance Platform for Enterprise Security Teams" },
-    ],
-  },
-  {
-    name: "Cloaked", slug: "cloaked", w: 160, url: "https://cloaked.com",
-    img: "/images/carousel/cloaked.webp", bgPos: "70% center", category: "Cybersecurity & Privacy",
-    desc: "All-in-one consumer privacy and security platform protecting digital identities in the AI era.",
-    pullQuote: "350,000+ paying users. 10M+ identities protected. 10× year-over-year growth.",
-    founders: [
-      { name: "Arjun Bhatnagar", title: "Co-Founder & CEO" },
-      { name: "Abhijay Bhatnagar", title: "Co-Founder & CTO" },
-    ],
-    story: "Brothers Arjun and Abhijay Bhatnagar recognized that AI-powered scams were weaponizing personal data at unprecedented scale, while privacy tools remained fragmented and reactive. They built Cloaked as the all-in-one platform that gives people back control — masked emails, masked phone numbers, data broker removal, dark web monitoring, and identity theft insurance in a single product. With 350,000+ paying users, 10 million+ identities protected, and 10x year-over-year growth, Cloaked has proven massive consumer demand. We invested because privacy is becoming mandatory infrastructure, and Cloaked is expanding from consumer traction into enterprise — a path that mirrors the most successful platform companies in cybersecurity.",
-    headlines: [
-      { date: "Mar 2026", title: "Cloaked Raises $375M Series B Led by General Catalyst" },
-      { date: "Jan 2026", title: "Cloaked Surpasses 350,000 Paying Users and 10M Protected Identities" },
-    ],
-  },
-  {
-    name: "MarginEdge", slug: "marginedge", w: 220, url: "https://www.marginedge.com",
-    img: "/images/carousel/marginedge.webp", bgPos: "85% center", category: "Restaurant Technology",
-    desc: "Restaurant management platform automating back-office operations and financial insights.",
-    pullQuote: "Restaurant operators drowning in invoices, spreadsheets, and inventory counts.",
-    founders: [
-      { name: "Bo Davis", title: "Co-Founder & CEO" },
-    ],
-    story: "Bo Davis spent years watching restaurant operators drown in invoices, spreadsheets, and manual inventory counts. He built MarginEdge to eliminate the back-office burden entirely — turning stacks of paper into real-time financial intelligence. We invested because restaurants are the backbone of the hospitality ecosystem, and MarginEdge gives operators the visibility they need to thrive. The platform now automates operations for thousands of restaurants, helping them focus on what matters: the food and the guest.",
-    headlines: [
-      { date: "Mar 2026", title: "MarginEdge Surpasses 5,000 Restaurant Locations" },
-      { date: "Nov 2025", title: "MarginEdge Launches AI-Powered Inventory Forecasting" },
-    ],
-  },
-  {
-    name: "Nuit\u00e9e", slug: "nuitee", w: 160, url: "https://nuitee.com",
-    img: "/images/carousel/nuitee.webp", bgPos: "85% center", category: "Travel Distribution",
-    desc: "B2B hotel distribution platform connecting travel companies to global accommodation inventory.",
-    pullQuote: "Hotel distribution was broken — fragmented APIs, inconsistent data, unreliable connectivity.",
-    founders: [
-      { name: "Med Benmansour", title: "Founder & CEO" },
-    ],
-    story: "Med Benmansour understood that hotel distribution was broken — fragmented APIs, inconsistent data, and unreliable connectivity made it nearly impossible for travel companies to access global inventory efficiently. He built Nuit\u00e9e as the infrastructure layer the industry was missing: a single API that connects travel platforms to millions of hotel rooms worldwide. We backed Nuit\u00e9e because distribution is the plumbing of travel, and Med's platform makes it work the way it always should have.",
-    headlines: [
-      { date: "Feb 2026", title: "Nuit\u00e9e API Now Powers Over 200 Travel Platforms Globally" },
-      { date: "Oct 2025", title: "Nuit\u00e9e Closes Series A to Scale Hotel Distribution Infrastructure" },
-    ],
-  },
-  {
-    name: "Cardless", slug: "cardless", w: 200, url: "https://www.cardless.com",
-    img: "/images/carousel/cardless.webp", bgPos: "85% center", category: "Payments & Loyalty",
-    desc: "Modern credit card platform enabling brands to launch and manage co-branded card programs.",
-    pullQuote: "Launch a card program in weeks, not years.",
-    founders: [
-      { name: "Scott Kazmierowicz", title: "Co-Founder & CEO" },
-      { name: "Michael Spelfogel", title: "Co-Founder & President" },
-    ],
-    story: "Scott Kazmierowicz and Michael Spelfogel recognized that co-branded credit cards were one of the most powerful tools in travel loyalty — but launching one required years of bank negotiations and millions in upfront investment. They built Cardless to change that equation entirely, enabling any brand to launch a card program in weeks instead of years. We invested because loyalty and payments sit at the heart of the travel economy, and Cardless makes this capability accessible to brands of every size.",
-    headlines: [
-      { date: "Jan 2026", title: "Cardless Partners with Major Airline for New Rewards Card" },
-      { date: "Sep 2025", title: "Cardless Platform Surpasses $1B in Annual Transaction Volume" },
-    ],
-  },
-  {
-    name: "Rain", slug: "rain", w: 160, url: "https://www.rain.xyz",
-    img: "/images/carousel/rain.webp", bgPos: "85% center", category: "Consumer Finance",
-    desc: "Earned wage access platform helping employers offer on-demand pay to their workforce.",
-    pullQuote: "Hospitality's workforce lives paycheck to paycheck while their wages sit locked.",
-    founders: [
-      { name: "Farooq Malik", title: "Co-Founder & CEO" },
-      { name: "Charles Yoo-Naut", title: "Co-Founder" },
-    ],
-    story: "Farooq Malik and Charles Yoo-Naut saw that the workers powering the hospitality industry — housekeepers, servers, front desk staff — were living paycheck to paycheck while their earned wages sat locked in two-week pay cycles. They built Rain to give workers instant access to the money they've already earned. We backed Rain because the travel and hospitality workforce is the foundation of everything we invest in, and financial wellness directly impacts retention, productivity, and service quality.",
-    headlines: [
-      { date: "Mar 2026", title: "Rain Expands Earned Wage Access to 500+ Hospitality Employers" },
-      { date: "Dec 2025", title: "Rain Raises Series B to Accelerate Workforce Finance Platform" },
-    ],
-  },
-  {
-    name: "Super", slug: "super", w: 190, url: "https://www.super.com",
-    img: "/images/carousel/super.webp", bgPos: "85% center", category: "Consumer Finance",
-    desc: "Next-generation travel and experiences platform for the modern traveler.",
-    pullQuote: "Not just a booking engine — a financial companion for the modern traveler.",
-    founders: [
-      { name: "Hussein Fazal", title: "Co-Founder & CEO" },
-    ],
-    story: "Hussein Fazal set out to build the app that helps everyday consumers save money on everything — starting with travel. Super.com combines discounted hotel bookings, a credit-building debit card, and exclusive savings into one platform that rewards users for spending smarter. We invested because Super.com is redefining what a travel platform can be: not just a booking engine, but a financial companion that makes travel more accessible for millions of people through one powerful platform.",
-    headlines: [
-      { date: "Feb 2026", title: "Super.com Surpasses 10 Million Users Worldwide" },
-      { date: "Nov 2025", title: "Super.com Launches Credit-Building Features for Travelers" },
-    ],
-  },
+  { name: "Canary Technologies", slug: "canary-technologies", w: 220, url: "https://www.canarytechnologies.com", img: "/images/carousel/canary.webp", bgPos: "85% center", category: "Hospitality Technology" },
+  { name: "Mews", slug: "mews", w: 200, url: "https://www.mews.com", img: "/images/carousel/mews.webp", bgPos: "85% center", category: "Hospitality Technology" },
+  { name: "Jetstream", slug: "jetstream", w: 180, url: "https://jetstream.security", img: "/images/carousel/jetstream.webp", bgPos: "55% center", category: "Cybersecurity & Privacy" },
+  { name: "Cloaked", slug: "cloaked", w: 160, url: "https://cloaked.com", img: "/images/carousel/cloaked.webp", bgPos: "70% center", category: "Cybersecurity & Privacy" },
+  { name: "MarginEdge", slug: "marginedge", w: 220, url: "https://www.marginedge.com", img: "/images/carousel/marginedge.webp", bgPos: "85% center", category: "Restaurant Technology" },
+  { name: "Nuit\u00e9e", slug: "nuitee", w: 160, url: "https://nuitee.com", img: "/images/carousel/nuitee.webp", bgPos: "85% center", category: "Travel Distribution" },
+  { name: "Cardless", slug: "cardless", w: 200, url: "https://www.cardless.com", img: "/images/carousel/cardless.webp", bgPos: "85% center", category: "Payments & Loyalty" },
+  { name: "Rain", slug: "rain", w: 160, url: "https://www.rain.xyz", img: "/images/carousel/rain.webp", bgPos: "85% center", category: "Consumer Finance" },
+  { name: "Super", slug: "super", w: 190, url: "https://www.super.com", img: "/images/carousel/super.webp", bgPos: "85% center", category: "Consumer Finance" },
 ];
 
 export default function EditorialPortfolioPage() {
@@ -163,11 +38,6 @@ export default function EditorialPortfolioPage() {
   const categoryList = ["All", "Hospitality Technology", "Restaurant Technology", "Travel Distribution", "Payments & Loyalty", "Consumer Finance", "Cybersecurity & Privacy"];
   const searchParams = useSearchParams();
   const [active, setActive] = useState("All");
-
-  useEffect(() => {
-    document.documentElement.classList.add("portfolio-snap");
-    return () => document.documentElement.classList.remove("portfolio-snap");
-  }, []);
 
   useEffect(() => {
     const cat = searchParams.get("category");
@@ -190,12 +60,15 @@ export default function EditorialPortfolioPage() {
       <EditorialNav active="portfolio" />
 
       {/* ── Hero ── */}
-      <section className="px-6 md:px-12 py-24 md:py-40 snap-start">
+      <section className="px-6 md:px-12 py-24 md:py-40">
         <div className="max-w-7xl mx-auto">
-          <span className="text-[0.72rem] uppercase tracking-[0.22em] block mb-8" style={{ ...sans, color: c.accent, fontWeight: c.sansWeight }}>Portfolio</span>
-          <h1 className="text-[clamp(2rem,5vw,4.5rem)] leading-[1.08] font-light italic mb-12 max-w-4xl" style={{ ...serif, color: c.text }}>
+          <span className="text-[0.72rem] uppercase tracking-[0.22em] block mb-8" style={{ ...sans, color: c.accentText, fontWeight: c.sansWeight }}>Portfolio</span>
+          <h1 className="text-[clamp(2rem,5vw,4.5rem)] leading-[1.08] font-light italic mb-10 max-w-4xl" style={{ ...serif, color: c.text }}>
             Investing in companies shaping the future of global travel.
           </h1>
+          <p className="text-[1.15rem] leading-[1.7] max-w-3xl mb-12" style={{ ...sans, color: c.bodyText, fontWeight: c.sansWeight }}>
+            Travel isn&rsquo;t just a vertical. Our portfolio encompasses all companies who can or will sell to and partner with the global travel industry. Thayer invests on behalf of the travel industry to make travel operations and consumption &mdash; safer, easier, and fundamentally more intelligent.
+          </p>
           <div className="flex flex-wrap gap-8 md:gap-16">
             {metaStats.map((s, i) => (
               <div key={i}>
@@ -207,24 +80,19 @@ export default function EditorialPortfolioPage() {
         </div>
       </section>
 
-      {/* ── Portfolio Header + Filters ── */}
-      <section id="active-investments" className="px-6 md:px-12 pt-16 md:pt-24 pb-8 snap-start">
+      {/* ── Active Investments (01) ── */}
+      <section id="active-investments" className="px-6 md:px-12 pt-16 md:pt-24 pb-24 md:pb-32 scroll-mt-20">
         <div className="max-w-7xl mx-auto">
           <SectionHeader label="Active Investments" number="01" />
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-2 mb-12">
             {categoryList.map((cat) => (
               <button
                 key={cat}
-                onClick={() => {
-                  setActive(cat);
-                  setTimeout(() => {
-                    document.getElementById("active-investments")?.scrollIntoView({ behavior: "smooth", block: "start" });
-                  }, 50);
-                }}
+                onClick={() => setActive(cat)}
                 className="text-[0.7rem] uppercase tracking-[0.16em] px-2 py-2 border transition-all duration-300 hover:bg-[rgba(196,154,69,0.1)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
                 style={{
                   borderColor: active === cat ? c.accent : c.rule,
-                  color: active === cat ? c.accent : c.muted,
+                  color: active === cat ? c.accentText : c.muted,
                   backgroundColor: active === cat ? "rgba(196,154,69,0.1)" : undefined,
                   fontWeight: c.sansWeight,
                   outlineColor: c.accent,
@@ -234,103 +102,31 @@ export default function EditorialPortfolioPage() {
               </button>
             ))}
           </div>
-        </div>
-      </section>
 
-      {/* ── Portfolio Slides ── */}
-      <div className="flex flex-col">
-        {filtered.map((co, idx) => (
-          <section
-            key={co.slug}
-            id={co.slug}
-            className="min-h-[calc(100vh-80px)] snap-start flex flex-col md:flex-row border-t"
-            style={{ borderColor: c.rule }}
-          >
-            {/* Left — founder photo + logo */}
-            <div
-              className="w-full md:w-1/2 relative overflow-hidden flex items-center justify-center min-h-[50vh] md:min-h-[calc(100vh-80px)]"
-              style={{
-                backgroundImage: `url('${co.img}')`,
-                backgroundSize: "cover",
-                backgroundPosition: co.bgPos,
-              }}
-            >
-              <div className="absolute inset-0" style={{ backgroundColor: "rgba(0,0,0,0.45)" }} />
-              <img
-                src={`/logos/portfolio/${co.slug}-dark.svg`}
-                alt={`${co.name} logo`}
-                className="object-contain relative z-10"
-                style={{ width: co.w * 1.5, maxWidth: "60%" }}
-              />
-              <span
-                className="absolute top-6 right-6 text-[0.68rem] uppercase tracking-[0.22em] z-10"
-                style={{ ...sans, color: "rgba(255,255,255,0.7)", fontWeight: 500 }}
-              >
-                {String(idx + 1).padStart(2, "0")} / {String(filtered.length).padStart(2, "0")}
-              </span>
-            </div>
-
-            {/* Right — story */}
-            <div
-              className="w-full md:w-1/2 p-8 md:p-14 lg:p-16 flex flex-col justify-center"
-              style={{ backgroundColor: c.surface }}
-            >
-              <span className="text-[0.78rem] uppercase tracking-[0.2em] block mb-3" style={{ ...sans, color: c.accent, fontWeight: c.sansWeight }}>{co.category}</span>
-              <h3 className="text-[2rem] md:text-[2.75rem] font-light italic mb-5" style={{ ...serif, color: c.text, fontWeight: c.headingWeight }}>{co.name}</h3>
-
-              {/* Founders */}
-              <div className="mb-6">
-                {co.founders.map((f, i) => (
-                  <div key={i} className="mb-2">
-                    <span className="text-[1.4rem] md:text-[1.5rem] font-light italic" style={{ ...serif, color: c.text }}>{f.name}</span>
-                    <span className="text-[0.7rem] uppercase tracking-[0.18em] block" style={{ ...sans, color: c.accent, fontWeight: c.sansWeight }}>{f.title}</span>
-                  </div>
-                ))}
-              </div>
-
-              {/* Gold pull-quote */}
-              <blockquote
-                className="text-[1.4rem] md:text-[1.6rem] leading-[1.3] font-light italic mb-6 pl-5 border-l-2"
-                style={{ ...serif, color: c.accent, borderColor: c.accent }}
-              >
-                {co.pullQuote}
-              </blockquote>
-
-              {/* Story */}
-              <p className="text-[1.05rem] md:text-[1.1rem] leading-[1.7] mb-6" style={{ ...sans, color: c.bodyText, fontWeight: c.sansWeight }}>
-                {co.story}
-              </p>
-
-              {/* Headlines */}
-              <div className="border-t pt-5" style={{ borderColor: c.rule }}>
-                <span className="text-[0.66rem] uppercase tracking-[0.22em] block mb-3" style={{ ...sans, color: c.accent, fontWeight: c.sansWeight }}>Recent Headlines</span>
-                <div className="flex flex-col">
-                  {co.headlines.map((h, i) => (
-                    <div key={i} className="flex items-start gap-6 py-2.5 border-b" style={{ borderColor: c.rule }}>
-                      <span className="text-[0.72rem] uppercase tracking-[0.18em] shrink-0 w-20 pt-1" style={{ ...sans, color: c.muted, fontWeight: c.sansWeight }}>{h.date}</span>
-                      <span className="text-[1.1rem] md:text-[1.2rem] font-light italic flex-1" style={{ ...serif, color: c.text, fontWeight: c.headingWeight }}>{h.title}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
+            {filtered.map((co) => (
               <a
+                key={co.slug}
                 href={co.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-[0.72rem] uppercase tracking-[0.18em] mt-6 inline-block hover:opacity-80 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 self-start"
-                style={{ ...sans, color: c.accent, fontWeight: c.sansWeight, outlineColor: c.accent }}
+                aria-label={`Visit ${co.name}`}
+                className="group aspect-[4/3] border flex items-center justify-center px-6 md:px-10 relative overflow-hidden focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+                style={{ backgroundColor: c.surface, borderColor: c.rule, outlineColor: c.accent }}
               >
-                Visit {co.name} &rarr;
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 scale-100 group-hover:scale-110 transition-all duration-700 ease-out bg-cover" style={{ backgroundImage: `url('${co.img}')`, backgroundPosition: co.bgPos }} />
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 ease-out" style={{ backgroundColor: "rgba(0,0,0,0.4)" }} />
+                <img src={`/logos/portfolio/${co.slug}-${light ? "light" : "dark"}.svg`} alt={`${co.name} logo`} className="object-contain relative z-10 group-hover:hidden" style={{ width: co.w, maxWidth: "80%" }} />
+                <img src={`/logos/portfolio/${co.slug}-dark.svg`} alt={`${co.name} logo`} className="object-contain relative z-10 hidden group-hover:block group-hover:scale-110 transition-transform duration-700 ease-out" style={{ width: co.w, maxWidth: "80%" }} />
               </a>
-            </div>
-          </section>
-        ))}
-      </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
-      <div className="snap-start">
-        <EditorialFooter />
-      </div>
+      <EditorialHeadlines number="02" />
+
+      <EditorialFooter />
     </div>
   );
 }
