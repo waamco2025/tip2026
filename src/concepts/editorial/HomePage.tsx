@@ -263,6 +263,20 @@ export default function EditorialHomePage() {
     setNavPaused(true);
   }, []);
 
+  const touchStartX = useRef<number | null>(null);
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartX.current === null) return;
+    const dx = e.changedTouches[0].clientX - touchStartX.current;
+    touchStartX.current = null;
+    if (Math.abs(dx) > 50) {
+      if (dx < 0) goNext();
+      else goPrev();
+    }
+  };
+
   useEffect(() => {
     if (navPaused && !userPaused) {
       const resume = setTimeout(() => setNavPaused(false), 10000);
@@ -320,7 +334,7 @@ export default function EditorialHomePage() {
       {/* ── Hero ── */}
       <div className="flex flex-col md:flex-row md:h-[calc(100vh-73px)]">
         {/* Left panel — full viewport on mobile, 40% on desktop */}
-        <div className="relative flex flex-col justify-center w-full md:w-[40%] px-6 md:px-12 py-12 md:py-0 z-10 shrink-0 min-h-[calc(100vh-73px)] md:min-h-0" style={{ backgroundColor: c.bg }}>
+        <div className="relative flex flex-col justify-end md:justify-center w-full md:w-[40%] px-6 md:px-12 py-12 md:py-0 z-10 shrink-0 min-h-[calc(100vh-73px)] md:min-h-0" style={{ backgroundColor: c.bg }}>
           <span className="hidden md:block text-[0.72rem] uppercase tracking-[0.22em] mb-8" style={{ ...sans, color: c.accentText, fontWeight: c.sansWeight }}>
             Pioneers in Travel Technology &middot; Est. 2008
           </span>
@@ -336,42 +350,43 @@ export default function EditorialHomePage() {
 
         </div>
 
-        {/* Right panel — full viewport on mobile, 60% on desktop */}
-        <section className="relative flex-1 min-h-[calc(100vh-73px)] md:min-h-0 overflow-hidden">
-          {/* Photo slides — blurred backfill behind, contained crisp photo on top, cross-fade */}
-          {carouselSlides.map((s, i) => (
-            s.image ? (
-              <div
-                key={i}
-                className="absolute inset-0 transition-opacity duration-1000 ease-in-out"
-                style={{ opacity: i === activeSlide ? 1 : 0 }}
-              >
-                {/* Blurred wallpaper backfill (covers panel, no crop matters) */}
+        {/* Right panel — flows below left on mobile, 60% on desktop */}
+        <section
+          className="relative w-full h-[calc(100vh-73px)] md:h-auto md:flex-1 overflow-hidden flex flex-col md:block"
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
+        >
+          {/* Image carousel — top half on mobile, full panel on desktop */}
+          <div className="relative h-[55vh] shrink-0 md:absolute md:inset-0 md:h-auto overflow-hidden">
+            {carouselSlides.map((s, i) => (
+              s.image ? (
                 <div
-                  className="absolute inset-0 bg-cover bg-center"
-                  style={{
-                    backgroundImage: `url('${s.image}')`,
-                    filter: "blur(36px) saturate(0.85) brightness(0.55)",
-                    transform: "scale(1.15)",
-                  }}
-                />
-                {/* Crisp photo — mobile: 120% width top-aligned; desktop: contained + centered */}
-                <div
-                  className="absolute inset-0 bg-no-repeat bg-[length:120%_auto] bg-top md:bg-contain md:bg-center"
-                  style={{ backgroundImage: `url('${s.image}')` }}
-                />
-              </div>
-            ) : (
-              <div key={i} className="absolute inset-0 transition-opacity duration-1000 ease-in-out" style={{ backgroundColor: light ? "#d8d4cc" : "#1a1a1a", opacity: i === activeSlide ? 1 : 0 }} />
-            )
-          ))}
-          {/* Bottom-up gradient for readability */}
-          <div className="absolute inset-0 hidden md:block" style={{ background: "linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.2) 40%, rgba(0,0,0,0) 70%)" }} />
-          {/* Mobile overlay */}
-          <div className="absolute inset-0 md:hidden" style={{ background: light
-            ? "linear-gradient(to top, rgba(237,233,226,0.95) 0%, rgba(237,233,226,0.85) 40%, rgba(237,233,226,0.2) 70%)"
-            : "linear-gradient(to top, rgba(18,18,18,0.95) 0%, rgba(18,18,18,0.85) 40%, rgba(18,18,18,0.2) 70%)"
-          }} />
+                  key={i}
+                  className="absolute inset-0 transition-opacity duration-1000 ease-in-out"
+                  style={{ opacity: i === activeSlide ? 1 : 0 }}
+                >
+                  {/* Blurred wallpaper backfill */}
+                  <div
+                    className="absolute inset-0 bg-cover bg-center"
+                    style={{
+                      backgroundImage: `url('${s.image}')`,
+                      filter: "blur(36px) saturate(0.85) brightness(0.55)",
+                      transform: "scale(1.15)",
+                    }}
+                  />
+                  {/* Crisp photo — mobile: cover; desktop: contained + centered */}
+                  <div
+                    className="absolute inset-0 bg-no-repeat bg-cover bg-center md:bg-contain"
+                    style={{ backgroundImage: `url('${s.image}')` }}
+                  />
+                </div>
+              ) : (
+                <div key={i} className="absolute inset-0 transition-opacity duration-1000 ease-in-out" style={{ backgroundColor: light ? "#d8d4cc" : "#1a1a1a", opacity: i === activeSlide ? 1 : 0 }} />
+              )
+            ))}
+            {/* Desktop bottom-up gradient for readability */}
+            <div className="absolute inset-0 hidden md:block" style={{ background: "linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.2) 40%, rgba(0,0,0,0) 70%)" }} />
+          </div>
 
           {/* Desktop: logo, attribution, carousel, link — bottom right */}
           <div className="absolute bottom-8 right-8 hidden md:flex flex-col items-end z-10 gap-7">
@@ -427,32 +442,35 @@ export default function EditorialHomePage() {
             </Link>
           </div>
 
-          {/* Mobile attribution + arrows */}
-          <div className="absolute bottom-14 left-6 right-6 md:hidden z-10">
-            {/* Mobile logo — cross-fade, above attribution */}
-            <div className="relative mb-5" style={{ height: 36, width: 180 }}>
-              {carouselSlides.map((s, idx) => (
-                <img key={idx} src={`/logos/portfolio/${s.slug}-${light ? "light" : "dark"}.svg`} alt={s.company} className="absolute left-0 top-0 object-contain transition-opacity duration-700 ease-in-out" style={{ height: 36, opacity: idx === activeSlide ? 1 : 0 }} />
-              ))}
-            </div>
-            <div className="flex items-end justify-between gap-4">
+          {/* Mobile content — logo + attribution below image */}
+          <div className="md:hidden relative flex-1 flex flex-col px-6 pt-8 pb-24" style={{ backgroundColor: c.bg }}>
+            <div className="flex flex-col items-start gap-5">
+              {/* Logo — cross-fade */}
+              <div className="relative" style={{ height: 36, width: 180 }}>
+                {carouselSlides.map((s, idx) => (
+                  <img key={idx} src={`/logos/portfolio/${s.slug}-${light ? "light" : "dark"}.svg`} alt={s.company} className="absolute left-0 top-0 object-contain transition-opacity duration-700 ease-in-out" style={{ height: 36, opacity: idx === activeSlide ? 1 : 0 }} />
+                ))}
+              </div>
+              {/* Names + titles */}
               <div className="flex flex-col items-start gap-3">
                 {slide.founders.map((f, i) => (
                   <div key={i} className="flex flex-col items-start">
-                    <span className="text-[1.5rem] font-light italic" style={{ ...serif, color: light ? c.text : "#fff" }}>{f.name}</span>
-                    <span className="text-[0.78rem] uppercase tracking-[0.22em]" style={{ ...sans, color: light ? c.muted : "rgba(255,255,255,0.7)", fontWeight: c.sansWeight }}>{f.title}</span>
+                    <span className="text-[1.5rem] font-light italic" style={{ ...serif, color: c.text }}>{f.name}</span>
+                    <span className="text-[0.78rem] uppercase tracking-[0.22em]" style={{ ...sans, color: c.muted, fontWeight: c.sansWeight }}>{f.title}</span>
                   </div>
                 ))}
               </div>
-              <div className="flex gap-2 shrink-0">
-                <button onClick={goPrev} className="w-10 h-10 flex items-center justify-center border" style={{ borderColor: c.accent, color: c.accent }}>
-                  <ChevronLeft className="w-5 h-5" />
-                </button>
-                <button onClick={goNext} className="w-10 h-10 flex items-center justify-center border" style={{ borderColor: c.accent, color: c.accent }}>
-                  <ChevronRight className="w-5 h-5" />
-                </button>
-              </div>
             </div>
+          </div>
+
+          {/* Mobile arrows — anchored to bottom of panel, centered */}
+          <div className="md:hidden absolute bottom-4 left-0 right-0 flex justify-center gap-3 z-10">
+            <button onClick={goPrev} aria-label="Previous slide" className="w-10 h-10 flex items-center justify-center border" style={{ borderColor: c.accent, color: c.accent, backgroundColor: c.bg }}>
+              <ChevronLeft className="w-5 h-5" />
+            </button>
+            <button onClick={goNext} aria-label="Next slide" className="w-10 h-10 flex items-center justify-center border" style={{ borderColor: c.accent, color: c.accent, backgroundColor: c.bg }}>
+              <ChevronRight className="w-5 h-5" />
+            </button>
           </div>
         </section>
       </div>
