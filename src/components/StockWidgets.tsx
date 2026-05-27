@@ -156,11 +156,11 @@ export function EditorialStockWidgets({ light = false }: { light?: boolean }) {
   const border = light ? "rgba(0,0,0,0.08)" : "rgba(255,255,255,0.07)";
   const ticker = light ? "#1A1917" : "#EAE5DB";
   const muted = light ? "#8A8578" : "#7A7568";
-  const accent = "#C49A45";
-  const upColor = "#C49A45";
+  const accent = "#2E9D55";
+  const upColor = "#2E9D55";
   const downColor = light ? "#B91C1C" : "#EF4444";
   const chartBg = light ? "#E8E5E0" : "#0C0C0A";
-  const badgeBg = "rgba(196,154,69,0.12)";
+  const badgeBg = "rgba(46,157,85,0.12)";
   const priceFont = "'Cormorant Garamond', serif";
   const labelFont = "'Syne', sans-serif";
 
@@ -229,7 +229,7 @@ export function EditorialStockWidgets({ light = false }: { light?: boolean }) {
               </a>
               <div
                 className="flex items-center gap-1 px-2.5 py-1 rounded"
-                style={{ backgroundColor: up ? "rgba(196,154,69,0.12)" : light ? "rgba(185,28,28,0.1)" : "rgba(239,68,68,0.12)" }}
+                style={{ backgroundColor: up ? "rgba(46,157,85,0.12)" : light ? "rgba(185,28,28,0.1)" : "rgba(239,68,68,0.12)" }}
               >
                 <span
                   className="text-xs font-semibold"

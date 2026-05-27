@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { ChevronDown } from "lucide-react";
 import { EditorialNav, EditorialFooter, EditorialHeadlines } from "./HomePage";
 import { useEditorialMode, ec } from "./EditorialModeContext";
+import type { Article } from "@/lib/article-types";
 
 function SectionHeader({ label, number }: { label: string; number: string }) {
   const { light } = useEditorialMode();
@@ -17,28 +18,20 @@ function SectionHeader({ label, number }: { label: string; number: string }) {
   );
 }
 
-export default function EditorialAboutPage() {
+export default function EditorialAboutPage({ articles }: { articles: Article[] }) {
   const { light } = useEditorialMode();
   const c = ec(light);
   const serif = { fontFamily: "'Cormorant Garamond', Georgia, serif" };
   const sans = { fontFamily: "'Syne', sans-serif" };
 
-  const philosophies = [
-    { title: "Conviction", desc: "While Travel and Tourism is one of the largest industries on earth contributing roughly 10% of global GDP, it has historically underinvested in modern technology compared to other sectors of similar size." },
-    { title: "Network", desc: "Founded in 2008, Thayer was created to spur innovation in travel and help entrepreneurs navigate its complex web of stakeholders. Over the past 15+ years, we have invested in over 100 companies that have had a huge impact in advancing the travel industry." },
-    { title: "Partnership", desc: "Today we are focused on being the bridge between silicon valley and the global travel industry. We help all companies unlock the travel industry and drive sales, strategy and partnership for our portfolio. All businesses will sell to, partner with or consume travel and Thayer is the strategic co-pilot." },
-  ];
 
   const team = [
-    { name: "Chris Hemmeter", role: "Managing Partner", photo: "/images/team/chris-hemmeter.webp", bio: "Built and sold his way through six industries before deciding venture was the one he\u2019d stay in. Founded and sold iCare Marketing to Sysco (2012) and Dynamic Payment Ventures to Elavon, a US Bank subsidiary (2007). Earlier ventures include E&O Kitchen and Bar, a San Francisco restaurant; The Hemmeter Collection, a direct-response retailer; and Hemmeter Publishing, a travel book publisher \u2014 plus a stint as CEO of foodservice software firm CriticalArc. Co-founded Thayer Ventures to back the technical operators rebuilding travel from the infrastructure up. Cornell, BS." },
-    { name: "Tyler Carrico", role: "Managing Partner", photo: "/images/team/tyler-carrico.webp", bio: "Joined Thayer Ventures as its first and only investment hire \u2014 a sink-or-swim apprenticeship covering execution, diligence, sourcing, portfolio support, fund management, and LP advisory all at once. Over four years he helped deploy $50M across 12 companies and managed follow-ons across 40+ more. Co-founded Derive Ventures in 2021 to go all-in on the same thesis at a larger scale. Previously in TMT investment banking at BoA Merrill Lynch. UVA, McIntire BS." },
-    { name: "Mike Scott", role: "Managing Partner", photo: "/images/team/mike-scott.webp", bio: "Got a $4B+ crash course in travel economics at KSL Capital Partners, covering US hospitality, timeshare, all-inclusives, travel distribution, gaming, and alternative accommodations. Co-founded Derive Ventures in 2021 to back the software layer reshaping those same asset classes. Advises Paradero, an experiential hospitality brand in Mexico. Formerly a J.P. Morgan banker covering real estate, gaming, and lodging. Michigan, Ross BBA." },
-    { name: "Lee Pillsbury", role: "Co-Founder & Partner", photo: "", bio: "Spent 19 years inside Marriott watching what the lodging industry couldn\u2019t build itself \u2014 then left to build it. Rose to EVP of Lodging Strategy (Marriott 5x\u2019d revenues and 8x\u2019d EBITA during his run), then founded Thayer Lodging Group in 1988 and ran it for 25+ years at a 26.2% IRR before selling to Brookfield in 2015. Partnered with Jin Jiang Group to form Thayer China and build the first central reservations system running in Mandarin; later took Interstate Hotels private and tripled it to 500+ properties. Today chairs TLG Investment Partners, a national real estate firm with 3,000+ residential units across Florida and Arizona. Cornell Hotel School graduate, Trustee Emeritus, and co-founder with his wife Mary of the Pillsbury Institute for Hospitality Entrepreneurship at Cornell. The two were the first husband-and-wife team to fly a single-engine plane across the North Atlantic." },
-    { name: "Mark Farrell", role: "Venture Partner", photo: "", bio: "A former mayor of San Francisco, which turns out to be unusually useful preparation for a venture firm \u2014 both roles live at the intersection of long-term infrastructure bets and daily operational firefighting. Co-founded Thayer Ventures in 2009 and served as Managing Director; co-CEO and CFO of Thayer Ventures Acquisition Corp (NASDAQ: TVAC), the $176M SPAC that took Inspirato public in 2022. Stepped back from day-to-day investing in 2024 to announce another mayoral run. Earlier: attorney at Wilson Sonsini, banker at Thomas Weisel Partners, and eight years as an elected San Francisco official. Loyola Marymount BA (cum laude), University College Dublin MA, Penn Law JD (cum laude)." },
-    { name: "Jeff Jackson", role: "Venture Partner", photo: "", bio: "Has sat on every side of a travel M&A table. 14 years at American Airlines, where he managed Sabre\u2019s legal separation from AA before joining the standalone company as EVP and CFO in 2000. Eleven years at Sabre spanning its IPO, 25+ acquisitions and divestitures totaling $8B in value, a Travelocity board seat, global expansion, and the eventual take-private by a PE consortium. Board member at Rent-A-Center and Getty Images along the way. General Partner at Thayer Ventures since 2012. Dartmouth; Kellogg MBA. Treasurer of Fort Worden Hospitality in Port Townsend, WA." },
-    { name: "David Brem", role: "Venture Partner", photo: "", bio: "Marine Corps Intelligence before venture \u2014 led cyber intelligence at the Marine Corps Intelligence Activity in Quantico, which may explain the preference for founders who can explain their competitive position in one sentence. Earlier consulting work modernized technology for aerospace and defense clients; later Commercial Strategy at American Airlines and Managing Director of Michigan\u2019s flagship investment fund, sourcing early-stage deals across consumer brands and robotics. Michigan MBA (Ross), BA American University, MA Applied Intelligence (Cyber) from Georgetown." },
-    { name: "Cara Whitehill", role: "Venture Partner", photo: "/images/team/cara-whitehill.webp", bio: "Has shipped product at Expedia, Travelocity, Deem, and Traxo \u2014 a career path that reads like a who\u2019s who of travel tech operators. Now splits her time between Thayer\u2019s partnership work with strategic investors and portfolio companies, and a personal angel portfolio of early-stage B2B startups across travel, enterprise software, and healthcare. Frequent PhocusWright speaker, NYU Hospitality Innovation guest lecturer, and co-host of Travel Tech Insider podcast. Based in Cincinnati, where she and her husband are working on playing golf in all 50 states." },
-    { name: "Chelsea Salamone", role: "Vice President", photo: "/images/team/chelsea-salamone.webp", bio: "Ten years in hospitality before venture \u2014 the kind of operator DNA that makes boutique hotel people actually answer her calls. Five years at Standard International helping lead the global expansion of Standard and Bunkhouse and developing new brand concepts. Earlier BD roles at Kimpton and Pyramid Hotel Group, after cutting her teeth in Hilton Worldwide\u2019s Management Training Program. Boston University, BS in Hospitality Management." },
+    { name: "Chris Hemmeter", role: "Managing Partner", photo: "/images/team/chris-hemmeter.webp", bio: "Chris Hemmeter co-founded Thayer Ventures, a venture capital platform investing in technology companies in the travel and mobility space. Prior to Thayer Ventures, Chris was founder and CEO of iCare Marketing (sold to Sysco Foodservice Corporation in 2012); founder and CEO of Dynamic Payment Ventures (sold to Elavon, a subsidiary of US Bank in 2007); CEO of CriticalArc Technologies, a supply-chain software provider to the foodservice industry; founder of E&O Kitchen and Bar, a casual dining restaurant based in San Francisco; founder of The Hemmeter Collection, a direct response retailer; and founder of Hemmeter Publishing, a publisher and distributor of travel books and content. Chris holds a Bachelor of Science from Cornell University." },
+    { name: "Tyler Carrico", role: "Managing Partner", photo: "/images/team/tyler-carrico.webp", bio: "Tyler Carrico co-founded Derive Ventures in 2021 and currently serves as a Managing Partner. Prior to Derive, Tyler spent 4 years as an investment professional at Thayer Ventures. At Thayer Ventures, he was the first and only hire during his tenure responsible for investment execution, diligence, sourcing, portfolio support, fund management, and LP advisory. He was directly involved with the deployment of $50 million over 12 portfolio companies and oversaw follow-ons and management of over 40 companies. Prior to Thayer Ventures, Tyler was an investment banking professional in BoA Merril Lynch's Tech, Media and Telecom group. He graduated from the University of Virginia and holds a Bachelor of Science from the McIntire School of Commerce." },
+    { name: "Mike Scott", role: "Managing Partner", photo: "/images/team/mike-scott.webp", bio: "Mike Scott co-founded Derive Ventures in 2021 and currently serves as a Managing Partner. Prior to co-founding Derive, Mike spent over 3 years as a private equity investment professional at KSL Capital Partners. At KSL, he had over $4bn of transaction experience covering U.S. hospitality, timeshare, all-inclusive resorts, travel distribution, gaming and alternative accommodations. Prior to KSL, Mike was an investment banking professional in J.P. Morgan's Real Estate, Gaming and Lodging group. Mike currently serves as an advisor to Paradero \u2013 an experiential hospitality brand, operator and owner in Mexico. He graduated from the University of Michigan and holds a Bachelor of Business Administration from the Stephen M. Ross School of Business." },
+    { name: "Jeff Jackson", role: "Venture Partner", photo: "/images/team/jeffery-jackson.webp", bio: "Jeff has spent the bulk of his career in executive roles within the transportation and distribution space. Based in Dallas, Jeff spent 14 years with American Airlines, managed the legal separation of Sabre, Inc. from AA and left to become EVP and Chief Financial Officer of the stand-alone company in 2000. Over his 11 years at Sabre, both as Chief Financial Officer and as EVP Corporate Development, Jeff managed the Sabre initial public offering, completed over 25 acquisitions and divestitures of over $8 billion in value, served on the Board of Travelocity, managed the globalization of the Sabre organization, and completed sale of the company to a group of private equity firms, thereby taking Sabre, Inc. private. Jeff serveds on the Boards of Rent-A-Center, a $2.8 billion public rent-to-own retail space company and of Getty Images. Prior to becoming the Managing Director of Thayer Investment Partners, Jeff was a General Partner at Thayer Ventures since 2012. Thayer Ventures invests in travel and hospitality focused start-up tech companies, including hotels, restaurants, travel, cruise and gaming. Jeff is a graduate of Dartmouth College and has an MBA from the Northwestern's Kellogg Business School. He serveds as Chair of Parents Advisory Committee of Carleton College and as an ex-officio member of the Board of Trustees. He is Treasurer and Board member of Fort Worden Hospitality, a conference and events center for music, arts, nature, community, weddings, food and drink in Port Townsend, Washington." },
+    { name: "David Brem", role: "Venture Partner", photo: "/images/team/david-brem.webp", bio: "David Brem currently serves as a Venture Partner at Thayer Investment Partners. Prior to TIP, David earned his MBA from the Stephen M. Ross School of Business at the University of Michigan. During business school, David worked at an early-stage venture firm focused on investing in companies transforming transportation, logistics, and advanced air mobility. David also served as Managing Director of Michigan's flagship investment fund, where he led sourcing, diligence, and portfolio support for early-stage investments across sectors, including consumer brands and robotics. David also previously worked in Commercial Strategy at American Airlines, supporting initiatives across the carrier's hub network operations, and founded Michigan's first institutionally recognized aviation organization, engaging with industry leaders across aerospace, climate, and travel technology. Prior to business school, David worked in management consulting, where he focused on modernizing technology solutions for aerospace and aviation organizations, across both defense and commercial engagements. Prior to entering client service, David served as the Subject Matter Expert Lead for his team at the Marine Corps Intelligence Activity, where he led cyber intelligence efforts supporting national security operations in Quantico, VA. In addition to his MBA, David also holds a Bachelor's degree in Political Science from American University, and a Master's degree in Applied Intelligence with a concentration in Cyber Intelligence from Georgetown University." },
+    { name: "Chelsea Salamone", role: "Vice President", photo: "/images/team/chelsea-salamone.webp", bio: "Chelsea brings over a decade of expertise in the hospitality industry. Before joining TIP, she spent over 5 years at Standard International, aiding in the global expansion of the Standard and Bunkhouse hotels, and contributing to the development of new brands and brand elements. Prior to her tenure at Standard International, Chelsea held business development positions at Kimpton Hotels & Restaurants and Pyramid Hotel Group, and gained operational experience with Hilton through Hilton Worldwide's Management Training Program. She holds a Bachelor of Science in Hospitality Management from Boston University." },
   ];
   const [expandedMember, setExpandedMember] = useState<number | null>(null);
 
@@ -47,23 +40,10 @@ export default function EditorialAboutPage() {
       <EditorialNav active="about" />
 
       {/* ── Hero ── */}
-      <section className="relative px-6 md:px-12 py-24 md:py-40 overflow-hidden">
-        <div className="absolute inset-0 bg-cover bg-no-repeat" style={{ backgroundImage: "url('/images/about.webp')", backgroundPosition: "center calc(50% + 80px)" }} />
-        <div className="absolute inset-0 hidden md:block" style={{ background: light
-          ? "linear-gradient(to right, rgba(237,233,226,0.92) 0px, rgba(237,233,226,0.92) 500px, rgba(237,233,226,0.3) 100%)"
-          : "linear-gradient(to right, rgba(18,18,18,0.92) 0px, rgba(18,18,18,0.92) 500px, rgba(18,18,18,0.2) 100%)"
-        }} />
-        <div className="absolute inset-0 md:hidden" style={{ backgroundColor: light
-          ? "rgba(237,233,226,0.85)"
-          : "rgba(18,18,18,0.82)"
-        }} />
-        <div className="absolute inset-x-0 bottom-0 h-[40%] hidden md:block" style={{ background: light
-          ? "linear-gradient(to top, rgba(237,233,226,0.8) 0%, rgba(237,233,226,0) 100%)"
-          : "linear-gradient(to top, rgba(18,18,18,0.8) 0%, rgba(18,18,18,0) 100%)"
-        }} />
-        <div className="relative max-w-7xl mx-auto z-10">
+      <section className="relative px-6 md:px-12 py-24 md:min-h-[600px] flex flex-col overflow-hidden">
+        <div className="relative w-full max-w-7xl mx-auto z-10">
           <span className="text-[0.72rem] uppercase tracking-[0.22em] block mb-8" style={{ ...sans, color: c.accentText, fontWeight: c.sansWeight }}>About the Firm</span>
-          <h1 className="text-[clamp(2.2rem,5.5vw,5rem)] leading-[1.08] font-light italic mb-8 max-w-4xl" style={{ ...serif, color: c.text }}>
+          <h1 className="text-[clamp(2rem,5vw,4.5rem)] leading-[1.08] font-light italic mb-8 max-w-4xl" style={{ ...serif, color: c.text }}>
             A History of Innovation in Travel.
           </h1>
           <p className="text-[1.15rem] leading-[1.7] max-w-2xl" style={{ ...sans, color: c.bodyText, fontWeight: c.sansWeight }}>
@@ -77,14 +57,13 @@ export default function EditorialAboutPage() {
       <section className="px-6 md:px-12 py-24 md:py-32 transition-colors duration-500" style={{ backgroundColor: c.surface }}>
         <div className="max-w-7xl mx-auto">
           <SectionHeader label="Our Process" number="01" />
-          <div className="grid md:grid-cols-3 gap-8 md:gap-12">
-            {philosophies.map((p, i) => (
-              <div key={i} className="border p-8 md:p-10" style={{ borderColor: c.rule }}>
-                <span className="text-[3.25rem] md:text-[3.75rem] font-light block mb-4 leading-none" style={{ ...serif, color: c.accent, fontWeight: c.statWeight }}>0{i + 1}</span>
-                <h3 className="text-[1.75rem] font-light italic mb-4" style={{ ...serif, color: c.text, fontWeight: c.headingWeight }}>{p.title}</h3>
-                <p className="text-[1.15rem] leading-[1.7]" style={{ ...sans, color: c.bodyText, fontWeight: c.sansWeight }}>{p.desc}</p>
-              </div>
-            ))}
+          <div className="grid md:grid-cols-2 gap-12 md:gap-20">
+            <h2 className="text-[clamp(2.2rem,4.5vw,4rem)] leading-[1.1] font-light italic" style={{ ...serif, color: c.text }}>
+              Conviction, network, and partnership, refined over 15+ years.
+            </h2>
+            <p className="text-[1.15rem] leading-[1.7]" style={{ ...sans, color: c.bodyText, fontWeight: c.sansWeight }}>
+              While Travel and Tourism is one of the largest industries on earth contributing roughly 10% of global GDP, it has historically underinvested in modern technology compared to other sectors of similar size. Founded in 2008, Thayer was created to spur innovation in travel and help entrepreneurs navigate its complex web of stakeholders. Over the past 15+ years, we have invested in over 100 companies that have had a huge impact in advancing the travel industry. Today we are focused on being the bridge between silicon valley and the global travel industry. We help all companies unlock the travel industry and drive sales, strategy and partnership for our portfolio. All businesses will sell to, partner with or consume travel and Thayer is the strategic co-pilot.
+            </p>
           </div>
         </div>
       </section>
@@ -102,7 +81,7 @@ export default function EditorialAboutPage() {
                     type="button"
                     onClick={() => setExpandedMember(expanded ? null : i)}
                     aria-expanded={expanded}
-                    className="w-full flex items-center justify-between gap-6 py-6 md:py-8 text-left transition-colors hover:text-[#C49A45] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4"
+                    className="w-full flex items-center justify-between gap-6 py-6 md:py-8 text-left transition-colors hover:text-[#2E9D55] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4"
                     style={{ color: c.text, outlineColor: c.accent }}
                   >
                     <div className="flex flex-col md:flex-row md:items-baseline gap-2 md:gap-6 flex-1 min-w-0">
@@ -158,7 +137,7 @@ export default function EditorialAboutPage() {
               { slug: "marriott", name: "Marriott", w: 130 },
             ].map((co, i) => (
               <div key={i} className="group aspect-[3/2] border flex items-center justify-center px-6 relative overflow-hidden" style={{ borderColor: c.rule }}>
-                <div className="absolute inset-x-0 bottom-0 h-0 group-hover:h-full transition-all duration-200 ease-out" style={{ backgroundColor: "rgb(196,154,69)" }} />
+                <div className="absolute inset-x-0 bottom-0 h-0 group-hover:h-full transition-all duration-200 ease-out" style={{ backgroundColor: "rgb(46,157,85)" }} />
                 <img src={`/logos/network/${co.slug}-${light ? "light" : "dark"}.svg`} alt={co.name} className="object-contain relative z-10 group-hover:hidden" style={{ width: co.w, maxWidth: "80%" }} />
                 <img src={`/logos/network/${co.slug}-dark.svg`} alt={co.name} className="object-contain relative z-10 hidden group-hover:block group-hover:scale-125 transition-transform duration-700 ease-out" style={{ width: co.w, maxWidth: "80%" }} />
               </div>
@@ -167,7 +146,7 @@ export default function EditorialAboutPage() {
         </div>
       </section>
 
-      <EditorialHeadlines number="04" />
+      <EditorialHeadlines number="04" articles={articles} />
 
       <EditorialFooter />
     </div>

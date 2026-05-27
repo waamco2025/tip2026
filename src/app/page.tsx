@@ -1,5 +1,7 @@
 import EditorialHome from "@/concepts/editorial/HomePage";
+import { getAllArticles } from "@/lib/articles";
 
 export default function Home() {
-  return <EditorialHome />;
+  const articles = getAllArticles();
+  return <EditorialHome articles={articles} />;
 }

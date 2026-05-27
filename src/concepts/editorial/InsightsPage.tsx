@@ -2,7 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
-import { EditorialNav, EditorialFooter } from "./HomePage";
+import { EditorialNav, EditorialFooter, ArticleListItem } from "./HomePage";
 import { useEditorialMode, ec } from "./EditorialModeContext";
 import type { Article } from "@/lib/article-types";
 import { formatDate } from "@/lib/article-types";
@@ -32,28 +32,26 @@ export default function EditorialInsightsPage({ articles }: { articles: Article[
     <div className="min-h-screen transition-colors duration-500" style={{ backgroundColor: c.bg, color: c.text }}>
       <EditorialNav active="insights" />
 
-      {/* ── Hero ── */}
-      <section className="px-6 md:px-12 py-24 md:py-40">
-        <div className="max-w-7xl mx-auto">
-          <span className="text-[0.72rem] uppercase tracking-[0.22em] block mb-8" style={{ ...sans, color: c.accentText, fontWeight: c.sansWeight }}>Insights</span>
-          <h1 className="text-[clamp(2rem,5vw,4.5rem)] leading-[1.08] font-light italic mb-8 max-w-4xl" style={{ ...serif, color: c.text }}>
-            Perspectives on the future of travel &amp; technology.
-          </h1>
-          <p className="text-[1.15rem] leading-[1.7] max-w-2xl" style={{ ...sans, color: c.bodyText, fontWeight: c.sansWeight }}>
-            News, research, and commentary from Thayer Investment Partners and our portfolio companies.
-          </p>
-        </div>
-      </section>
+      {/* ── Hero (intro + featured) ── */}
+      <section className="px-6 md:px-12 py-24 md:pb-8 md:min-h-[600px] flex flex-col">
+        <div className="max-w-7xl mx-auto w-full flex flex-col md:flex-row gap-12 md:gap-16 flex-1">
+          <div className="md:flex-1">
+            <span className="text-[0.72rem] uppercase tracking-[0.22em] block mb-8" style={{ ...sans, color: c.accentText, fontWeight: c.sansWeight }}>Insights</span>
+            <h1 className="text-[clamp(2rem,5vw,4.5rem)] leading-[1.08] font-light italic mb-8" style={{ ...serif, color: c.text }}>
+              Perspectives on the future of travel &amp; technology.
+            </h1>
+            <p className="text-[1.15rem] leading-[1.7] max-w-xl" style={{ ...sans, color: c.bodyText, fontWeight: c.sansWeight }}>
+              News, research, and commentary from Thayer Investment Partners and our portfolio companies.
+            </p>
+          </div>
 
-      {/* ── Featured Article (01) ── */}
-      {featured && (
-        <section className="px-6 md:px-12 py-24 md:py-32 border-t" style={{ borderColor: c.rule }}>
-          <div className="max-w-7xl mx-auto">
-            <SectionHeader label="Featured" number="01" />
-            <Link href={`/news/${featured.slug}`} className="group grid md:grid-cols-2 gap-8 md:gap-16">
+          {featured && (
+            <div className="md:flex-1 md:flex">
+            <Link href={`/news/${featured.slug}`} className="group flex flex-col gap-4 border p-6 md:p-8 w-full md:h-full" style={{ backgroundColor: c.surface, borderColor: c.rule }}>
+              <span className="text-[0.65rem] uppercase tracking-[0.2em] block" style={{ ...sans, color: c.accentText, fontWeight: c.sansWeight }}>Latest &middot; {formatDate(featured.date)} &middot; {featured.category}</span>
               <div
-                className="aspect-[4/3] border flex items-end p-6 group-hover:border-[#C49A45]/30 transition-colors overflow-hidden relative"
-                style={{ backgroundColor: c.surface, borderColor: c.rule }}
+                className="aspect-[5/3] md:aspect-auto md:flex-1 md:min-h-0 border overflow-hidden relative"
+                style={{ backgroundColor: c.bg, borderColor: c.rule }}
               >
                 {featured.heroImage ? (
                   <img
@@ -62,50 +60,34 @@ export default function EditorialInsightsPage({ articles }: { articles: Article[
                     className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
                   />
                 ) : (
-                  <span className="text-[0.65rem] uppercase tracking-[0.2em]" style={{ ...sans, color: c.muted, fontWeight: c.sansWeight }}>Featured Image</span>
+                  <span className="absolute bottom-6 left-6 text-[0.65rem] uppercase tracking-[0.2em]" style={{ ...sans, color: c.muted, fontWeight: c.sansWeight }}>Featured Image</span>
                 )}
               </div>
-              <div className="flex flex-col justify-center">
-                <span className="text-[0.65rem] uppercase tracking-[0.2em] block mb-4" style={{ ...sans, color: c.accentText, fontWeight: c.sansWeight }}>{formatDate(featured.date)} &middot; {featured.category}</span>
-                <h2 className="text-[clamp(1.6rem,3vw,2.6rem)] leading-[1.15] font-light italic mb-6 group-hover:text-[#C49A45] transition-colors" style={{ ...serif, color: c.text, fontWeight: c.headingWeight }}>
+              <div>
+                <h2 className="text-[clamp(1.4rem,2.4vw,2rem)] leading-[1.2] font-light italic mb-4 group-hover:text-[#2E9D55] transition-colors" style={{ ...serif, color: c.text, fontWeight: c.headingWeight }}>
                   {featured.title}
                 </h2>
-                <p className="text-[1.15rem] leading-[1.7] mb-8" style={{ ...sans, color: c.bodyText, fontWeight: c.sansWeight }}>
+                <p className="text-[1.05rem] leading-[1.7] mb-5" style={{ ...sans, color: c.bodyText, fontWeight: c.sansWeight }}>
                   {featured.subhead}
                 </p>
-                <span className="text-[0.72rem] uppercase tracking-[0.18em] group-hover:text-[#C49A45] transition-colors" style={{ ...sans, color: c.muted, fontWeight: c.sansWeight }}>
+                <span className="text-[0.72rem] uppercase tracking-[0.18em] group-hover:text-[#2E9D55] transition-colors" style={{ ...sans, color: c.muted, fontWeight: c.sansWeight }}>
                   Read Article &rarr;
                 </span>
               </div>
             </Link>
-          </div>
-        </section>
-      )}
+            </div>
+          )}
+        </div>
+      </section>
 
-      {/* ── Recent Articles (02) ── */}
+      {/* ── Recent Articles (01) ── */}
       {rest.length > 0 && (
         <section className="px-6 md:px-12 py-24 md:py-32">
           <div className="max-w-7xl mx-auto">
-            <SectionHeader label="Recent Articles" number="02" />
+            <SectionHeader label="Recent Articles" number="01" />
             <div className="flex flex-col">
               {rest.map((a) => (
-                <Link
-                  key={a.slug}
-                  href={`/news/${a.slug}`}
-                  className="group grid md:grid-cols-[140px_1fr] gap-4 md:gap-10 py-8 border-b transition-colors"
-                  style={{ borderColor: c.rule }}
-                >
-                  <span className="text-[0.7rem] uppercase tracking-[0.16em] pt-1" style={{ ...sans, color: c.muted, fontWeight: c.sansWeight }}>{formatDate(a.date)}</span>
-                  <div>
-                    <div className="flex items-center gap-3 mb-3">
-                      <span className="text-[0.65rem] uppercase tracking-[0.2em]" style={{ ...sans, color: c.accentText, fontWeight: c.sansWeight }}>{a.category}</span>
-                    </div>
-                    <h3 className="text-[1.75rem] md:text-[1.5rem] font-light italic mb-3 group-hover:text-[#C49A45] transition-colors" style={{ ...serif, color: c.text, fontWeight: c.headingWeight }}>
-                      {a.title}
-                    </h3>
-                    <p className="text-[1.15rem] leading-[1.7]" style={{ ...sans, color: c.bodyText, fontWeight: c.sansWeight }}>{a.subhead}</p>
-                  </div>
-                </Link>
+                <ArticleListItem key={a.slug} article={a} />
               ))}
             </div>
           </div>

@@ -69,11 +69,11 @@ export default function EditorialInvestorRelationsPage() {
           <SectionHeader label="Documents & Filings" number="01" />
           <div className="grid md:grid-cols-3 gap-6 md:gap-8">
             {documents.map((d, i) => (
-              <div key={i} className="border p-7 md:p-8 flex flex-col hover:border-[#C49A45]/30 transition-colors group cursor-pointer" style={{ borderColor: c.rule }}>
+              <div key={i} className="border p-7 md:p-8 flex flex-col hover:border-[#2E9D55]/30 transition-colors group cursor-pointer" style={{ borderColor: c.rule }}>
                 <span
                   className={`text-[0.65rem] uppercase tracking-[0.22em] self-start px-3 py-1 border mb-5 ${
                     d.type === "PDF"
-                      ? "text-[#C49A45] border-[#C49A45]/30"
+                      ? "text-[#2E9D55] border-[#2E9D55]/30"
                       : d.type === "SEC"
                       ? "border-[#7A7568]/30"
                       : "text-[#4a8c6a] border-[#4a8c6a]/30"
@@ -82,9 +82,9 @@ export default function EditorialInvestorRelationsPage() {
                 >
                   {d.type}
                 </span>
-                <h3 className="text-[1.75rem] font-light italic mb-3 group-hover:text-[#C49A45] transition-colors" style={{ ...serif, color: c.text, fontWeight: c.headingWeight }}>{d.title}</h3>
+                <h3 className="text-[1.75rem] font-light italic mb-3 group-hover:text-[#2E9D55] transition-colors" style={{ ...serif, color: c.text, fontWeight: c.headingWeight }}>{d.title}</h3>
                 <p className="text-[1.15rem] leading-[1.7] flex-1 mb-5" style={{ ...sans, color: c.bodyText, fontWeight: c.sansWeight }}>{d.desc}</p>
-                <span className="text-[0.78rem] uppercase tracking-[0.18em] group-hover:text-[#C49A45] transition-colors" style={{ ...sans, color: c.muted, fontWeight: c.sansWeight }}>
+                <span className="text-[0.78rem] uppercase tracking-[0.18em] group-hover:text-[#2E9D55] transition-colors" style={{ ...sans, color: c.muted, fontWeight: c.sansWeight }}>
                   {d.link} &rarr;
                 </span>
               </div>
@@ -119,7 +119,7 @@ export default function EditorialInvestorRelationsPage() {
                     style={{
                       ...sans,
                       color: f.status === "Deploying" ? c.accentText : c.muted,
-                      borderColor: f.status === "Deploying" ? "rgba(196,154,69,0.3)" : "rgba(122,117,104,0.3)",
+                      borderColor: f.status === "Deploying" ? "rgba(46,157,85,0.3)" : "rgba(122,117,104,0.3)",
                       fontWeight: c.sansWeight,
                     }}
                   >

@@ -2,13 +2,15 @@
 
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
-import { Sun, Moon, Building2, UtensilsCrossed, Globe, CreditCard, Wallet, ShieldCheck, ChevronLeft, ChevronRight, Pause, Play } from "lucide-react";
+import { Building2, UtensilsCrossed, Globe, CreditCard, Wallet, ShieldCheck, Pause, Play } from "lucide-react";
 import { useEditorialMode, ec } from "./EditorialModeContext";
+import type { Article } from "@/lib/article-types";
+import { formatDate } from "@/lib/article-types";
 
 /* ─── Shared Nav ─── */
 export function EditorialNav({ active = "home" }: { active?: string }) {
   const [open, setOpen] = useState(false);
-  const { light, toggle } = useEditorialMode();
+  const { light } = useEditorialMode();
   const c = ec(light);
   const links = [
     { label: "Home", href: "/", key: "home" },
@@ -26,7 +28,7 @@ export function EditorialNav({ active = "home" }: { active?: string }) {
       style={{ backgroundColor: c.bg, borderColor: c.rule }}
     >
       <Link href="/">
-        <img src={c.logo} alt="Thayer" className="h-8" />
+        <img src={c.logo} alt="Thayer" className="h-12 md:h-14" />
       </Link>
 
       {/* Desktop */}
@@ -41,16 +43,10 @@ export function EditorialNav({ active = "home" }: { active?: string }) {
             {l.label}
           </Link>
         ))}
-        <button onClick={toggle} aria-label={light ? "Switch to dark mode" : "Switch to light mode"} className="hover:opacity-70 transition-opacity focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4" style={{ color: c.muted, outlineColor: c.accent }}>
-          {light ? <Moon className="w-4 h-4" /> : <Sun className="w-4 h-4" />}
-        </button>
       </div>
 
-      {/* Mobile toggle + hamburger */}
+      {/* Mobile hamburger */}
       <div className="flex md:hidden items-center gap-4">
-        <button onClick={toggle} aria-label={light ? "Switch to dark mode" : "Switch to light mode"} className="hover:opacity-70 transition-opacity focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4" style={{ color: c.muted, outlineColor: c.accent }}>
-          {light ? <Moon className="w-4 h-4" /> : <Sun className="w-4 h-4" />}
-        </button>
         <button onClick={() => setOpen(!open)} className="flex flex-col gap-[5px] w-6" aria-label="Menu">
           <span className="block h-px transition-all duration-300" style={{ backgroundColor: c.hamburger, transform: open ? "rotate(45deg) translateY(3px)" : "none", opacity: 1 }} />
           <span className="block h-px transition-all duration-300" style={{ backgroundColor: c.hamburger, opacity: open ? 0 : 1 }} />
@@ -122,34 +118,49 @@ function SectionHeader({ label, number }: { label: string; number: string }) {
   );
 }
 
-/* ─── Shared Recent Headlines ─── */
-const recentHeadlines = [
-  { date: "Mar 2026", title: "Thayer Leads $45M Series B in TravelAI Platform" },
-  { date: "Feb 2026", title: "Portfolio Company CloudHotel Expands to 42 Countries" },
-  { date: "Jan 2026", title: "Thayer Fund III Announces Final Close at $150M" },
-];
-
-export function EditorialHeadlines({ number }: { number: string }) {
+/* ─── Shared Article List Item ─── */
+export function ArticleListItem({ article }: { article: Article }) {
   const { light } = useEditorialMode();
   const c = ec(light);
   const serif = { fontFamily: "'Cormorant Garamond', Georgia, serif" };
   const sans = { fontFamily: "'Syne', sans-serif" };
   return (
+    <Link
+      href={`/news/${article.slug}`}
+      className="group grid grid-cols-[120px_1fr] md:grid-cols-[200px_1fr] gap-5 md:gap-10 py-8 border-b transition-colors items-start"
+      style={{ borderColor: c.rule }}
+    >
+      <div className="aspect-[4/3] border overflow-hidden relative" style={{ borderColor: c.rule, backgroundColor: c.surface }}>
+        {article.heroImage ? (
+          <img
+            src={article.heroImage}
+            alt={article.heroImageAlt}
+            className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+          />
+        ) : null}
+      </div>
+      <div>
+        <span className="text-[0.65rem] uppercase tracking-[0.2em] block mb-3" style={{ ...sans, color: c.accentText, fontWeight: c.sansWeight }}>
+          {formatDate(article.date)} &middot; {article.category}
+        </span>
+        <h3 className="text-[1.4rem] md:text-[1.75rem] leading-[1.2] font-light italic mb-3 group-hover:text-[#2E9D55] transition-colors" style={{ ...serif, color: c.text, fontWeight: c.headingWeight }}>
+          {article.title}
+        </h3>
+        <p className="hidden md:block text-[1.05rem] md:text-[1.15rem] leading-[1.7]" style={{ ...sans, color: c.bodyText, fontWeight: c.sansWeight }}>{article.subhead}</p>
+      </div>
+    </Link>
+  );
+}
+
+export function EditorialHeadlines({ number, articles }: { number: string; articles: Article[] }) {
+  if (articles.length === 0) return null;
+  return (
     <section className="px-6 md:px-12 py-24 md:py-32 snap-start">
       <div className="max-w-7xl mx-auto">
-        <SectionHeader label="Recent Headlines" number={number} />
+        <SectionHeader label="Recent Articles" number={number} />
         <div className="flex flex-col">
-          {recentHeadlines.map((h, i) => (
-            <Link
-              key={i}
-              href="/news"
-              className="group flex items-center gap-6 md:gap-10 py-6 border-b transition-colors"
-              style={{ borderColor: c.rule }}
-            >
-              <span className="text-[0.72rem] uppercase tracking-[0.18em] shrink-0 w-20" style={{ ...sans, color: c.muted, fontWeight: c.sansWeight }}>{h.date}</span>
-              <span className="text-[1.75rem] font-light italic flex-1 group-hover:text-[#C49A45] transition-colors" style={{ ...serif, color: c.text, fontWeight: c.headingWeight }}>{h.title}</span>
-              <span className="group-hover:text-[#C49A45] transition-colors shrink-0" style={{ color: c.muted }}>&rarr;</span>
-            </Link>
+          {articles.slice(0, 3).map((a) => (
+            <ArticleListItem key={a.slug} article={a} />
           ))}
         </div>
       </div>
@@ -235,7 +246,7 @@ const carouselSlides = [
 ];
 
 /* ─── Home Page ─── */
-export default function EditorialHomePage() {
+export default function EditorialHomePage({ articles }: { articles: Article[] }) {
   const { light } = useEditorialMode();
   const c = ec(light);
   const serif = { fontFamily: "'Cormorant Garamond', Georgia, serif" };
@@ -339,7 +350,7 @@ export default function EditorialHomePage() {
             Pioneers in Travel Technology &middot; Est. 2008
           </span>
           <h1
-            className="text-[clamp(2.6rem,5vw,4rem)] leading-[1.08] font-light italic mb-6"
+            className="text-[clamp(2rem,5vw,4.5rem)] leading-[1.08] font-light italic mb-6"
             style={{ ...serif, color: c.text }}
           >
             Investing in the Entrepreneurs Shaping the Global Travel Industry.
@@ -389,7 +400,7 @@ export default function EditorialHomePage() {
           </div>
 
           {/* Desktop: logo, attribution, carousel, link — bottom right */}
-          <div className="absolute bottom-8 right-8 hidden md:flex flex-col items-end z-10 gap-7">
+          <div className="absolute bottom-16 right-8 hidden md:flex flex-col items-end z-10 gap-7">
             {/* Company logo — cross-fade */}
             <div className="relative" style={{ height: 52, width: 260 }}>
               {carouselSlides.map((s, idx) => (
@@ -411,35 +422,31 @@ export default function EditorialHomePage() {
               ))}
             </div>
 
-            {/* Carousel dashes + arrows */}
-            <div className="flex gap-1.5 items-center">
-              <button onClick={goPrev} aria-label="Previous slide" className="w-[20px] h-[20px] flex items-center justify-center transition-colors duration-300 hover:opacity-70 shrink-0 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2" style={{ outlineColor: c.accent }}>
-                <ChevronLeft className="w-4 h-4" />
-              </button>
-              {carouselSlides.map((s, i) => (
-                <button
-                  key={i}
-                  onClick={() => { if (i === activeSlide) { setUserPaused(!userPaused); setNavPaused(false); } else { goTo(i); } }}
-                  aria-label={i === activeSlide ? (userPaused ? "Play carousel" : "Pause carousel") : `Go to slide ${i + 1} — ${s.company}`}
-                  className="group/card w-[24px] h-[4px] flex items-center justify-center cursor-pointer relative shrink-0 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4"
-                  style={{ backgroundColor: i === activeSlide ? "rgb(196,154,69)" : "rgba(255,255,255,0.3)", outlineColor: c.accent }}
-                >
-                  {i === activeSlide && (
-                    <div key={`timer-${activeSlide}-${paused}`} className="absolute inset-y-0 left-0" style={{ backgroundColor: "rgba(255,255,255,0.4)", animation: paused ? "none" : "carousel-timer 6s linear forwards", width: paused ? "100%" : undefined }} />
-                  )}
-                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover/card:opacity-100 transition-opacity duration-200 z-10" style={{ backgroundColor: "rgb(196,154,69)", height: 20, top: -8 }}>
-                    {i === activeSlide && userPaused ? <Play className="w-3 h-3 text-white" /> : <Pause className="w-3 h-3 text-white" />}
-                  </div>
-                </button>
-              ))}
-              <button onClick={goNext} aria-label="Next slide" className="w-[20px] h-[20px] flex items-center justify-center transition-colors duration-300 hover:opacity-70 shrink-0 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2" style={{ outlineColor: c.accent }}>
-                <ChevronRight className="w-4 h-4" />
-              </button>
-            </div>
+            {/* Carousel dashes + link */}
+            <div className="flex flex-col items-end gap-3">
+              <div className="flex gap-1.5 items-center">
+                {carouselSlides.map((s, i) => (
+                  <button
+                    key={i}
+                    onClick={() => { if (i === activeSlide) { setUserPaused(!userPaused); setNavPaused(false); } else { goTo(i); } }}
+                    aria-label={i === activeSlide ? (userPaused ? "Play carousel" : "Pause carousel") : `Go to slide ${i + 1} — ${s.company}`}
+                    className="group/card w-[24px] h-[4px] flex items-center justify-center cursor-pointer relative shrink-0 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4"
+                    style={{ backgroundColor: i === activeSlide ? "rgb(46,157,85)" : "rgba(255,255,255,0.3)", outlineColor: c.accent }}
+                  >
+                    {i === activeSlide && (
+                      <div key={`timer-${activeSlide}-${paused}`} className="absolute inset-y-0 left-0" style={{ backgroundColor: "rgba(255,255,255,0.4)", animation: paused ? "none" : "carousel-timer 6s linear forwards", width: paused ? "100%" : undefined }} />
+                    )}
+                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover/card:opacity-100 transition-opacity duration-200 z-10" style={{ backgroundColor: "rgb(46,157,85)", height: 20, top: -8 }}>
+                      {i === activeSlide && userPaused ? <Play className="w-3 h-3 text-white" /> : <Pause className="w-3 h-3 text-white" />}
+                    </div>
+                  </button>
+                ))}
+              </div>
 
-            <Link href="/portfolio" className="text-[0.72rem] uppercase tracking-[0.18em] hover:opacity-80 transition-colors" style={{ ...sans, color: c.accentText, fontWeight: c.sansWeight }}>
-              View Portfolio &rarr;
-            </Link>
+              <Link href="/portfolio" className="text-[0.72rem] uppercase tracking-[0.18em] hover:opacity-80 transition-colors" style={{ ...sans, fontWeight: c.sansWeight, color: "#fff" }}>
+                View Portfolio &rarr;
+              </Link>
+            </div>
           </div>
 
           {/* Mobile content — logo + attribution below image */}
@@ -463,15 +470,6 @@ export default function EditorialHomePage() {
             </div>
           </div>
 
-          {/* Mobile arrows — anchored to bottom of panel, centered */}
-          <div className="md:hidden absolute bottom-4 left-0 right-0 flex justify-center gap-3 z-10">
-            <button onClick={goPrev} aria-label="Previous slide" className="w-10 h-10 flex items-center justify-center border" style={{ borderColor: c.accent, color: c.accent, backgroundColor: c.bg }}>
-              <ChevronLeft className="w-5 h-5" />
-            </button>
-            <button onClick={goNext} aria-label="Next slide" className="w-10 h-10 flex items-center justify-center border" style={{ borderColor: c.accent, color: c.accent, backgroundColor: c.bg }}>
-              <ChevronRight className="w-5 h-5" />
-            </button>
-          </div>
         </section>
       </div>
 
@@ -481,7 +479,7 @@ export default function EditorialHomePage() {
           <SectionHeader label="What Partners Say" number="01" />
           <div className="grid md:grid-cols-3 gap-8 md:gap-12">
             {testimonials.map((t, i) => (
-              <div key={i} className="border p-8 md:p-10 flex flex-col transition-colors duration-500 hover:bg-[rgba(196,154,69,0.06)]" style={{ borderColor: c.rule }}>
+              <div key={i} className="border p-8 md:p-10 flex flex-col transition-colors duration-500 hover:bg-[rgba(46,157,85,0.06)]" style={{ borderColor: c.rule }}>
                 <span className="text-[2.5rem] leading-none mb-4" style={{ ...serif, color: c.accent }}>&ldquo;</span>
                 <p className="text-[1.15rem] leading-[1.7] font-light flex-1 mb-8" style={{ ...sans, color: c.bodyText, fontWeight: c.sansWeight }}>
                   {t.quote}
@@ -519,7 +517,7 @@ export default function EditorialHomePage() {
         </div>
       </section>
 
-      <EditorialHeadlines number="03" />
+      <EditorialHeadlines number="03" articles={articles} />
 
       <EditorialFooter />
     </div>

@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { EditorialNav, EditorialFooter, EditorialHeadlines } from "./HomePage";
 import { useEditorialMode, ec } from "./EditorialModeContext";
+import type { Article } from "@/lib/article-types";
 
 function SectionHeader({ label, number }: { label: string; number: string }) {
   const { light } = useEditorialMode();
@@ -21,101 +22,107 @@ type Company = {
   name: string;
   slug: string;
   url: string;
-  category: string;
+  categories: string[];
+  highlight?: boolean;
   w?: number;
   img?: string;
   bgPos?: string;
+  logo?: string;      // logo file stem when it differs from slug (also marks "has a logo file")
+  noWhite?: boolean;  // logo has no -dark (white) variant for the hover state
 };
 
 const companies: Company[] = [
-  { name: "Canary Technologies", slug: "canary-technologies", w: 220, url: "https://www.canarytechnologies.com", img: "/images/carousel/canary.webp", bgPos: "85% center", category: "Hospitality Technology" },
-  { name: "Mews", slug: "mews", w: 200, url: "https://www.mews.com", img: "/images/carousel/mews.webp", bgPos: "85% center", category: "Hospitality Technology" },
-  { name: "Jetstream", slug: "jetstream", w: 180, url: "https://jetstream.security", img: "/images/carousel/jetstream.webp", bgPos: "55% center", category: "Hospitality Technology" },
-  { name: "Cloaked", slug: "cloaked", w: 160, url: "https://cloaked.com", img: "/images/carousel/cloaked.webp", bgPos: "70% center", category: "Enterprise & Emerging Tech" },
-  { name: "MarginEdge", slug: "marginedge", w: 220, url: "https://www.marginedge.com", img: "/images/carousel/marginedge.webp", bgPos: "85% center", category: "Hospitality Technology" },
-  { name: "Nuit\u00e9e", slug: "nuitee", w: 160, url: "https://nuitee.com", img: "/images/carousel/nuitee.webp", bgPos: "85% center", category: "Travel & Transportation" },
-  { name: "Cardless", slug: "cardless", w: 200, url: "https://www.cardless.com", img: "/images/carousel/cardless.webp", bgPos: "85% center", category: "Loyalty & Payments" },
-  { name: "Rain", slug: "rain", w: 160, url: "https://www.rain.xyz", img: "/images/carousel/rain.webp", bgPos: "85% center", category: "Fintech" },
-  { name: "Super", slug: "super", w: 190, url: "https://www.super.com", img: "/images/carousel/super.webp", bgPos: "85% center", category: "Travel & Transportation" },
-  /* Logo-less entries (text label only until SVGs are added) */
-  { name: "Katanox", slug: "katanox", url: "https://www.katanox.com", category: "Hospitality Technology" },
-  { name: "Lendflow", slug: "lendflow", url: "https://www.lendflow.com", category: "Fintech" },
-  { name: "Runwise", slug: "runwise", url: "https://www.runwise.com", category: "PropTech & Real Estate" },
-  { name: "Domuso", slug: "domuso", url: "https://www.domuso.com", category: "Loyalty & Payments" },
-  { name: "Scale Computing", slug: "scale-computing", url: "https://www.scalecomputing.com", category: "Enterprise & Emerging Tech" },
-  { name: "Cents", slug: "cents", url: "https://www.trycents.com", category: "Enterprise & Emerging Tech" },
-  { name: "StayFlexi", slug: "stayflexi", url: "https://stayflexi.com", category: "Hospitality Technology" },
-  { name: "Roots Natural Kitchen", slug: "roots-natural-kitchen", url: "https://www.rootsnaturalkitchen.com", category: "Hospitality Brands & Experiences" },
-  { name: "Meez", slug: "meez", url: "https://www.getmeez.com", category: "Hospitality Technology" },
-  { name: "Way", slug: "way", url: "https://www.way.co", category: "Hospitality Technology" },
-  { name: "Sensible Weather", slug: "sensible-weather", url: "https://www.sensibleweather.com", category: "Travel & Transportation" },
-  { name: "Nestment", slug: "nestment", url: "https://www.nestment.com", category: "PropTech & Real Estate" },
-  { name: "Topkey", slug: "topkey", url: "https://www.topkey.io", category: "Hospitality Technology" },
-  { name: "Vend", slug: "vend", url: "https://www.vendpark.io", category: "PropTech & Real Estate" },
-  { name: "Cardinal Lands", slug: "cardinal-lands", url: "https://cardinallands.com", category: "Hospitality Brands & Experiences" },
-  { name: "PayTheory", slug: "paytheory", url: "https://www.paytheory.com", category: "Loyalty & Payments" },
-  { name: "Directo", slug: "directo", url: "https://www.directsoftware.com", category: "Travel & Transportation" },
-  { name: "Aventuur", slug: "aventuur", url: "https://www.aventuur.com", category: "Hospitality Brands & Experiences" },
-  { name: "Gravity Haus", slug: "gravity-haus", url: "https://gravityhaus.com", category: "Hospitality Brands & Experiences" },
-  { name: "Orderful", slug: "orderful", url: "https://www.orderful.com", category: "Enterprise & Emerging Tech" },
-  { name: "Guidesly", slug: "guidesly", url: "https://guidesly.com", category: "Travel & Transportation" },
-  { name: "Jose Andres Group", slug: "jose-andres-group", url: "https://www.joseandres.com", category: "Hospitality Brands & Experiences" },
-  { name: "BoomPop", slug: "boompop", url: "https://boompop.com", category: "Hospitality Brands & Experiences" },
-  { name: "Ballers", slug: "ballers", url: "https://www.ballers-us.com", category: "Hospitality Brands & Experiences" },
-  { name: "Paradero", slug: "paradero", url: "https://www.paraderohotels.com", category: "Hospitality Brands & Experiences" },
-  { name: "Tixr", slug: "tixr", url: "https://www.tixr.com", category: "Hospitality Brands & Experiences" },
-  { name: "Magic", slug: "magic", url: "https://www.magic.company", category: "Hospitality Technology" },
-  { name: "Path Water", slug: "path-water", url: "https://drinkpathwater.com", category: "Hospitality Brands & Experiences" },
-  { name: "Bilt", slug: "bilt", url: "https://www.biltrewards.com", category: "Loyalty & Payments" },
-  { name: "Beekeeper", slug: "beekeeper", url: "https://www.beekeeper.io", category: "Hospitality Technology" },
-  { name: "May Mobility", slug: "may-mobility", url: "https://maymobility.com", category: "Travel & Transportation" },
-  { name: "Humanly", slug: "humanly", url: "https://www.humanly.io", category: "Enterprise & Emerging Tech" },
-  { name: "Rest", slug: "rest", url: "https://www.restsensor.com", category: "Hospitality Technology" },
-  { name: "Meili", slug: "meili", url: "https://www.meili.travel", category: "Travel & Transportation" },
-  { name: "Deal Engine", slug: "deal-engine", url: "https://deal-engine.com", category: "Travel & Transportation" },
-  { name: "Point.Me", slug: "point-me", url: "https://www.point.me", category: "Travel & Transportation" },
-  { name: "HyperGuest", slug: "hyperguest", url: "https://www.hyperguest.com", category: "Hospitality Technology" },
-  { name: "RS21", slug: "rs21", url: "https://rs21.io", category: "Enterprise & Emerging Tech" },
-  { name: "Safara", slug: "safara", url: "https://www.safara.com", category: "Loyalty & Payments" },
-  { name: "NLX", slug: "nlx", url: "https://nlx.ai", category: "Hospitality Technology" },
-  { name: "Bounce", slug: "bounce", url: "https://bounce.com", category: "Travel & Transportation" },
-  { name: "TripSuite", slug: "tripsuite", url: "https://www.tripsuite.com", category: "Travel & Transportation" },
-  { name: "CruiseBound", slug: "cruisebound", url: "https://www.cruisebound.com", category: "Travel & Transportation" },
-  { name: "Bonafide", slug: "bonafide", url: "https://bonafide.ai", category: "Hospitality Technology" },
-  { name: "Amenitiz", slug: "amenitiz", url: "https://amenitiz.com/en", category: "Hospitality Technology" },
-  { name: "Bridge", slug: "bridge", url: "https://www.bridgemarketplace.com", category: "Fintech" },
-  { name: "Hermetic", slug: "hermetic", url: "https://www.hermetic.ai", category: "Hospitality Technology" },
-  { name: "Cafeteria", slug: "cafeteria", url: "https://www.teamcafeteria.com", category: "Enterprise & Emerging Tech" },
-  { name: "Journey", slug: "journey", url: "https://www.journey.com", category: "Loyalty & Payments" },
-  { name: "Somo", slug: "somo", url: "https://somo.ai", category: "Hospitality Technology" },
-  { name: "ClaraSight", slug: "clarasight", url: "https://www.clarasight.com", category: "Travel & Transportation" },
-  { name: "Resort Pass", slug: "resort-pass", url: "https://www.resortpass.com", category: "Travel & Transportation" },
-  { name: "Slang", slug: "slang", url: "https://www.slang.ai", category: "Hospitality Technology" },
-  { name: "Rove", slug: "rove", url: "https://www.rove.com", category: "Loyalty & Payments" },
-  { name: "Social Tables", slug: "social-tables", url: "https://www.socialtables.com", category: "Hospitality Technology" },
-  { name: "Id90", slug: "id90", url: "https://www.id90travel.com", category: "Travel & Transportation" },
-  { name: "Upgrade", slug: "upgrade", url: "https://www.upgrade.com", category: "Fintech" },
-  { name: "Duetto", slug: "duetto", url: "https://www.duettocloud.com", category: "Hospitality Technology" },
+  { name: "MarginEdge", slug: "marginedge", w: 220, url: "https://www.marginedge.com", img: "/images/carousel/marginedge.webp", bgPos: "85% center", categories: ["Travel", "Food Service", "Hospitality"], highlight: true },
+  { name: "Katanox", slug: "katanox", logo: "katanox", url: "https://www.katanox.com", categories: ["Travel", "Hospitality", "Distribution"] },
+  { name: "Lendflow", slug: "lendflow", logo: "lendflow", url: "https://www.lendflow.com", categories: ["Travel", "Horizontal"] },
+  { name: "Runwise", slug: "runwise", logo: "runwise", url: "https://www.runwise.com", categories: ["Travel", "Prop Tech", "Sustainability"] },
+  { name: "Domuso", slug: "domuso", logo: "domuso", url: "https://www.domuso.com", categories: ["Travel", "Prop Tech"] },
+  { name: "Scale Computing", slug: "scale-computing", w: 200, url: "https://www.scalecomputing.com", categories: ["Travel", "Horizontal"] },
+  { name: "Cents", slug: "cents", logo: "cents", url: "https://www.trycents.com", categories: ["Travel", "Prop Tech", "Horizontal"] },
+  { name: "StayFlexi", slug: "stayflexi", logo: "stayflexi", url: "https://stayflexi.com", categories: ["Travel", "Hospitality"] },
+  { name: "Roots Natural Kitchen", slug: "roots-natural-kitchen", logo: "roots-natural-kitchen", url: "https://www.rootsnaturalkitchen.com", categories: ["Travel", "OpCo", "Food Service"] },
+  { name: "Meez", slug: "meez", logo: "meez", url: "https://www.getmeez.com", categories: ["Travel", "Food Service", "Sustainability"] },
+  { name: "Way", slug: "way", w: 160, url: "https://www.way.co", categories: ["Travel", "Experience", "Distribution"] },
+  { name: "Sensible Weather", slug: "sensible-weather", logo: "sensible-weather", url: "https://www.sensibleweather.com", categories: ["Travel", "Horizontal", "Sustainability"] },
+  { name: "Nestment", slug: "nestment", logo: "nestment", url: "https://www.nestment.com", categories: ["Travel", "Prop Tech", "Sustainability"] },
+  { name: "Topkey", slug: "topkey", w: 160, url: "https://www.topkey.io", categories: ["Travel", "Hospitality", "Prop Tech"] },
+  { name: "Vend", slug: "vend", logo: "vend-park", url: "https://www.vendpark.io", categories: ["Travel", "Prop Tech"] },
+  { name: "Cardinal Lands", slug: "cardinal-lands", logo: "cardinal-lands", url: "https://cardinallands.com", categories: ["Travel", "Operations", "Hospitality"] },
+  { name: "PayTheory", slug: "paytheory", logo: "paytheory", url: "https://www.paytheory.com", categories: ["Travel", "Horizontal", "Sustainability"] },
+  { name: "Directo", slug: "directo", logo: "direct", url: "https://www.directsoftware.com", categories: ["Travel", "Hospitality", "Distribution"] },
+  { name: "Aventuur", slug: "aventuur", logo: "aventuur", url: "https://www.aventuur.com", categories: ["Travel", "OpCo", "Experience"] },
+  { name: "Canary Technologies", slug: "canary-technologies", w: 220, url: "https://www.canarytechnologies.com", img: "/images/carousel/canary.webp", bgPos: "85% center", categories: ["Travel", "Hospitality", "Experience"], highlight: true },
+  { name: "Gravity Haus", slug: "gravity-haus", logo: "gravity-haus", url: "https://gravityhaus.com", categories: ["Travel", "OpCo"] },
+  { name: "Orderful", slug: "orderful", w: 180, url: "https://www.orderful.com", categories: ["Travel", "Distribution", "Horizontal"] },
+  { name: "Cardless", slug: "cardless", w: 200, url: "https://www.cardless.com", img: "/images/carousel/cardless.webp", bgPos: "85% center", categories: ["Travel", "Horizontal"], highlight: true },
+  { name: "Guidesly", slug: "guidesly", logo: "guidesly", url: "https://guidesly.com", categories: ["Travel", "Experience"] },
+  { name: "Nuit\u00e9e", slug: "nuitee", w: 160, url: "https://nuitee.com", img: "/images/carousel/nuitee.webp", bgPos: "85% center", categories: ["Travel", "Distribution"], highlight: true },
+  { name: "Rain", slug: "rain", w: 160, url: "https://www.rain.xyz", img: "/images/carousel/rain.webp", bgPos: "85% center", categories: ["Travel", "Horizontal"], highlight: true },
+  { name: "Jose Andres Group", slug: "jose-andres-group", logo: "jose-andres-group", url: "https://www.joseandres.com", categories: ["Travel", "OpCo"] },
+  { name: "BoomPop", slug: "boompop", logo: "boompop", url: "https://boompop.com", categories: ["Travel", "Experience", "Hospitality", "Corporate"] },
+  { name: "Ballers", slug: "ballers", logo: "ballers", url: "https://www.ballers-us.com", categories: ["Travel", "OpCo", "Experience"] },
+  { name: "Paradero", slug: "paradero", w: 180, url: "https://www.paraderohotels.com", categories: ["Travel", "OpCo", "Hospitality"] },
+  { name: "Tixr", slug: "tixr", logo: "tixr", url: "https://www.tixr.com", categories: ["Travel", "Experience"], highlight: true },
+  { name: "Magic", slug: "magic", logo: "magic", url: "https://www.magic.company", categories: ["Travel", "Experience", "Hospitality", "Food Service"] },
+  { name: "Path Water", slug: "path-water", logo: "path", url: "https://drinkpathwater.com", categories: ["Travel", "Sustainability"] },
+  { name: "Bilt", slug: "bilt", logo: "bilt", url: "https://www.biltrewards.com", categories: ["Travel", "Horizontal", "Experience"], highlight: true },
+  { name: "Beekeeper", slug: "beekeeper", logo: "beekeeper", url: "https://www.beekeeper.io", categories: ["Travel", "Horizontal"] },
+  { name: "Mews", slug: "mews", w: 200, url: "https://www.mews.com", img: "/images/carousel/mews.webp", bgPos: "85% center", categories: ["Travel", "Hospitality"], highlight: true },
+  { name: "May Mobility", slug: "may-mobility", logo: "may-mobility", url: "https://maymobility.com", categories: ["Travel", "Transportation"] },
+  { name: "Humanly", slug: "humanly", logo: "humanly", url: "https://www.humanly.io", categories: ["Travel", "Horizontal"] },
+  { name: "Rest", slug: "rest", w: 140, url: "https://www.restsensor.com", categories: ["Travel", "Prop Tech", "Sustainability"] },
+  { name: "Super", slug: "super", w: 190, url: "https://www.super.com", img: "/images/carousel/super.webp", bgPos: "85% center", categories: ["Travel", "Distribution", "Horizontal"], highlight: true },
+  { name: "Meili", slug: "meili", logo: "meili", url: "https://www.meili.travel", categories: ["Travel", "Distribution"] },
+  { name: "Deal Engine", slug: "deal-engine", logo: "dealengine", url: "https://deal-engine.com", categories: ["Travel", "Corporate"] },
+  { name: "Point.Me", slug: "point-me", logo: "point.me", url: "https://www.point.me", categories: ["Travel", "Distribution", "Experience"] },
+  { name: "HyperGuest", slug: "hyperguest", logo: "hyperguest", url: "https://www.hyperguest.com", categories: ["Travel", "Distribution"] },
+  { name: "RS21", slug: "rs21", logo: "rs21", url: "https://rs21.io", categories: ["Travel", "Horizontal"] },
+  { name: "Safara", slug: "safara", logo: "safara", url: "https://www.safara.com", categories: ["Travel", "Distribution"] },
+  { name: "NLX", slug: "nlx", logo: "nlx", url: "https://nlx.ai", categories: ["Travel", "Horizontal"] },
+  { name: "Bounce", slug: "bounce", logo: "bounce", url: "https://bounce.com", categories: ["Travel", "Horizontal"] },
+  { name: "TripSuite", slug: "tripsuite", logo: "tripsuite", url: "https://www.tripsuite.com", categories: ["Travel", "Corporate"] },
+  { name: "CruiseBound", slug: "cruisebound", logo: "cruisebound", url: "https://www.cruisebound.com", categories: ["Travel", "Distribution"] },
+  { name: "Bonafide", slug: "bonafide", logo: "bonafide", url: "https://bonafide.ai", categories: ["Travel", "Distribution"] },
+  { name: "Amenitiz", slug: "amenitiz", logo: "amenitiz", url: "https://amenitiz.com/en", categories: ["Travel", "Hospitality"] },
+  { name: "Bridge", slug: "bridge", logo: "bridge", url: "https://www.bridgemarketplace.com", categories: ["Travel", "Hospitality", "Prop Tech"] },
+  { name: "Hermetic", slug: "hermetic", logo: "hermetic-ai", url: "https://www.hermetic.ai", categories: ["Travel", "Hospitality", "Food Service"] },
+  { name: "Cafeteria", slug: "cafeteria", logo: "cafeteria", url: "https://www.teamcafeteria.com", categories: ["Travel", "Horizontal"] },
+  { name: "Journey", slug: "journey", logo: "journey", url: "https://www.journey.com", categories: ["Travel", "Hospitality", "Experience"] },
+  { name: "Somo", slug: "somo", logo: "somo", w: 80, url: "https://somo.ai", categories: ["Travel", "Prop Tech", "Sustainability"] },
+  { name: "ClaraSight", slug: "clarasight", logo: "clarasight", url: "https://www.clarasight.com", categories: ["Travel", "Corporate", "Sustainability"] },
+  { name: "Resort Pass", slug: "resort-pass", logo: "resortpass", url: "https://www.resortpass.com", categories: ["Travel", "Hospitality", "Distribution"] },
+  { name: "Jetstream", slug: "jetstream", w: 180, url: "https://jetstream.security", img: "/images/carousel/jetstream.webp", bgPos: "55% center", categories: ["Travel", "Horizontal"] },
+  { name: "Slang", slug: "slang", logo: "slang", url: "https://www.slang.ai", categories: ["Travel", "Food Service"] },
+  { name: "Cloaked", slug: "cloaked", w: 160, url: "https://cloaked.com", img: "/images/carousel/cloaked.webp", bgPos: "70% center", categories: ["Travel", "Horizontal"], highlight: true },
+  { name: "Rove", slug: "rove", logo: "rove", url: "https://www.rove.com", categories: ["Travel", "Distribution"] },
+  { name: "Social Tables", slug: "social-tables", logo: "socialtables", url: "https://www.socialtables.com", categories: ["Travel", "Hospitality"] },
+  { name: "Id90", slug: "id90", logo: "id90", url: "https://www.id90travel.com", categories: ["Travel", "Distribution"] },
+  { name: "Upgrade", slug: "upgrade", logo: "upgrade", url: "https://www.upgrade.com", categories: ["Travel", "Horizontal"] },
+  { name: "Duetto", slug: "duetto", w: 180, url: "https://www.duettocloud.com", categories: ["Travel", "Hospitality"] },
 ];
 
-export default function EditorialPortfolioPage() {
+export default function EditorialPortfolioPage({ articles }: { articles: Article[] }) {
   const { light } = useEditorialMode();
   const c = ec(light);
   const serif = { fontFamily: "'Cormorant Garamond', Georgia, serif" };
   const sans = { fontFamily: "'Syne', sans-serif" };
 
   const categoryList = [
-    "All",
-    "Hospitality Technology",
-    "Hospitality Brands & Experiences",
-    "Travel & Transportation",
-    "PropTech & Real Estate",
-    "Loyalty & Payments",
-    "Fintech",
-    "Enterprise & Emerging Tech",
+    "Travel",
+    "Corporate",
+    "Distribution",
+    "Experience",
+    "Food Service",
+    "Horizontal",
+    "Hospitality",
+    "OpCo",
+    "Operations",
+    "Prop Tech",
+    "Sustainability",
+    "Transportation",
   ];
   const searchParams = useSearchParams();
-  const [active, setActive] = useState("All");
+  const [active, setActive] = useState("Travel");
 
   useEffect(() => {
     const cat = searchParams.get("category");
@@ -124,37 +131,23 @@ export default function EditorialPortfolioPage() {
     }
   }, [searchParams]);
 
-  const filtered = active === "All" ? companies : companies.filter((co) => co.category === active);
-
-  const metaStats = [
-    { value: "$2.8B+", label: "Portfolio Value" },
-    { value: "67", label: "Active Companies" },
-    { value: "7", label: "Sectors" },
-    { value: "3", label: "Funds" },
-  ];
+  const matches = companies.filter((co) => co.categories.includes(active));
+  const filtered = [...matches.filter((co) => co.highlight), ...matches.filter((co) => !co.highlight)];
 
   return (
     <div className="min-h-screen transition-colors duration-500" style={{ backgroundColor: c.bg, color: c.text }}>
       <EditorialNav active="portfolio" />
 
       {/* ── Hero ── */}
-      <section className="px-6 md:px-12 py-24 md:py-40">
-        <div className="max-w-7xl mx-auto">
+      <section className="px-6 md:px-12 py-24 md:min-h-[600px] flex flex-col">
+        <div className="w-full max-w-7xl mx-auto">
           <span className="text-[0.72rem] uppercase tracking-[0.22em] block mb-8" style={{ ...sans, color: c.accentText, fontWeight: c.sansWeight }}>Portfolio</span>
-          <h1 className="text-[clamp(2rem,5vw,4.5rem)] leading-[1.08] font-light italic mb-10 max-w-4xl" style={{ ...serif, color: c.text }}>
+          <h1 className="text-[clamp(2rem,5vw,4.5rem)] leading-[1.08] font-light italic mb-8 max-w-4xl" style={{ ...serif, color: c.text }}>
             Investing in companies shaping the future of global travel.
           </h1>
-          <p className="text-[1.15rem] leading-[1.7] max-w-3xl mb-12" style={{ ...sans, color: c.bodyText, fontWeight: c.sansWeight }}>
+          <p className="text-[1.15rem] leading-[1.7] max-w-3xl" style={{ ...sans, color: c.bodyText, fontWeight: c.sansWeight }}>
             Travel isn&rsquo;t just a vertical. Our portfolio encompasses all companies who can or will sell to and partner with the global travel industry. Thayer invests on behalf of the travel industry to make travel operations and consumption &mdash; safer, easier, and fundamentally more intelligent.
           </p>
-          <div className="flex flex-wrap gap-8 md:gap-16">
-            {metaStats.map((s, i) => (
-              <div key={i}>
-                <span className="text-[2.2rem] font-light block mb-1" style={{ ...serif, color: c.accent, fontWeight: c.statWeight }}>{s.value}</span>
-                <span className="text-[0.72rem] uppercase tracking-[0.18em]" style={{ ...sans, color: c.muted, fontWeight: c.sansWeight }}>{s.label}</span>
-              </div>
-            ))}
-          </div>
         </div>
       </section>
 
@@ -167,11 +160,11 @@ export default function EditorialPortfolioPage() {
               <button
                 key={cat}
                 onClick={() => setActive(cat)}
-                className="text-[0.7rem] uppercase tracking-[0.16em] px-2 py-2 border transition-all duration-300 hover:bg-[rgba(196,154,69,0.1)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+                className="text-[0.7rem] uppercase tracking-[0.16em] px-2 py-2 border transition-all duration-300 hover:bg-[rgba(46,157,85,0.1)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
                 style={{
                   borderColor: active === cat ? c.accent : c.rule,
                   color: active === cat ? c.accentText : c.muted,
-                  backgroundColor: active === cat ? "rgba(196,154,69,0.1)" : undefined,
+                  backgroundColor: active === cat ? "rgba(46,157,85,0.1)" : undefined,
                   fontWeight: c.sansWeight,
                   outlineColor: c.accent,
                 }}
@@ -182,38 +175,54 @@ export default function EditorialPortfolioPage() {
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-6">
-            {filtered.map((co) => (
-              <a
-                key={co.slug}
-                href={co.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={`Visit ${co.name}`}
-                className="group aspect-[4/3] border flex items-center justify-center px-4 md:px-6 relative overflow-hidden focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
-                style={{ backgroundColor: c.surface, borderColor: c.rule, outlineColor: c.accent }}
-              >
-                {co.img ? (
-                  <>
-                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 scale-100 group-hover:scale-110 transition-all duration-700 ease-out bg-cover" style={{ backgroundImage: `url('${co.img}')`, backgroundPosition: co.bgPos }} />
-                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 ease-out" style={{ backgroundColor: "rgba(0,0,0,0.4)" }} />
-                    <img src={`/logos/portfolio/${co.slug}-${light ? "light" : "dark"}.svg`} alt={`${co.name} logo`} className="object-contain relative z-10 group-hover:hidden" style={{ width: co.w, maxWidth: "80%" }} />
-                    <img src={`/logos/portfolio/${co.slug}-dark.svg`} alt={`${co.name} logo`} className="object-contain relative z-10 hidden group-hover:block group-hover:scale-110 transition-transform duration-700 ease-out" style={{ width: co.w, maxWidth: "80%" }} />
-                  </>
-                ) : (
-                  <span
-                    className="relative z-10 text-center text-[1.05rem] md:text-[1.15rem] font-light italic leading-tight transition-colors duration-300 group-hover:text-[#C49A45]"
-                    style={{ ...serif, color: c.text }}
-                  >
-                    {co.name}
-                  </span>
-                )}
-              </a>
-            ))}
+            {filtered.map((co) => {
+              const stem = co.logo ?? co.slug;
+              const showLogo = Boolean(co.logo || co.w);
+              const swapToWhite = Boolean(co.img) || !co.noWhite;
+              const logoStyle: React.CSSProperties = co.w
+                ? { width: co.w, maxWidth: "80%" }
+                : { maxWidth: "80%", maxHeight: "45%" };
+              return (
+                <a
+                  key={co.slug}
+                  href={co.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`Visit ${co.name}`}
+                  className="group aspect-[4/3] border flex items-center justify-center px-4 md:px-6 relative overflow-hidden focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+                  style={{ backgroundColor: c.surface, borderColor: c.rule, outlineColor: c.accent }}
+                >
+                  {showLogo ? (
+                    <>
+                      {co.img ? (
+                        <>
+                          <div className="absolute inset-0 opacity-0 group-hover:opacity-100 scale-100 group-hover:scale-110 transition-all duration-700 ease-out bg-cover" style={{ backgroundImage: `url('${co.img}')`, backgroundPosition: co.bgPos }} />
+                          <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 ease-out" style={{ backgroundColor: "rgba(0,0,0,0.4)" }} />
+                        </>
+                      ) : (
+                        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 ease-out" style={{ backgroundColor: c.accent }} />
+                      )}
+                      <img src={`/logos/portfolio/${stem}-${light ? "light" : "dark"}.svg`} alt={`${co.name} logo`} className={`object-contain relative z-10 ${swapToWhite ? "group-hover:hidden" : ""}`} style={logoStyle} />
+                      {swapToWhite && (
+                        <img src={`/logos/portfolio/${stem}-dark.svg`} alt={`${co.name} logo`} className={`object-contain relative z-10 hidden group-hover:block transition-transform duration-700 ease-out ${co.img ? "group-hover:scale-110" : ""}`} style={logoStyle} />
+                      )}
+                    </>
+                  ) : (
+                    <span
+                      className="relative z-10 text-center text-[1.05rem] md:text-[1.15rem] font-light italic leading-tight transition-colors duration-300 group-hover:text-[#2E9D55]"
+                      style={{ ...serif, color: c.text }}
+                    >
+                      {co.name}
+                    </span>
+                  )}
+                </a>
+              );
+            })}
           </div>
         </div>
       </section>
 
-      <EditorialHeadlines number="02" />
+      <EditorialHeadlines number="02" articles={articles} />
 
       <EditorialFooter />
     </div>

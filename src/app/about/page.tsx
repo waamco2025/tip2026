@@ -1,5 +1,7 @@
 import EditorialAbout from "@/concepts/editorial/AboutPage";
+import { getAllArticles } from "@/lib/articles";
 
 export default function AboutPage() {
-  return <EditorialAbout />;
+  const articles = getAllArticles();
+  return <EditorialAbout articles={articles} />;
 }

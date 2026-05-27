@@ -105,7 +105,7 @@ export default function EditorialArticlePage({ article, prev, next, related }: P
           {article.sourceUrl && (
             <p className="mt-12 pt-6 border-t text-[0.7rem] uppercase tracking-[0.16em]" style={{ borderColor: c.rule, ...sans, color: c.muted, fontWeight: c.sansWeight }}>
               Source &middot;{" "}
-              <a href={article.sourceUrl} target="_blank" rel="noopener noreferrer" className="hover:text-[#C49A45] transition-colors" style={{ color: c.accentText }}>
+              <a href={article.sourceUrl} target="_blank" rel="noopener noreferrer" className="hover:text-[#2E9D55] transition-colors" style={{ color: c.accentText }}>
                 {new URL(article.sourceUrl).hostname.replace(/^www\./, "")}
               </a>
             </p>
@@ -127,8 +127,8 @@ export default function EditorialArticlePage({ article, prev, next, related }: P
                   style={{ borderColor: c.rule }}
                 >
                   <span className="text-[0.68rem] uppercase tracking-[0.16em] shrink-0 w-24" style={{ ...sans, color: c.muted, fontWeight: c.sansWeight }}>{formatDate(r.date)}</span>
-                  <span className="text-[1.5rem] md:text-[1.5rem] font-light italic flex-1 group-hover:text-[#C49A45] transition-colors" style={{ ...serif, color: c.text, fontWeight: c.headingWeight }}>{r.title}</span>
-                  <span className="group-hover:text-[#C49A45] transition-colors shrink-0" style={{ color: c.muted }}>&rarr;</span>
+                  <span className="text-[1.5rem] md:text-[1.5rem] font-light italic flex-1 group-hover:text-[#2E9D55] transition-colors" style={{ ...serif, color: c.text, fontWeight: c.headingWeight }}>{r.title}</span>
+                  <span className="group-hover:text-[#2E9D55] transition-colors shrink-0" style={{ color: c.muted }}>&rarr;</span>
                 </Link>
               ))}
             </div>

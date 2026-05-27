@@ -1,28 +1,15 @@
 "use client";
 
-import { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useContext } from "react";
 
 const EditorialModeContext = createContext<{
   light: boolean;
   toggle: () => void;
-}>({ light: false, toggle: () => {} });
+}>({ light: true, toggle: () => {} });
 
 export function EditorialModeProvider({ children }: { children: React.ReactNode }) {
-  const [light, setLight] = useState(false);
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    const stored = localStorage.getItem("editorial-light");
-    if (stored === "true") setLight(true);
-    setMounted(true);
-  }, []);
-
-  useEffect(() => {
-    if (mounted) localStorage.setItem("editorial-light", String(light));
-  }, [light, mounted]);
-
   return (
-    <EditorialModeContext.Provider value={{ light, toggle: () => setLight((v) => !v) }}>
+    <EditorialModeContext.Provider value={{ light: true, toggle: () => {} }}>
       {children}
     </EditorialModeContext.Provider>
   );
@@ -33,22 +20,21 @@ export function useEditorialMode() {
 }
 
 /* Color mappings */
-export function ec(light: boolean) {
+export function ec(_light: boolean) {
   return {
-    bg: light ? "#F4F1EC" : "#0C0C0A",
-    surface: light ? "#F0EDE8" : "#141410",
-    text: light ? "#1A1917" : "#EAE5DB",
-    muted: light ? "#4A4338" : "#9A9588",
-    accent: "#C49A45",
-    accentText: light ? "#8B6B25" : "#C49A45",
-    rule: light ? "rgba(0,0,0,0.14)" : "rgba(255,255,255,0.1)",
-    bodyText: light ? "rgba(26,25,23,0.78)" : "rgba(234,229,219,0.9)",
-    bodyWeight: light ? 600 : 500,
-    /* Additional weights for different contexts */
-    sansWeight: light ? 600 : 500,    // sans-serif labels, dates, tags
-    headingWeight: light ? 600 : 500, // section subheadings (italic)
-    statWeight: light ? 600 : 400,    // stat numbers
-    hamburger: light ? "#1A1917" : "#EAE5DB",
-    logo: light ? "/logotype-dark.svg" : "/logotype.svg",
+    bg: "#F4F1EC",
+    surface: "#F0EDE8",
+    text: "#1A1917",
+    muted: "#4A4338",
+    accent: "#2E9D55",
+    accentText: "#1F6B3A",
+    rule: "rgba(0,0,0,0.14)",
+    bodyText: "rgba(26,25,23,0.78)",
+    bodyWeight: 600,
+    sansWeight: 600,
+    headingWeight: 600,
+    statWeight: 600,
+    hamburger: "#1A1917",
+    logo: "/logotype-dark.svg",
   };
 }
