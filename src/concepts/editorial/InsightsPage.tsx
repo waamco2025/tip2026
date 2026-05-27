@@ -57,7 +57,7 @@ export default function EditorialInsightsPage({ articles }: { articles: Article[
                   <img
                     src={featured.heroImage}
                     alt={featured.heroImageAlt}
-                    className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+                    className="absolute inset-0 w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-700 ease-out"
                   />
                 ) : (
                   <span className="absolute bottom-6 left-6 text-[0.65rem] uppercase tracking-[0.2em]" style={{ ...sans, color: c.muted, fontWeight: c.sansWeight }}>Featured Image</span>
