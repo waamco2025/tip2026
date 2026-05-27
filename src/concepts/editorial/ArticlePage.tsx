@@ -2,7 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
-import { EditorialNav, EditorialFooter } from "./HomePage";
+import { EditorialNav, EditorialFooter, ArticleListItem } from "./HomePage";
 import { useEditorialMode, ec } from "./EditorialModeContext";
 import type { Article, ArticleBlock, InlineSpan } from "@/lib/article-types";
 import { formatDate } from "@/lib/article-types";
@@ -45,7 +45,7 @@ type Props = {
   article: Article;
   prev: Pick<Article, "slug" | "title"> | null;
   next: Pick<Article, "slug" | "title"> | null;
-  related: Pick<Article, "slug" | "title" | "date">[];
+  related: Article[];
 };
 
 export default function EditorialArticlePage({ article, prev, next, related }: Props) {
@@ -120,16 +120,7 @@ export default function EditorialArticlePage({ article, prev, next, related }: P
             <span className="text-[0.72rem] uppercase tracking-[0.22em] block mb-10" style={{ ...sans, color: c.accentText, fontWeight: c.sansWeight }}>Related Articles</span>
             <div className="flex flex-col">
               {related.map((r) => (
-                <Link
-                  key={r.slug}
-                  href={`/news/${r.slug}`}
-                  className="group flex items-center gap-6 md:gap-10 py-5 border-b transition-colors"
-                  style={{ borderColor: c.rule }}
-                >
-                  <span className="text-[0.68rem] uppercase tracking-[0.16em] shrink-0 w-24" style={{ ...sans, color: c.muted, fontWeight: c.sansWeight }}>{formatDate(r.date)}</span>
-                  <span className="text-[1.5rem] md:text-[1.5rem] font-light italic flex-1 group-hover:text-[#2E9D55] transition-colors" style={{ ...serif, color: c.text, fontWeight: c.headingWeight }}>{r.title}</span>
-                  <span className="group-hover:text-[#2E9D55] transition-colors shrink-0" style={{ color: c.muted }}>&rarr;</span>
-                </Link>
+                <ArticleListItem key={r.slug} article={r} />
               ))}
             </div>
           </div>
