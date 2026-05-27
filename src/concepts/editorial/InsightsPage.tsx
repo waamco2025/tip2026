@@ -33,9 +33,9 @@ export default function EditorialInsightsPage({ articles }: { articles: Article[
       <EditorialNav active="insights" />
 
       {/* ── Hero (intro + featured) ── */}
-      <section className="px-6 md:px-12 py-24 md:pb-8 md:min-h-[600px] flex flex-col">
+      <section className="px-6 md:px-12 py-24 md:py-0 md:min-h-[600px] flex flex-col">
         <div className="max-w-7xl mx-auto w-full flex flex-col md:flex-row gap-12 md:gap-16 flex-1">
-          <div className="md:flex-1">
+          <div className="md:flex-1 md:pt-24">
             <span className="text-[0.72rem] uppercase tracking-[0.22em] block mb-8" style={{ ...sans, color: c.accentText, fontWeight: c.sansWeight }}>Insights</span>
             <h1 className="text-[clamp(2rem,5vw,4.5rem)] leading-[1.08] font-light italic mb-8" style={{ ...serif, color: c.text }}>
               Perspectives on the future of travel &amp; technology.
@@ -46,11 +46,11 @@ export default function EditorialInsightsPage({ articles }: { articles: Article[
           </div>
 
           {featured && (
-            <div className="md:flex-1 md:flex">
-            <Link href={`/news/${featured.slug}`} className="group flex flex-col gap-4 border p-6 md:p-8 w-full md:h-full" style={{ backgroundColor: c.surface, borderColor: c.rule }}>
+            <div className="md:flex-1 md:flex md:items-center">
+            <Link href={`/news/${featured.slug}`} className="group flex flex-col gap-4 border p-6 md:p-8 w-full" style={{ backgroundColor: c.surface, borderColor: c.rule }}>
               <span className="text-[0.65rem] uppercase tracking-[0.2em] block" style={{ ...sans, color: c.accentText, fontWeight: c.sansWeight }}>Latest &middot; {formatDate(featured.date)} &middot; {featured.category}</span>
               <div
-                className="aspect-[5/3] md:aspect-auto md:flex-1 md:min-h-0 border overflow-hidden relative"
+                className="aspect-[5/3] md:aspect-auto md:h-[210px] border overflow-hidden relative"
                 style={{ backgroundColor: c.bg, borderColor: c.rule }}
               >
                 {featured.heroImage ? (
