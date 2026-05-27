@@ -29,6 +29,7 @@ type Company = {
   bgPos?: string;
   logo?: string;      // logo file stem when it differs from slug (also marks "has a logo file")
   noWhite?: boolean;  // logo has no -dark (white) variant for the hover state
+  acquired?: string;  // acquirer name; renders an "Acquired by …" pill that lifts on hover
 };
 
 const companies: Company[] = [
@@ -66,7 +67,7 @@ const companies: Company[] = [
   { name: "Magic", slug: "magic", logo: "magic", url: "https://www.magic.company", categories: ["Travel", "Experience", "Hospitality", "Food Service"] },
   { name: "Path Water", slug: "path-water", logo: "path", url: "https://drinkpathwater.com", categories: ["Travel", "Sustainability"] },
   { name: "Bilt", slug: "bilt", logo: "bilt", url: "https://www.biltrewards.com", categories: ["Travel", "Horizontal", "Experience"], highlight: true },
-  { name: "Beekeeper", slug: "beekeeper", logo: "beekeeper", url: "https://www.beekeeper.io", categories: ["Travel", "Horizontal"] },
+  { name: "Beekeeper", slug: "beekeeper", logo: "beekeeper", acquired: "LumApps", url: "https://www.beekeeper.io", categories: ["Travel", "Horizontal"] },
   { name: "Mews", slug: "mews", w: 200, url: "https://www.mews.com", categories: ["Travel", "Hospitality"], highlight: true },
   { name: "May Mobility", slug: "may-mobility", logo: "may-mobility", url: "https://maymobility.com", categories: ["Travel", "Transportation"] },
   { name: "Humanly", slug: "humanly", logo: "humanly", url: "https://www.humanly.io", categories: ["Travel", "Horizontal"] },
@@ -95,10 +96,10 @@ const companies: Company[] = [
   { name: "Slang", slug: "slang", logo: "slang", url: "https://www.slang.ai", categories: ["Travel", "Food Service"] },
   { name: "Cloaked", slug: "cloaked", w: 160, url: "https://cloaked.com", categories: ["Travel", "Horizontal"], highlight: true },
   { name: "Rove", slug: "rove", logo: "rove", url: "https://www.rove.com", categories: ["Travel", "Distribution"] },
-  { name: "Social Tables", slug: "social-tables", logo: "socialtables", url: "https://www.socialtables.com", categories: ["Travel", "Hospitality"] },
+  { name: "Social Tables", slug: "social-tables", logo: "socialtables", acquired: "Cvent", url: "https://www.socialtables.com", categories: ["Travel", "Hospitality"] },
   { name: "Id90", slug: "id90", logo: "id90", url: "https://www.id90travel.com", categories: ["Travel", "Distribution"] },
   { name: "Upgrade", slug: "upgrade", logo: "upgrade", url: "https://www.upgrade.com", categories: ["Travel", "Horizontal"] },
-  { name: "Duetto", slug: "duetto", w: 180, url: "https://www.duettocloud.com", categories: ["Travel", "Hospitality"] },
+  { name: "Duetto", slug: "duetto", w: 180, acquired: "GrowthCurve", url: "https://www.duettocloud.com", categories: ["Travel", "Hospitality"] },
 ];
 
 export default function EditorialPortfolioPage({ articles }: { articles: Article[] }) {
@@ -213,6 +214,14 @@ export default function EditorialPortfolioPage({ articles }: { articles: Article
                       style={{ ...serif, color: c.text }}
                     >
                       {co.name}
+                    </span>
+                  )}
+                  {co.acquired && (
+                    <span
+                      className="absolute bottom-3 left-0 right-0 mx-auto w-fit z-20 whitespace-nowrap rounded-full border px-2.5 py-1 text-[0.55rem] uppercase tracking-[0.12em] transition-transform duration-500 ease-out group-hover:-translate-y-1.5"
+                      style={{ ...sans, backgroundColor: c.bg, borderColor: c.rule, color: c.muted, fontWeight: c.sansWeight }}
+                    >
+                      Acquired by {co.acquired}
                     </span>
                   )}
                 </a>
