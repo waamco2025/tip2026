@@ -2,7 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
-import { EditorialNav, EditorialFooter, ArticleListItem } from "./HomePage";
+import { EditorialNav, EditorialFooter, ArticleListItem, CloudBackground } from "./HomePage";
 import { useEditorialMode, ec } from "./EditorialModeContext";
 import type { Article } from "@/lib/article-types";
 import { formatDate } from "@/lib/article-types";
@@ -29,7 +29,8 @@ export default function EditorialInsightsPage({ articles }: { articles: Article[
   const rest = articles.slice(1);
 
   return (
-    <div className="min-h-screen transition-colors duration-500" style={{ backgroundColor: c.bg, color: c.text }}>
+    <div className="relative isolate min-h-screen transition-colors duration-500" style={{ backgroundColor: c.bg, color: c.text }}>
+      <CloudBackground />
       <EditorialNav active="insights" />
 
       {/* ── Hero (intro + featured) ── */}

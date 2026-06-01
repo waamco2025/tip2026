@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { ChevronDown } from "lucide-react";
-import { EditorialNav, EditorialFooter, EditorialHeadlines } from "./HomePage";
+import { EditorialNav, EditorialFooter, EditorialHeadlines, CloudBackground } from "./HomePage";
 import { useEditorialMode, ec } from "./EditorialModeContext";
 import type { Article } from "@/lib/article-types";
 
@@ -36,7 +36,8 @@ export default function EditorialAboutPage({ articles }: { articles: Article[] }
   const [expandedMember, setExpandedMember] = useState<number | null>(null);
 
   return (
-    <div className="min-h-screen transition-colors duration-500" style={{ backgroundColor: c.bg, color: c.text }}>
+    <div className="relative isolate min-h-screen transition-colors duration-500" style={{ backgroundColor: c.bg, color: c.text }}>
+      <CloudBackground />
       <EditorialNav active="about" />
 
       {/* ── Hero ── */}

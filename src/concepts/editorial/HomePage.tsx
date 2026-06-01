@@ -10,8 +10,18 @@ import { formatDate } from "@/lib/article-types";
 /* ─── Shared Nav ─── */
 export function EditorialNav({ active = "home" }: { active?: string }) {
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const { light } = useEditorialMode();
   const c = ec(light);
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+  // White link treatment only at md+ on the Home hero (where links overlay the dark carousel).
+  // Desktop links are `hidden md:flex`, so this color never reaches mobile.
+  const overlayMode = active === "home" && !scrolled;
   const links = [
     { label: "Home", href: "/", key: "home" },
     { label: "About", href: "/about", key: "about" },
@@ -21,37 +31,46 @@ export function EditorialNav({ active = "home" }: { active?: string }) {
   ];
   const linkCls = (k: string) =>
     `transition-colors duration-300 ${active === k ? "" : "hover:opacity-80"}`;
+  const desktopLinkColor = (isActive: boolean) =>
+    overlayMode
+      ? (isActive ? "#ffffff" : "rgba(255,255,255,0.75)")
+      : (isActive ? c.text : c.muted);
 
   return (
     <nav
-      className="sticky top-0 z-50 px-6 md:px-12 py-5 md:py-6 flex items-center justify-between border-b transition-colors duration-500"
-      style={{ backgroundColor: c.bg, borderColor: c.rule }}
+      className="sticky top-0 z-50 border-b transition-colors duration-300"
+      style={{
+        backgroundColor: scrolled ? c.bg : "transparent",
+        borderColor: scrolled ? c.rule : "transparent",
+      }}
     >
-      <Link href="/">
-        <img src={c.logo} alt="Thayer" className="h-12 md:h-14" />
-      </Link>
+      <div className="max-w-7xl mx-auto px-6 md:px-0 py-5 md:py-6 flex items-center justify-between">
+        <Link href="/">
+          <img src={c.logo} alt="Thayer" className="h-12 md:h-14" />
+        </Link>
 
-      {/* Desktop */}
-      <div className="hidden md:flex items-center gap-8" style={{ fontFamily: "'Syne', sans-serif" }}>
-        {links.map((l) => (
-          <Link
-            key={l.key}
-            href={l.href}
-            className={`text-[0.78rem] uppercase tracking-[0.14em] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 ${linkCls(l.key)}`}
-            style={{ color: active === l.key ? c.text : c.muted, fontWeight: c.sansWeight, outlineColor: c.accent }}
-          >
-            {l.label}
-          </Link>
-        ))}
-      </div>
+        {/* Desktop */}
+        <div className="hidden md:flex items-center gap-8" style={{ fontFamily: "'Syne', sans-serif" }}>
+          {links.map((l) => (
+            <Link
+              key={l.key}
+              href={l.href}
+              className={`text-[0.78rem] uppercase tracking-[0.14em] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 ${linkCls(l.key)}`}
+              style={{ color: desktopLinkColor(active === l.key), fontWeight: c.sansWeight, outlineColor: c.accent }}
+            >
+              {l.label}
+            </Link>
+          ))}
+        </div>
 
-      {/* Mobile hamburger */}
-      <div className="flex md:hidden items-center gap-4">
-        <button onClick={() => setOpen(!open)} className="flex flex-col gap-[5px] w-6" aria-label="Menu">
-          <span className="block h-px transition-all duration-300" style={{ backgroundColor: c.hamburger, transform: open ? "rotate(45deg) translateY(3px)" : "none", opacity: 1 }} />
-          <span className="block h-px transition-all duration-300" style={{ backgroundColor: c.hamburger, opacity: open ? 0 : 1 }} />
-          <span className="block h-px transition-all duration-300" style={{ backgroundColor: c.hamburger, transform: open ? "rotate(-45deg) translateY(-3px)" : "none", opacity: 1 }} />
-        </button>
+        {/* Mobile hamburger */}
+        <div className="flex md:hidden items-center gap-4">
+          <button onClick={() => setOpen(!open)} className="flex flex-col gap-[5px] w-6" aria-label="Menu">
+            <span className="block h-px transition-all duration-300" style={{ backgroundColor: c.hamburger, transform: open ? "rotate(45deg) translateY(3px)" : "none", opacity: 1 }} />
+            <span className="block h-px transition-all duration-300" style={{ backgroundColor: c.hamburger, opacity: open ? 0 : 1 }} />
+            <span className="block h-px transition-all duration-300" style={{ backgroundColor: c.hamburger, transform: open ? "rotate(-45deg) translateY(-3px)" : "none", opacity: 1 }} />
+          </button>
+        </div>
       </div>
 
       {/* Mobile menu */}
@@ -74,6 +93,60 @@ export function EditorialNav({ active = "home" }: { active?: string }) {
         </div>
       )}
     </nav>
+  );
+}
+
+/* ─── "Above the Clouds" — fixed halftone cloud background ─── */
+// Procedural: two SVG turbulence noise fields composited with two halftone dot
+// patterns (larger dots for cloud bodies, smaller dots for wisps). The whole
+// element is fixed to the viewport bottom and CSS-masked into a vertical fade,
+// so clouds appear to dissipate upward as the user rises through the page.
+export function CloudBackground() {
+  const { light } = useEditorialMode();
+  const c = ec(light);
+  return (
+    <div
+      aria-hidden="true"
+      className="pointer-events-none fixed inset-x-0 bottom-0 h-[30vh] -z-10"
+      style={{
+        WebkitMaskImage:
+          "linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 45%, rgba(0,0,0,0) 100%)",
+        maskImage:
+          "linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 45%, rgba(0,0,0,0) 100%)",
+      }}
+    >
+      <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          {/* Cloud bodies — broad lobes, hard-edged via steep alpha threshold so the dots
+              form readable cloud silhouettes rather than a diffuse haze. */}
+          <filter id="cloud-soft" x="0" y="0" width="100%" height="100%">
+            <feTurbulence type="fractalNoise" baseFrequency="0.005 0.012" numOctaves="3" seed="2" />
+            <feColorMatrix values="0 0 0 0 1   0 0 0 0 1   0 0 0 0 1   4 0 0 0 -1.6" />
+          </filter>
+          {/* Wisps along the edges — finer turbulence at an even sharper threshold */}
+          <filter id="cloud-detail" x="0" y="0" width="100%" height="100%">
+            <feTurbulence type="fractalNoise" baseFrequency="0.018 0.035" numOctaves="2" seed="7" />
+            <feColorMatrix values="0 0 0 0 1   0 0 0 0 1   0 0 0 0 1   5 0 0 0 -2.2" />
+          </filter>
+          <mask id="cloud-mask-soft" maskUnits="userSpaceOnUse">
+            <rect width="100%" height="100%" filter="url(#cloud-soft)" />
+          </mask>
+          <mask id="cloud-mask-detail" maskUnits="userSpaceOnUse">
+            <rect width="100%" height="100%" filter="url(#cloud-detail)" />
+          </mask>
+          <pattern id="dots-large" width="10" height="10" patternUnits="userSpaceOnUse">
+            <circle cx="5" cy="5" r="2" fill={c.muted} />
+          </pattern>
+          <pattern id="dots-small" width="5" height="5" patternUnits="userSpaceOnUse">
+            <circle cx="2.5" cy="2.5" r="1" fill={c.muted} />
+          </pattern>
+        </defs>
+        {/* Shadow / body dots */}
+        <rect width="100%" height="100%" fill="url(#dots-large)" mask="url(#cloud-mask-soft)" opacity="0.32" />
+        {/* Highlight / wisp dots */}
+        <rect width="100%" height="100%" fill="url(#dots-small)" mask="url(#cloud-mask-detail)" opacity="0.5" />
+      </svg>
+    </div>
   );
 }
 
@@ -333,19 +406,22 @@ export default function EditorialHomePage({ articles }: { articles: Article[] })
 
   const testimonials = [
     { quote: "Working with Thayer is like having an experienced strategic operator on our side, not just another tech investor.", author: "Richard Valtr", role: "Founder, Mews" },
-    { quote: "I never would have considered us a travel company, but Thayer has proven otherwise. Their team helped unlock a massive category for us.", author: "Farooq Malik", role: "Co-Founder & CEO, Rain" },
+    { quote: "I never would have considered Rain a travel company, but Thayer has proven otherwise. Their team works in the background to drive exposure and partnership across a large and important category.", author: "Farooq Malik", role: "Co-Founder & CEO, Rain" },
     { quote: "Every investor claims to be value-add, Thayer is at the top of the list of those who actually are! Their unique ability to drive high-value partnerships in the travel industry is unparalleled.", author: "Pierre-Olivier Lepage", role: "CEO, Cruisebound" },
+    { quote: "The Thayer Annual Summit is a special event. The kind where every conversation counted and turned into signed partnerships to help transform the travel & hospitality industry. I feel very grateful to be a part of the Thayer network and I'm looking forward to events to come.", author: "David Lord", role: "CEO, Guidesly" },
+    { quote: "", author: "Mohamed Benmansour", role: "CEO, Nuitée" },
   ];
 
   return (
-    <div className="min-h-screen transition-colors duration-500" style={{ backgroundColor: c.bg, color: c.text }}>
+    <div className="relative isolate min-h-screen transition-colors duration-500" style={{ backgroundColor: c.bg, color: c.text }}>
+      <CloudBackground />
       <style>{marqueeCSS}</style>
       <EditorialNav active="home" />
 
       {/* ── Hero ── */}
-      <div className="flex flex-col md:flex-row md:h-[calc(100vh-73px)]">
+      <div className="flex flex-col md:flex-row md:h-screen md:-mt-[105px]">
         {/* Left panel — full viewport on mobile, 40% on desktop */}
-        <div className="relative flex flex-col justify-end md:justify-center w-full md:w-[40%] px-6 md:px-12 py-12 md:py-0 z-10 shrink-0 min-h-[calc(100vh-73px)] md:min-h-0" style={{ backgroundColor: c.bg }}>
+        <div className="relative flex flex-col justify-end md:justify-center w-full md:w-[40%] px-6 md:px-12 py-12 md:py-0 z-10 shrink-0 min-h-[calc(100vh-89px)] md:min-h-0" style={{ backgroundColor: c.bg }}>
           <span className="hidden md:block text-[0.72rem] uppercase tracking-[0.22em] mb-8" style={{ ...sans, color: c.accentText, fontWeight: c.sansWeight }}>
             Pioneers in Travel Technology &middot; Est. 2008
           </span>
@@ -363,7 +439,7 @@ export default function EditorialHomePage({ articles }: { articles: Article[] })
 
         {/* Right panel — flows below left on mobile, 60% on desktop */}
         <section
-          className="relative w-full h-[calc(100vh-73px)] md:h-auto md:flex-1 overflow-hidden flex flex-col md:block"
+          className="relative w-full h-[calc(100vh-89px)] md:h-auto md:flex-1 overflow-hidden flex flex-col md:block"
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}
         >
@@ -473,10 +549,10 @@ export default function EditorialHomePage({ articles }: { articles: Article[] })
         </section>
       </div>
 
-      {/* ── What Partners Say (01) ── */}
+      {/* ── What Our Entrepreneurs Say (01) ── */}
       <section className="px-6 md:px-12 py-24 md:py-32">
         <div className="max-w-7xl mx-auto">
-          <SectionHeader label="What Partners Say" number="01" />
+          <SectionHeader label="What Our Entrepreneurs Say" number="01" />
           <div className="grid md:grid-cols-3 gap-8 md:gap-12">
             {testimonials.map((t, i) => (
               <div key={i} className="border p-8 md:p-10 flex flex-col transition-colors duration-500 hover:bg-[rgba(46,157,85,0.06)]" style={{ borderColor: c.rule }}>

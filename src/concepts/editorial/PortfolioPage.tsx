@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
-import { EditorialNav, EditorialFooter, EditorialHeadlines } from "./HomePage";
+import { EditorialNav, EditorialFooter, EditorialHeadlines, CloudBackground } from "./HomePage";
 import { useEditorialMode, ec } from "./EditorialModeContext";
 import type { Article } from "@/lib/article-types";
 
@@ -48,9 +48,9 @@ const companies: Company[] = [
   { name: "Nestment", slug: "nestment", logo: "nestment", url: "https://www.nestment.com", categories: ["Travel", "Prop Tech", "Sustainability"] },
   { name: "Topkey", slug: "topkey", w: 160, url: "https://www.topkey.io", categories: ["Travel", "Hospitality", "Prop Tech"] },
   { name: "Vend", slug: "vend", logo: "vend-park", url: "https://www.vendpark.io", categories: ["Travel", "Prop Tech"] },
-  { name: "Cardinal Lands", slug: "cardinal-lands", logo: "cardinal-lands", url: "https://cardinallands.com", categories: ["Travel", "Operations", "Hospitality"] },
+  { name: "Cardinal Lands", slug: "cardinal-lands", logo: "cardinal-lands", url: "https://cardinallands.com", categories: ["Travel", "OpCo", "Hospitality"] },
   { name: "PayTheory", slug: "paytheory", logo: "paytheory", url: "https://www.paytheory.com", categories: ["Travel", "Horizontal", "Sustainability"] },
-  { name: "Directo", slug: "directo", logo: "direct", url: "https://www.directsoftware.com", categories: ["Travel", "Hospitality", "Distribution"] },
+  { name: "Directo", slug: "directo", logo: "directo", url: "https://www.getdirecto.com", categories: ["Travel", "Hospitality", "Distribution"] },
   { name: "Aventuur", slug: "aventuur", logo: "aventuur", url: "https://www.aventuur.com", categories: ["Travel", "OpCo", "Experience"] },
   { name: "Canary Technologies", slug: "canary-technologies", w: 220, url: "https://www.canarytechnologies.com", categories: ["Travel", "Hospitality", "Experience"], highlight: true },
   { name: "Gravity Haus", slug: "gravity-haus", logo: "gravity-haus", url: "https://gravityhaus.com", categories: ["Travel", "OpCo"] },
@@ -69,7 +69,7 @@ const companies: Company[] = [
   { name: "Bilt", slug: "bilt", logo: "bilt", url: "https://www.biltrewards.com", categories: ["Travel", "Horizontal", "Experience"], highlight: true },
   { name: "Beekeeper", slug: "beekeeper", logo: "beekeeper", acquired: "LumApps", url: "https://www.beekeeper.io", categories: ["Travel", "Horizontal"] },
   { name: "Mews", slug: "mews", w: 200, url: "https://www.mews.com", categories: ["Travel", "Hospitality"], highlight: true },
-  { name: "May Mobility", slug: "may-mobility", logo: "may-mobility", url: "https://maymobility.com", categories: ["Travel", "Transportation"] },
+  { name: "May Mobility", slug: "may-mobility", logo: "may-mobility", url: "https://maymobility.com", categories: ["Travel"] },
   { name: "Humanly", slug: "humanly", logo: "humanly", url: "https://www.humanly.io", categories: ["Travel", "Horizontal"] },
   { name: "Rest", slug: "rest", w: 140, url: "https://www.restsensor.com", categories: ["Travel", "Prop Tech", "Sustainability"] },
   { name: "Super", slug: "super", w: 190, url: "https://www.super.com", categories: ["Travel", "Distribution", "Horizontal"], highlight: true },
@@ -117,10 +117,8 @@ export default function EditorialPortfolioPage({ articles }: { articles: Article
     "Horizontal",
     "Hospitality",
     "OpCo",
-    "Operations",
     "Prop Tech",
     "Sustainability",
-    "Transportation",
   ];
   const searchParams = useSearchParams();
   const [active, setActive] = useState("Travel");
@@ -136,7 +134,8 @@ export default function EditorialPortfolioPage({ articles }: { articles: Article
   const filtered = [...matches.filter((co) => co.highlight), ...matches.filter((co) => !co.highlight)];
 
   return (
-    <div className="min-h-screen transition-colors duration-500" style={{ backgroundColor: c.bg, color: c.text }}>
+    <div className="relative isolate min-h-screen transition-colors duration-500" style={{ backgroundColor: c.bg, color: c.text }}>
+      <CloudBackground />
       <EditorialNav active="portfolio" />
 
       {/* ── Hero ── */}

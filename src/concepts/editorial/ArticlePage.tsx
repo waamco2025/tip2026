@@ -2,7 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
-import { EditorialNav, EditorialFooter, ArticleListItem } from "./HomePage";
+import { EditorialNav, EditorialFooter, ArticleListItem, CloudBackground } from "./HomePage";
 import { useEditorialMode, ec } from "./EditorialModeContext";
 import type { Article, ArticleBlock, InlineSpan } from "@/lib/article-types";
 import { formatDate } from "@/lib/article-types";
@@ -55,7 +55,8 @@ export default function EditorialArticlePage({ article, prev, next, related }: P
   const sans = { fontFamily: "'Syne', sans-serif" };
 
   return (
-    <div className="min-h-screen transition-colors duration-500" style={{ backgroundColor: c.bg, color: c.text }}>
+    <div className="relative isolate min-h-screen transition-colors duration-500" style={{ backgroundColor: c.bg, color: c.text }}>
+      <CloudBackground />
       <EditorialNav active="insights" />
 
       {/* ── Article Hero ── */}

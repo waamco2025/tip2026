@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { EditorialNav, EditorialFooter } from "./HomePage";
+import { EditorialNav, EditorialFooter, CloudBackground } from "./HomePage";
 import { useEditorialMode, ec } from "./EditorialModeContext";
 import { EditorialStockWidgets } from "@/components/StockWidgets";
 
@@ -36,7 +36,8 @@ export default function EditorialInvestorRelationsPage() {
   ];
 
   return (
-    <div className="min-h-screen transition-colors duration-500" style={{ backgroundColor: c.bg, color: c.text }}>
+    <div className="relative isolate min-h-screen transition-colors duration-500" style={{ backgroundColor: c.bg, color: c.text }}>
+      <CloudBackground />
       <EditorialNav active="ir" />
 
       {/* ── Hero ── */}
