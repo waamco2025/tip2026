@@ -2,6 +2,8 @@
 
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useNavigationOverlay } from "./NavigationOverlay";
 import { Building2, UtensilsCrossed, Globe, CreditCard, Wallet, ShieldCheck, Pause, Play } from "lucide-react";
 import { useEditorialMode, ec } from "./EditorialModeContext";
 import type { Article } from "@/lib/article-types";
@@ -154,6 +156,189 @@ export function CloudBackground() {
   );
 }
 
+/* ─── Next-page lead-in (hero-shaped) ─── */
+// Sits at the bottom of every page in place of a CTA. Renders the NEXT page's
+// full hero copy (eyebrow + h1 + body) in the same layout container as the
+// destination hero, so the content occupies the identical viewport coordinates
+// on both sides of the navigation. Click handler smoothly scrolls the lead-in
+// to the hero position (section top at nav bottom), then router.push — the
+// effect is "I scrolled into the next page." On the destination, the left
+// column is already in place; only the right column (cards/grid/carousel/arrow
+// flight) animates in, which the existing hero entry animations handle.
+type PageKey = "home" | "about" | "portfolio" | "insights";
+// Layout matches the destination hero's container shape so eyebrow/headline/body
+// sit at identical viewport coordinates on both sides of the navigation:
+//   "single"  — max-w-7xl wrapper with h1 max-w-4xl + body max-w-2xl (About hero)
+//   "two-col" — max-w-7xl wrapper with flex-row, text in flex-1 left column
+//               and an empty flex-1 right placeholder (Portfolio/Insights heroes;
+//               the destination's logo grid / featured card animates in over it)
+const NEXT_PAGE: Record<PageKey, {
+  href: string;
+  title: string;
+  eyebrow: string;
+  headline: string;
+  body: string;
+  layout: "single" | "two-col";
+}> = {
+  home: {
+    href: "/about",
+    title: "About",
+    eyebrow: "About the Firm",
+    headline: "A History of Innovation in Travel.",
+    body: "Since 2008, Thayer Investment Partners has been at the forefront of travel technology investing, partnering with visionary founders to build companies that reshape how the world moves, stays, and experiences new places.",
+    layout: "single",
+  },
+  about: {
+    href: "/portfolio",
+    title: "Portfolio",
+    eyebrow: "Portfolio",
+    headline: "Investing in companies shaping the future of global travel.",
+    body: "Travel isn’t just a vertical. Our portfolio encompasses all companies who can or will sell to and partner with the global travel industry. Thayer invests on behalf of the travel industry to make travel operations and consumption — safer, easier, and fundamentally more intelligent.",
+    layout: "two-col",
+  },
+  portfolio: {
+    href: "/news",
+    title: "Insights",
+    eyebrow: "Insights",
+    headline: "Perspectives on the future of travel & technology.",
+    body: "News, research, and commentary from Thayer Investment Partners and our portfolio companies.",
+    layout: "two-col",
+  },
+  insights: {
+    href: "/",
+    title: "Home",
+    eyebrow: "Pioneers in Travel Technology · Est. 2008",
+    headline: "Investing in the Entrepreneurs Shaping the Global Travel Industry.",
+    body: "Thayer Investment Partners is a strategic venture capital firm focused on helping entrepreneurs navigate the dynamic, complex world of travel. Our investors are global corporations, executives, operators and accomplished entrepreneurs who share our belief that travel builds a better world.",
+    layout: "single",
+  },
+};
+
+export function NextPagePanel({ current }: { current: PageKey }) {
+  const { light } = useEditorialMode();
+  const c = ec(light);
+  const serif = { fontFamily: "'Cormorant Garamond', Georgia, serif" };
+  const sans = { fontFamily: "'Syne', sans-serif" };
+  const next = NEXT_PAGE[current];
+  const router = useRouter();
+  const navOverlay = useNavigationOverlay();
+  const sectionRef = useRef<HTMLElement>(null);
+  const navigatingRef = useRef(false);
+
+  // Prefetch destination on mount so router.push resolves instantly during
+  // the overlay's opaque hold — minimizes the window where new page is still
+  // loading.
+  useEffect(() => {
+    router.prefetch(next.href);
+  }, [router, next.href]);
+
+  const navigate = useCallback(async () => {
+    if (navigatingRef.current) return;
+    navigatingRef.current = true;
+    const finish = async () => {
+      // Dim the lead-in copy to 50%. Destination hero copies subscribe to the
+      // same dimStyle so they also start at 50% on mount — the page swap is a
+      // same-opacity content change instead of a flash.
+      if (navOverlay) await navOverlay.dim();
+      // scroll: false suppresses Next's default scrollTo(0,0); the provider's
+      // useLayoutEffect handles the reset synchronously between React commit
+      // and the next browser paint, so the new page is never visible at the
+      // old scroll position.
+      router.push(next.href, { scroll: false });
+      // Brief hold so the new page mounts + paints at scroll=0, then fade back.
+      await new Promise<void>((r) => setTimeout(r, 80));
+      navOverlay?.undim();
+    };
+
+    if (!sectionRef.current) {
+      await finish();
+      return;
+    }
+    const navHeight = window.innerWidth >= 768 ? 105 : 89;
+    const rect = sectionRef.current.getBoundingClientRect();
+    const targetY = rect.top + window.scrollY - navHeight;
+    const startY = window.scrollY;
+    const distance = targetY - startY;
+    if (Math.abs(distance) < 4) {
+      await finish();
+      return;
+    }
+    // Custom smooth scroll so we know exactly when it finishes — required so
+    // we can chain the overlay fade + router.push the moment the scroll settles.
+    const duration = 500;
+    const startTime = performance.now();
+    await new Promise<void>((resolve) => {
+      function step(now: number) {
+        const elapsed = now - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const ease = 0.5 - 0.5 * Math.cos(progress * Math.PI); // ease-in-out
+        window.scrollTo(0, startY + distance * ease);
+        if (progress < 1) requestAnimationFrame(step);
+        else resolve();
+      }
+      requestAnimationFrame(step);
+    });
+    await finish();
+  }, [router, next.href, navOverlay]);
+
+  return (
+    <section
+      ref={sectionRef}
+      onClick={navigate}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          navigate();
+        }
+      }}
+      role="link"
+      tabIndex={0}
+      aria-label={`Continue to ${next.title}`}
+      className="relative px-6 md:px-12 py-24 md:min-h-screen flex flex-col md:justify-center overflow-hidden cursor-pointer group focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-4px]"
+      style={{ outlineColor: c.accent }}
+    >
+      {next.layout === "two-col" ? (
+        <div className="relative w-full max-w-7xl mx-auto z-10 flex flex-col md:flex-row gap-12 md:gap-16 md:min-h-[36rem]">
+          <div className="md:flex-1" style={navOverlay?.dimStyle}>
+            <span className="text-[0.72rem] uppercase tracking-[0.22em] block mb-8 transition-colors group-hover:text-[#2E9D55]" style={{ ...sans, color: c.accentText, fontWeight: c.sansWeight }}>
+              {next.eyebrow}
+            </span>
+            <h2 className="text-[clamp(2rem,5vw,4.5rem)] leading-[1.08] font-light italic mb-8 transition-colors group-hover:text-[#2E9D55]" style={{ ...serif, color: c.text }}>
+              {next.headline}
+            </h2>
+            <p className="text-[1.15rem] leading-[1.7]" style={{ ...sans, color: c.bodyText, fontWeight: c.sansWeight }}>
+              {next.body}
+            </p>
+          </div>
+          {/* Empty right column — destination's logo grid / card animates in here on arrival. */}
+          <div className="md:flex-1" aria-hidden />
+        </div>
+      ) : (
+        <div className="relative w-full max-w-7xl mx-auto z-10 md:min-h-[36rem]" style={navOverlay?.dimStyle}>
+          <span className="text-[0.72rem] uppercase tracking-[0.22em] block mb-8 transition-colors group-hover:text-[#2E9D55]" style={{ ...sans, color: c.accentText, fontWeight: c.sansWeight }}>
+            {next.eyebrow}
+          </span>
+          <h2 className="text-[clamp(2rem,5vw,4.5rem)] leading-[1.08] font-light italic mb-8 max-w-4xl transition-colors group-hover:text-[#2E9D55]" style={{ ...serif, color: c.text }}>
+            {next.headline}
+          </h2>
+          <p className="text-[1.15rem] leading-[1.7] max-w-2xl" style={{ ...sans, color: c.bodyText, fontWeight: c.sansWeight }}>
+            {next.body}
+          </p>
+        </div>
+      )}
+
+      <div className="absolute top-1/2 -translate-y-1/2 right-6 md:right-12 flex items-center gap-3 pointer-events-none">
+        <span className="text-[0.72rem] uppercase tracking-[0.22em] transition-colors group-hover:text-[#2E9D55]" style={{ ...sans, color: c.accentText, fontWeight: c.sansWeight }}>
+          Continue to {next.title}
+        </span>
+        <span className="text-[1.1rem] transition-transform duration-300 group-hover:translate-x-1.5" style={{ color: c.accentText }} aria-hidden>
+          &rarr;
+        </span>
+      </div>
+    </section>
+  );
+}
+
 /* ─── Shared Footer ─── */
 export function EditorialFooter() {
   const { light } = useEditorialMode();
@@ -182,33 +367,19 @@ export function EditorialFooter() {
   );
 }
 
-/* ─── Section Header with marginalia arrow companion ─── */
-// When a section header enters the viewport (with a 15% inset on top/bottom)
-// the brand arrow fades in next to the eyebrow text, floating in from above or
-// below depending on scroll direction. When the header leaves the inset region
-// the arrow waits ~800ms before fading out, so quick scrolls don't flicker it.
-// Arrow is hidden below md (there's no margin to place it in).
-export function SectionHeader({ label, number }: { label: string; number: string }) {
-  const { light } = useEditorialMode();
-  const c = ec(light);
-  const ref = useRef<HTMLDivElement>(null);
+/* ─── Marginalia arrow companion ─── */
+// Hook that observes an anchor element and renders the brand arrow which floats
+// in diagonally from off-canvas bottom-left when the anchor enters the viewport
+// (with a 15% inset). On exit it waits ~800ms before fading. Returns a ref to
+// attach to the anchor (which must be position: relative) and the arrow JSX to
+// render as a child. Arrow is hidden below md.
+export function useHeadlineArrow<T extends HTMLElement = HTMLDivElement>(opts: { playOnce?: boolean } = {}) {
+  const { playOnce = false } = opts;
+  const ref = useRef<T>(null);
   type Phase = "pre" | "in" | "out";
   const [phase, setPhase] = useState<Phase>("pre");
-  const [enterDir, setEnterDir] = useState<"down" | "up">("down");
-  const dirRef = useRef<"down" | "up">("down");
-  const lastScrollY = useRef(0);
-
-  useEffect(() => {
-    const onScroll = () => {
-      const y = window.scrollY;
-      if (y > lastScrollY.current) dirRef.current = "down";
-      else if (y < lastScrollY.current) dirRef.current = "up";
-      lastScrollY.current = y;
-    };
-    lastScrollY.current = window.scrollY;
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+  const { light } = useEditorialMode();
+  const c = ec(light);
 
   useEffect(() => {
     if (!ref.current) return;
@@ -220,10 +391,9 @@ export function SectionHeader({ label, number }: { label: string; number: string
         const e = entries[0];
         if (e.isIntersecting) {
           if (timer) { clearTimeout(timer); timer = null; }
-          setEnterDir(dirRef.current);
-          // Double rAF — force the browser to commit the "pre" paint (opacity 0, offset
-          // translate) before we flip to "in". Without this the transition is skipped
-          // on mount because React updates both states in the same frame.
+          // Double rAF — force the browser to commit the "pre" paint (opacity 0,
+          // offset translate) before flipping to "in". Without this the transition
+          // is skipped on mount because React updates both states in the same frame.
           if (raf1 !== null) cancelAnimationFrame(raf1);
           raf1 = requestAnimationFrame(() => {
             if (raf2 !== null) cancelAnimationFrame(raf2);
@@ -231,7 +401,14 @@ export function SectionHeader({ label, number }: { label: string; number: string
           });
         } else {
           if (timer) clearTimeout(timer);
-          timer = setTimeout(() => setPhase("out"), 800);
+          // Only fade out if we were actually "in" — stops below-the-fold sections from
+          // auto-advancing pre→out (which would consume the diagonal start position
+          // while invisible, so the first real entry would only fade in, not travel).
+          // playOnce: once "in", stay "in" — hero arrows shouldn't replay on scroll-back.
+          timer = setTimeout(() => setPhase((p) => {
+            if (playOnce) return p;
+            return p === "in" ? "out" : p;
+          }), 800);
         }
       },
       { rootMargin: "-15% 0px -15% 0px" }
@@ -243,35 +420,41 @@ export function SectionHeader({ label, number }: { label: string; number: string
       if (raf1 !== null) cancelAnimationFrame(raf1);
       if (raf2 !== null) cancelAnimationFrame(raf2);
     };
-  }, []);
+  }, [playOnce]);
 
-  const arrowOffset = enterDir === "down" ? -16 : 16;
-  const arrowTransform =
-    phase === "in" ? "translateY(0)"
-    : phase === "pre" ? `translateY(${arrowOffset}px)`
-    : "translateY(0)";
+  const arrow = (
+    <span
+      aria-hidden="true"
+      className="hidden md:block absolute pointer-events-none"
+      style={{
+        right: "100%",
+        marginRight: 10,
+        top: "100%",
+        opacity: phase === "in" ? 1 : 0,
+        transform: phase === "pre" ? "translate(-64px, 64px)" : "translate(0, 0)",
+        transition: "opacity 600ms ease-out, transform 1200ms cubic-bezier(0.4, 0, 0.4, 1)",
+      }}
+    >
+      <svg width="16" height="16" viewBox="462 5 22 22" xmlns="http://www.w3.org/2000/svg">
+        <path
+          d="M462.6,14.1c0-.8.8-1.3,1.5-1.5l17.4-6.1c1-.5,2.2.6,1.8,1.8l-6.1,17.4c-.3.7-.7,1.5-1.5,1.5s-1.5-.7-1.5-1.5v-10h-10c-.8,0-1.5-.7-1.5-1.5Z"
+          fill={c.accent}
+        />
+      </svg>
+    </span>
+  );
+
+  return { ref, arrow };
+}
+
+export function SectionHeader({ label, number }: { label: string; number: string }) {
+  const { light } = useEditorialMode();
+  const c = ec(light);
+  const { ref, arrow } = useHeadlineArrow();
 
   return (
     <div ref={ref} data-section-header className="flex items-center gap-6 mb-16 md:mb-20 relative">
-      <span
-        aria-hidden="true"
-        className="hidden md:block absolute pointer-events-none"
-        style={{
-          right: "100%",
-          marginRight: 10,
-          top: "100%",
-          opacity: phase === "in" ? 1 : 0,
-          transform: arrowTransform,
-          transition: "opacity 500ms ease, transform 600ms cubic-bezier(0.4, 0, 0.2, 1)",
-        }}
-      >
-        <svg width="16" height="16" viewBox="462 5 22 22" xmlns="http://www.w3.org/2000/svg">
-          <path
-            d="M462.6,14.1c0-.8.8-1.3,1.5-1.5l17.4-6.1c1-.5,2.2.6,1.8,1.8l-6.1,17.4c-.3.7-.7,1.5-1.5,1.5s-1.5-.7-1.5-1.5v-10h-10c-.8,0-1.5-.7-1.5-1.5Z"
-            fill={c.accent}
-          />
-        </svg>
-      </span>
+      {arrow}
       <span className="text-[0.72rem] uppercase tracking-[0.22em] shrink-0" style={{ fontFamily: "'Syne', sans-serif", color: c.accentText, fontWeight: c.sansWeight }}>{label}</span>
       <div className="flex-1 h-px" style={{ backgroundColor: c.rule }} />
       <span className="text-[0.72rem] uppercase tracking-[0.22em] shrink-0" style={{ fontFamily: "'Syne', sans-serif", color: c.muted, fontWeight: c.sansWeight }}>{number}</span>
@@ -634,7 +817,7 @@ export default function EditorialHomePage({ articles }: { articles: Article[] })
           <SectionHeader label="What Our Entrepreneurs Say" number="01" />
           <div className="grid md:grid-cols-3 gap-8 md:gap-12">
             {testimonials.map((t, i) => (
-              <div key={i} className="border p-8 md:p-10 flex flex-col transition-colors duration-500 hover:bg-[rgba(46,157,85,0.06)]" style={{ borderColor: c.rule, backgroundColor: c.bg }}>
+              <div key={i} className="border p-8 md:p-10 flex flex-col transition-colors duration-500 hover:bg-[rgba(0,0,0,0.035)]" style={{ borderColor: c.rule, backgroundColor: c.bg }}>
                 <span className="text-[2.5rem] leading-none mb-4" style={{ ...serif, color: c.accent }}>&ldquo;</span>
                 <p className="text-[1.15rem] leading-[1.7] font-light flex-1 mb-8" style={{ ...sans, color: c.bodyText, fontWeight: c.sansWeight }}>
                   {t.quote}
@@ -673,6 +856,8 @@ export default function EditorialHomePage({ articles }: { articles: Article[] })
       </section>
 
       <EditorialHeadlines number="03" articles={articles} />
+
+      <NextPagePanel current="home" />
 
       <EditorialFooter />
     </div>

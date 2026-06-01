@@ -2,7 +2,8 @@
 
 import React from "react";
 import Link from "next/link";
-import { EditorialNav, EditorialFooter, ArticleListItem, CloudBackground, SectionHeader } from "./HomePage";
+import { EditorialNav, EditorialFooter, ArticleListItem, CloudBackground, SectionHeader, useHeadlineArrow } from "./HomePage";
+import { useNavigationOverlay } from "./NavigationOverlay";
 import { useEditorialMode, ec } from "./EditorialModeContext";
 import type { Article } from "@/lib/article-types";
 import { formatDate } from "@/lib/article-types";
@@ -12,6 +13,8 @@ export default function EditorialInsightsPage({ articles }: { articles: Article[
   const c = ec(light);
   const serif = { fontFamily: "'Cormorant Garamond', Georgia, serif" };
   const sans = { fontFamily: "'Syne', sans-serif" };
+  const { ref: heroArrowRef, arrow: heroArrow } = useHeadlineArrow<HTMLSpanElement>({ playOnce: true });
+  const navOverlay = useNavigationOverlay();
 
   const featured = articles[0];
   const rest = articles.slice(1);
@@ -22,10 +25,13 @@ export default function EditorialInsightsPage({ articles }: { articles: Article[
       <EditorialNav active="insights" />
 
       {/* ── Hero (intro + featured) ── */}
-      <section className="px-6 md:px-12 py-24 md:min-h-screen flex flex-col md:justify-center">
+      <section className="px-6 md:px-12 py-24 md:min-h-screen flex flex-col md:justify-center overflow-hidden">
         <div className="max-w-7xl mx-auto w-full flex flex-col md:flex-row gap-12 md:gap-16 md:min-h-[36rem]">
-          <div className="md:flex-1">
-            <span className="text-[0.72rem] uppercase tracking-[0.22em] block mb-8" style={{ ...sans, color: c.accentText, fontWeight: c.sansWeight }}>Insights</span>
+          <div className="md:flex-1" style={navOverlay?.dimStyle}>
+            <span ref={heroArrowRef} className="relative text-[0.72rem] uppercase tracking-[0.22em] block mb-8" style={{ ...sans, color: c.accentText, fontWeight: c.sansWeight }}>
+              {heroArrow}
+              Insights
+            </span>
             <h1 className="text-[clamp(2rem,5vw,4.5rem)] leading-[1.08] font-light italic mb-8" style={{ ...serif, color: c.text }}>
               Perspectives on the future of travel &amp; technology.
             </h1>

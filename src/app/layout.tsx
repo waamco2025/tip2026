@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { EditorialModeProvider } from "@/concepts/editorial/EditorialModeContext";
+import { NavigationOverlayProvider } from "@/concepts/editorial/NavigationOverlay";
 
 export const metadata: Metadata = {
   title: "Thayer Investment Partners",
@@ -22,7 +23,9 @@ export default function RootLayout({
       </head>
       <body className="antialiased">
         <EditorialModeProvider>
-          {children}
+          <NavigationOverlayProvider>
+            {children}
+          </NavigationOverlayProvider>
         </EditorialModeProvider>
       </body>
     </html>

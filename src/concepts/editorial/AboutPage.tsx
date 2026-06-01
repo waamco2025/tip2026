@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { ChevronDown } from "lucide-react";
-import { EditorialNav, EditorialFooter, EditorialHeadlines, CloudBackground, SectionHeader } from "./HomePage";
+import { EditorialNav, EditorialFooter, EditorialHeadlines, CloudBackground, SectionHeader, NextPagePanel } from "./HomePage";
+import { useNavigationOverlay } from "./NavigationOverlay";
 import { useEditorialMode, ec } from "./EditorialModeContext";
 import type { Article } from "@/lib/article-types";
 
@@ -11,6 +12,55 @@ export default function EditorialAboutPage({ articles }: { articles: Article[] }
   const c = ec(light);
   const serif = { fontFamily: "'Cormorant Garamond', Georgia, serif" };
   const sans = { fontFamily: "'Syne', sans-serif" };
+  const navOverlay = useNavigationOverlay();
+
+  // Hero arrow flight: brand arrow rises diagonally through the cloud band,
+  // drawing a contrail from a fixed start point to a rest point just above-right
+  // of the headline. Anchoring the end to the h1's bounding box keeps the arrow
+  // tip clear of the text regardless of viewport size — the h1's right edge is
+  // governed by font clamp + max-w-4xl, not section width, so a fixed % endpoint
+  // would land inside the text at wide-but-short viewports. Plays once on mount.
+  const heroOverlayRef = useRef<HTMLDivElement>(null);
+  const heroH1Ref = useRef<HTMLHeadingElement>(null);
+  const [contrailLength, setContrailLength] = useState(0);
+  const [endPos, setEndPos] = useState<{ x: number; y: number }>({ x: 60, y: 25 });
+  const [heroArrowFlown, setHeroArrowFlown] = useState(false);
+  const [flightComplete, setFlightComplete] = useState(false);
+  useEffect(() => {
+    const START_X = 16; // % of overlay
+    const START_Y = 86;
+    const END_OFFSET_X = 28; // px past h1's right edge
+    const END_OFFSET_Y = 12; // px above h1's top
+    const measure = () => {
+      if (!heroOverlayRef.current || !heroH1Ref.current) return;
+      const overlayRect = heroOverlayRef.current.getBoundingClientRect();
+      const h1Rect = heroH1Ref.current.getBoundingClientRect();
+      const endXPx = h1Rect.right - overlayRect.left + END_OFFSET_X;
+      const endYPx = h1Rect.top - overlayRect.top - END_OFFSET_Y;
+      const endX = Math.min(96, Math.max(20, (endXPx / overlayRect.width) * 100));
+      const endY = Math.min(96, Math.max(4, (endYPx / overlayRect.height) * 100));
+      setEndPos({ x: endX, y: endY });
+      const dx = ((endX - START_X) / 100) * overlayRect.width;
+      const dy = ((START_Y - endY) / 100) * overlayRect.height;
+      setContrailLength(Math.sqrt(dx * dx + dy * dy));
+    };
+    measure();
+    let raf1: number | null = null;
+    let raf2: number | null = null;
+    raf1 = requestAnimationFrame(() => {
+      raf2 = requestAnimationFrame(() => setHeroArrowFlown(true));
+    });
+    // After the initial 2500ms flight, lock the arrow's transitions off so any
+    // future endPos changes (from window resize) snap immediately.
+    const flightTimer = setTimeout(() => setFlightComplete(true), 2500);
+    window.addEventListener("resize", measure);
+    return () => {
+      if (raf1 !== null) cancelAnimationFrame(raf1);
+      if (raf2 !== null) cancelAnimationFrame(raf2);
+      clearTimeout(flightTimer);
+      window.removeEventListener("resize", measure);
+    };
+  }, []);
 
 
   const team = [
@@ -30,9 +80,57 @@ export default function EditorialAboutPage({ articles }: { articles: Article[] }
 
       {/* ── Hero ── */}
       <section className="relative px-6 md:px-12 py-24 md:min-h-screen flex flex-col md:justify-center overflow-hidden">
-        <div className="relative w-full max-w-7xl mx-auto z-10 md:min-h-[36rem]">
+        {/* Flying arrow + contrail overlay. SVG line stretches non-uniformly with
+            section dimensions; vector-effect keeps the stroke a constant pixel width.
+            The arrow div uses % left/top so its center stays aligned with the line
+            endpoints regardless of viewport. Hidden below md. */}
+        <div ref={heroOverlayRef} className="absolute inset-0 pointer-events-none z-0 hidden md:block" aria-hidden="true">
+          <svg className="absolute inset-0 w-full h-full" preserveAspectRatio="none" viewBox="0 0 100 100">
+            <defs>
+              <linearGradient id="contrail-grad" gradientUnits="userSpaceOnUse" x1="16" y1="86" x2={endPos.x} y2={endPos.y}>
+                <stop offset="0%" stopColor={c.accent} stopOpacity="0" />
+                <stop offset="20%" stopColor={c.accent} stopOpacity="1" />
+                <stop offset="80%" stopColor={c.accent} stopOpacity="1" />
+                <stop offset="100%" stopColor={c.accent} stopOpacity="0" />
+              </linearGradient>
+            </defs>
+            {contrailLength > 0 && (
+              <line
+                x1="16" y1="86" x2={endPos.x} y2={endPos.y}
+                stroke="url(#contrail-grad)"
+                strokeOpacity="0.5"
+                strokeWidth="2"
+                vectorEffect="non-scaling-stroke"
+                strokeDasharray={contrailLength}
+                strokeDashoffset={heroArrowFlown ? 0 : contrailLength}
+                style={{ transition: "stroke-dashoffset 2500ms cubic-bezier(0.4, 0, 0.4, 1)" }}
+              />
+            )}
+          </svg>
+          <div
+            className="absolute"
+            style={{
+              left: heroArrowFlown ? `${endPos.x}%` : "16%",
+              top: heroArrowFlown ? `${endPos.y}%` : "86%",
+              transform: "translate(-50%, -50%)",
+              opacity: heroArrowFlown ? 1 : 0,
+              transition: flightComplete
+                ? "none"
+                : "left 2500ms cubic-bezier(0.4, 0, 0.4, 1), top 2500ms cubic-bezier(0.4, 0, 0.4, 1), opacity 1800ms ease-out",
+            }}
+          >
+            <svg width="36" height="36" viewBox="462 5 22 22" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M462.6,14.1c0-.8.8-1.3,1.5-1.5l17.4-6.1c1-.5,2.2.6,1.8,1.8l-6.1,17.4c-.3.7-.7,1.5-1.5,1.5s-1.5-.7-1.5-1.5v-10h-10c-.8,0-1.5-.7-1.5-1.5Z"
+                fill={c.accent}
+              />
+            </svg>
+          </div>
+        </div>
+
+        <div className="relative w-full max-w-7xl mx-auto z-10 md:min-h-[36rem]" style={navOverlay?.dimStyle}>
           <span className="text-[0.72rem] uppercase tracking-[0.22em] block mb-8" style={{ ...sans, color: c.accentText, fontWeight: c.sansWeight }}>About the Firm</span>
-          <h1 className="text-[clamp(2rem,5vw,4.5rem)] leading-[1.08] font-light italic mb-8 max-w-4xl" style={{ ...serif, color: c.text }}>
+          <h1 ref={heroH1Ref} className="text-[clamp(2rem,5vw,4.5rem)] leading-[1.08] font-light italic mb-8 max-w-4xl" style={{ ...serif, color: c.text }}>
             A History of Innovation in Travel.
           </h1>
           <p className="text-[1.15rem] leading-[1.7] max-w-2xl" style={{ ...sans, color: c.bodyText, fontWeight: c.sansWeight }}>
@@ -136,6 +234,8 @@ export default function EditorialAboutPage({ articles }: { articles: Article[] }
       </section>
 
       <EditorialHeadlines number="04" articles={articles} />
+
+      <NextPagePanel current="about" />
 
       <EditorialFooter />
     </div>
