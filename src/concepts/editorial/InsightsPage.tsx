@@ -35,7 +35,7 @@ export default function EditorialInsightsPage({ articles }: { articles: Article[
           </div>
 
           {featured && (
-            <div className="md:flex-1 md:flex md:items-start">
+            <div className="md:flex-1 md:flex md:items-start md:-mt-18">
             <Link href={`/news/${featured.slug}`} className="group flex flex-col gap-4 border p-6 md:p-8 w-full" style={{ backgroundColor: c.surface, borderColor: c.rule }}>
               <span className="text-[0.65rem] uppercase tracking-[0.2em] block" style={{ ...sans, color: c.accentText, fontWeight: c.sansWeight }}>Latest &middot; {formatDate(featured.date)} &middot; {featured.category}</span>
               <div
