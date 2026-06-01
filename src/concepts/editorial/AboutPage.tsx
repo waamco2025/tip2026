@@ -2,21 +2,9 @@
 
 import React, { useState } from "react";
 import { ChevronDown } from "lucide-react";
-import { EditorialNav, EditorialFooter, EditorialHeadlines, CloudBackground } from "./HomePage";
+import { EditorialNav, EditorialFooter, EditorialHeadlines, CloudBackground, SectionHeader } from "./HomePage";
 import { useEditorialMode, ec } from "./EditorialModeContext";
 import type { Article } from "@/lib/article-types";
-
-function SectionHeader({ label, number }: { label: string; number: string }) {
-  const { light } = useEditorialMode();
-  const c = ec(light);
-  return (
-    <div className="flex items-center gap-6 mb-16 md:mb-20">
-      <span className="text-[0.72rem] uppercase tracking-[0.22em] shrink-0" style={{ fontFamily: "'Syne', sans-serif", color: c.accentText, fontWeight: c.sansWeight }}>{label}</span>
-      <div className="flex-1 h-px" style={{ backgroundColor: c.rule }} />
-      <span className="text-[0.72rem] uppercase tracking-[0.22em] shrink-0" style={{ fontFamily: "'Syne', sans-serif", color: c.muted, fontWeight: c.sansWeight }}>{number}</span>
-    </div>
-  );
-}
 
 export default function EditorialAboutPage({ articles }: { articles: Article[] }) {
   const { light } = useEditorialMode();
@@ -41,8 +29,8 @@ export default function EditorialAboutPage({ articles }: { articles: Article[] }
       <EditorialNav active="about" />
 
       {/* ── Hero ── */}
-      <section className="relative px-6 md:px-12 py-24 md:min-h-[600px] flex flex-col overflow-hidden">
-        <div className="relative w-full max-w-7xl mx-auto z-10">
+      <section className="relative px-6 md:px-12 py-24 md:min-h-screen flex flex-col md:justify-center overflow-hidden">
+        <div className="relative w-full max-w-7xl mx-auto z-10 md:min-h-[36rem]">
           <span className="text-[0.72rem] uppercase tracking-[0.22em] block mb-8" style={{ ...sans, color: c.accentText, fontWeight: c.sansWeight }}>About the Firm</span>
           <h1 className="text-[clamp(2rem,5vw,4.5rem)] leading-[1.08] font-light italic mb-8 max-w-4xl" style={{ ...serif, color: c.text }}>
             A History of Innovation in Travel.
@@ -55,7 +43,7 @@ export default function EditorialAboutPage({ articles }: { articles: Article[] }
       </section>
 
       {/* ── Philosophy (01) ── */}
-      <section className="px-6 md:px-12 py-24 md:py-32 transition-colors duration-500" style={{ backgroundColor: c.surface }}>
+      <section className="px-6 md:px-12 py-24 md:py-32 transition-colors duration-500">
         <div className="max-w-7xl mx-auto">
           <SectionHeader label="Our Process" number="01" />
           <div className="grid md:grid-cols-2 gap-12 md:gap-20">
@@ -116,7 +104,7 @@ export default function EditorialAboutPage({ articles }: { articles: Article[] }
       </section>
 
       {/* ── Our Club (03) ── */}
-      <section className="px-6 md:px-12 py-24 md:py-32 transition-colors duration-500" style={{ backgroundColor: c.surface }}>
+      <section className="px-6 md:px-12 py-24 md:py-32 transition-colors duration-500">
         <div className="max-w-7xl mx-auto">
           <SectionHeader label="Our Club" number="03" />
           <h2 className="text-[clamp(1.6rem,3vw,2.8rem)] leading-[1.15] font-light italic mb-6" style={{ ...serif, color: c.text }}>
@@ -137,7 +125,7 @@ export default function EditorialAboutPage({ articles }: { articles: Article[] }
               { slug: "lincoln", name: "Lincoln", w: 120 },
               { slug: "marriott", name: "Marriott", w: 130 },
             ].map((co, i) => (
-              <div key={i} className="group aspect-[3/2] border flex items-center justify-center px-6 relative overflow-hidden" style={{ borderColor: c.rule }}>
+              <div key={i} className="group aspect-[3/2] border flex items-center justify-center px-6 relative overflow-hidden" style={{ borderColor: c.rule, backgroundColor: c.bg }}>
                 <div className="absolute inset-x-0 bottom-0 h-0 group-hover:h-full transition-all duration-200 ease-out" style={{ backgroundColor: "rgb(46,157,85)" }} />
                 <img src={`/logos/network/${co.slug}-${light ? "light" : "dark"}.svg`} alt={co.name} className="object-contain relative z-10 group-hover:hidden" style={{ width: co.w, maxWidth: "80%" }} />
                 <img src={`/logos/network/${co.slug}-dark.svg`} alt={co.name} className="object-contain relative z-10 hidden group-hover:block group-hover:scale-125 transition-transform duration-700 ease-out" style={{ width: co.w, maxWidth: "80%" }} />

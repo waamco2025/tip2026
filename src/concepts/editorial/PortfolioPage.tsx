@@ -2,21 +2,9 @@
 
 import React, { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
-import { EditorialNav, EditorialFooter, EditorialHeadlines, CloudBackground } from "./HomePage";
+import { EditorialNav, EditorialFooter, EditorialHeadlines, CloudBackground, SectionHeader } from "./HomePage";
 import { useEditorialMode, ec } from "./EditorialModeContext";
 import type { Article } from "@/lib/article-types";
-
-function SectionHeader({ label, number }: { label: string; number: string }) {
-  const { light } = useEditorialMode();
-  const c = ec(light);
-  return (
-    <div className="flex items-center gap-6 mb-16 md:mb-20">
-      <span className="text-[0.72rem] uppercase tracking-[0.22em] shrink-0" style={{ fontFamily: "'Syne', sans-serif", color: c.accentText, fontWeight: c.sansWeight }}>{label}</span>
-      <div className="flex-1 h-px" style={{ backgroundColor: c.rule }} />
-      <span className="text-[0.72rem] uppercase tracking-[0.22em] shrink-0" style={{ fontFamily: "'Syne', sans-serif", color: c.muted, fontWeight: c.sansWeight }}>{number}</span>
-    </div>
-  );
-}
 
 type Company = {
   name: string;
@@ -109,6 +97,7 @@ export default function EditorialPortfolioPage({ articles }: { articles: Article
   const sans = { fontFamily: "'Syne', sans-serif" };
 
   const categoryList = [
+    "Highlights",
     "Travel",
     "Corporate",
     "Distribution",
@@ -130,8 +119,15 @@ export default function EditorialPortfolioPage({ articles }: { articles: Article
     }
   }, [searchParams]);
 
-  const matches = companies.filter((co) => co.categories.includes(active));
-  const filtered = [...matches.filter((co) => co.highlight), ...matches.filter((co) => !co.highlight)];
+  const matches =
+    active === "Highlights"
+      ? companies.filter((co) => co.highlight)
+      : companies.filter((co) => co.categories.includes(active));
+  const byName = (a: Company, b: Company) => a.name.localeCompare(b.name);
+  const filtered = [
+    ...matches.filter((co) => co.highlight).sort(byName),
+    ...matches.filter((co) => !co.highlight).sort(byName),
+  ];
 
   return (
     <div className="relative isolate min-h-screen transition-colors duration-500" style={{ backgroundColor: c.bg, color: c.text }}>
@@ -139,8 +135,8 @@ export default function EditorialPortfolioPage({ articles }: { articles: Article
       <EditorialNav active="portfolio" />
 
       {/* ── Hero ── */}
-      <section className="px-6 md:px-12 py-24 md:min-h-[600px] flex flex-col">
-        <div className="w-full max-w-7xl mx-auto">
+      <section className="px-6 md:px-12 py-24 md:min-h-screen flex flex-col md:justify-center">
+        <div className="w-full max-w-7xl mx-auto md:min-h-[36rem]">
           <span className="text-[0.72rem] uppercase tracking-[0.22em] block mb-8" style={{ ...sans, color: c.accentText, fontWeight: c.sansWeight }}>Portfolio</span>
           <h1 className="text-[clamp(2rem,5vw,4.5rem)] leading-[1.08] font-light italic mb-8 max-w-4xl" style={{ ...serif, color: c.text }}>
             Investing in companies shaping the future of global travel.
@@ -155,12 +151,12 @@ export default function EditorialPortfolioPage({ articles }: { articles: Article
       <section id="active-investments" className="px-6 md:px-12 py-24 md:py-32 scroll-mt-20">
         <div className="max-w-7xl mx-auto">
           <SectionHeader label="Active Investments" number="01" />
-          <div className="sticky top-[89px] md:top-[105px] z-40 flex flex-wrap gap-2 pt-4 pb-8 mb-4" style={{ backgroundColor: c.bg }}>
+          <div className="sticky top-[89px] md:top-[105px] z-40 flex flex-nowrap md:flex-wrap overflow-x-auto md:overflow-x-visible gap-2 pt-4 pb-8 mb-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden" style={{ backgroundColor: c.bg }}>
             {categoryList.map((cat) => (
               <button
                 key={cat}
                 onClick={() => setActive(cat)}
-                className="text-[0.7rem] uppercase tracking-[0.16em] px-4 py-2 border transition-all duration-300 hover:bg-[rgba(46,157,85,0.1)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+                className="text-[0.7rem] uppercase tracking-[0.16em] px-5 py-2 border shrink-0 transition-all duration-300 hover:bg-[rgba(46,157,85,0.1)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
                 style={{
                   borderColor: active === cat ? c.accent : c.rule,
                   color: active === cat ? c.accentText : c.muted,

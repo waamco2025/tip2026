@@ -1,21 +1,9 @@
 "use client";
 
 import React from "react";
-import { EditorialNav, EditorialFooter, CloudBackground } from "./HomePage";
+import { EditorialNav, EditorialFooter, CloudBackground, SectionHeader } from "./HomePage";
 import { useEditorialMode, ec } from "./EditorialModeContext";
 import { EditorialStockWidgets } from "@/components/StockWidgets";
-
-function SectionHeader({ label, number }: { label: string; number: string }) {
-  const { light } = useEditorialMode();
-  const c = ec(light);
-  return (
-    <div className="flex items-center gap-6 mb-16 md:mb-20">
-      <span className="text-[0.72rem] uppercase tracking-[0.22em] shrink-0" style={{ fontFamily: "'Syne', sans-serif", color: c.accentText, fontWeight: c.sansWeight }}>{label}</span>
-      <div className="flex-1 h-px" style={{ backgroundColor: c.rule }} />
-      <span className="text-[0.72rem] uppercase tracking-[0.22em] shrink-0" style={{ fontFamily: "'Syne', sans-serif", color: c.muted, fontWeight: c.sansWeight }}>{number}</span>
-    </div>
-  );
-}
 
 export default function EditorialInvestorRelationsPage() {
   const { light } = useEditorialMode();
@@ -95,7 +83,7 @@ export default function EditorialInvestorRelationsPage() {
       </section>
 
       {/* ── Fund Performance (02) ── */}
-      <section className="px-6 md:px-12 py-24 md:py-32 transition-colors duration-500" style={{ backgroundColor: c.surface }}>
+      <section className="px-6 md:px-12 py-24 md:py-32 transition-colors duration-500">
         <div className="max-w-7xl mx-auto">
           <SectionHeader label="Fund Performance" number="02" />
           <div className="grid md:grid-cols-2 gap-12 md:gap-20">
@@ -143,7 +131,7 @@ export default function EditorialInvestorRelationsPage() {
       </section>
 
       {/* ── Contact (04) ── */}
-      <section className="px-6 md:px-12 py-24 md:py-32 transition-colors duration-500" style={{ backgroundColor: c.surface }}>
+      <section className="px-6 md:px-12 py-24 md:py-32 transition-colors duration-500">
         <div className="max-w-7xl mx-auto">
           <SectionHeader label="Contact" number="04" />
           <div className="grid md:grid-cols-2 gap-8 md:gap-12">

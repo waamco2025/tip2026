@@ -2,7 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
-import { EditorialNav, EditorialFooter, ArticleListItem, CloudBackground } from "./HomePage";
+import { EditorialNav, EditorialFooter, ArticleListItem, CloudBackground, SectionHeader } from "./HomePage";
 import { useEditorialMode, ec } from "./EditorialModeContext";
 import type { Article, ArticleBlock, InlineSpan } from "@/lib/article-types";
 import { formatDate } from "@/lib/article-types";

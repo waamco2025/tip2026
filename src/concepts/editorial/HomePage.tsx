@@ -27,7 +27,7 @@ export function EditorialNav({ active = "home" }: { active?: string }) {
     { label: "About", href: "/about", key: "about" },
     { label: "Portfolio", href: "/portfolio", key: "portfolio" },
     { label: "Insights", href: "/news", key: "insights" },
-    { label: "Investor Relations", href: "/investor-relations", key: "ir" },
+    { label: "Investor Relations", href: "https://services.dataexchange.fiscloudservices.com/LogOn/2350903", key: "ir", external: true },
   ];
   const linkCls = (k: string) =>
     `transition-colors duration-300 ${active === k ? "" : "hover:opacity-80"}`;
@@ -55,6 +55,8 @@ export function EditorialNav({ active = "home" }: { active?: string }) {
             <Link
               key={l.key}
               href={l.href}
+              target={l.external ? "_blank" : undefined}
+              rel={l.external ? "noopener noreferrer" : undefined}
               className={`text-[0.78rem] uppercase tracking-[0.14em] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 ${linkCls(l.key)}`}
               style={{ color: desktopLinkColor(active === l.key), fontWeight: c.sansWeight, outlineColor: c.accent }}
             >
@@ -83,6 +85,8 @@ export function EditorialNav({ active = "home" }: { active?: string }) {
             <Link
               key={l.key}
               href={l.href}
+              target={l.external ? "_blank" : undefined}
+              rel={l.external ? "noopener noreferrer" : undefined}
               className={`text-[0.72rem] uppercase tracking-[0.14em] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 ${linkCls(l.key)}`}
               style={{ color: active === l.key ? c.text : c.muted, fontWeight: c.sansWeight, outlineColor: c.accent }}
               onClick={() => setOpen(false)}
@@ -167,9 +171,9 @@ export function EditorialFooter() {
             { label: "About", href: "/about" },
             { label: "Portfolio", href: "/portfolio" },
             { label: "Insights", href: "/news" },
-            { label: "Investor Relations", href: "/investor-relations" },
+            { label: "Investor Relations", href: "https://services.dataexchange.fiscloudservices.com/LogOn/2350903", external: true },
           ].map((t) => (
-            <Link key={t.label} href={t.href} className="text-[0.6rem] uppercase tracking-[0.14em] hover:opacity-80 transition-colors whitespace-nowrap" style={{ color: c.muted, fontWeight: c.sansWeight }}>{t.label}</Link>
+            <Link key={t.label} href={t.href} target={t.external ? "_blank" : undefined} rel={t.external ? "noopener noreferrer" : undefined} className="text-[0.6rem] uppercase tracking-[0.14em] hover:opacity-80 transition-colors whitespace-nowrap" style={{ color: c.muted, fontWeight: c.sansWeight }}>{t.label}</Link>
           ))}
         </div>
         <span className="text-[0.58rem] uppercase tracking-[0.1em] whitespace-nowrap shrink-0" style={{ color: c.muted, opacity: 0.6 }}>&copy; 2026 Thayer Investment Partners. All rights reserved.</span>
@@ -178,12 +182,96 @@ export function EditorialFooter() {
   );
 }
 
-/* ─── Section Header ─── */
-function SectionHeader({ label, number }: { label: string; number: string }) {
+/* ─── Section Header with marginalia arrow companion ─── */
+// When a section header enters the viewport (with a 15% inset on top/bottom)
+// the brand arrow fades in next to the eyebrow text, floating in from above or
+// below depending on scroll direction. When the header leaves the inset region
+// the arrow waits ~800ms before fading out, so quick scrolls don't flicker it.
+// Arrow is hidden below md (there's no margin to place it in).
+export function SectionHeader({ label, number }: { label: string; number: string }) {
   const { light } = useEditorialMode();
   const c = ec(light);
+  const ref = useRef<HTMLDivElement>(null);
+  type Phase = "pre" | "in" | "out";
+  const [phase, setPhase] = useState<Phase>("pre");
+  const [enterDir, setEnterDir] = useState<"down" | "up">("down");
+  const dirRef = useRef<"down" | "up">("down");
+  const lastScrollY = useRef(0);
+
+  useEffect(() => {
+    const onScroll = () => {
+      const y = window.scrollY;
+      if (y > lastScrollY.current) dirRef.current = "down";
+      else if (y < lastScrollY.current) dirRef.current = "up";
+      lastScrollY.current = y;
+    };
+    lastScrollY.current = window.scrollY;
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  useEffect(() => {
+    if (!ref.current) return;
+    let timer: ReturnType<typeof setTimeout> | null = null;
+    let raf1: number | null = null;
+    let raf2: number | null = null;
+    const io = new IntersectionObserver(
+      (entries) => {
+        const e = entries[0];
+        if (e.isIntersecting) {
+          if (timer) { clearTimeout(timer); timer = null; }
+          setEnterDir(dirRef.current);
+          // Double rAF — force the browser to commit the "pre" paint (opacity 0, offset
+          // translate) before we flip to "in". Without this the transition is skipped
+          // on mount because React updates both states in the same frame.
+          if (raf1 !== null) cancelAnimationFrame(raf1);
+          raf1 = requestAnimationFrame(() => {
+            if (raf2 !== null) cancelAnimationFrame(raf2);
+            raf2 = requestAnimationFrame(() => setPhase("in"));
+          });
+        } else {
+          if (timer) clearTimeout(timer);
+          timer = setTimeout(() => setPhase("out"), 800);
+        }
+      },
+      { rootMargin: "-15% 0px -15% 0px" }
+    );
+    io.observe(ref.current);
+    return () => {
+      io.disconnect();
+      if (timer) clearTimeout(timer);
+      if (raf1 !== null) cancelAnimationFrame(raf1);
+      if (raf2 !== null) cancelAnimationFrame(raf2);
+    };
+  }, []);
+
+  const arrowOffset = enterDir === "down" ? -16 : 16;
+  const arrowTransform =
+    phase === "in" ? "translateY(0)"
+    : phase === "pre" ? `translateY(${arrowOffset}px)`
+    : "translateY(0)";
+
   return (
-    <div className="flex items-center gap-6 mb-16 md:mb-20">
+    <div ref={ref} data-section-header className="flex items-center gap-6 mb-16 md:mb-20 relative">
+      <span
+        aria-hidden="true"
+        className="hidden md:block absolute pointer-events-none"
+        style={{
+          right: "100%",
+          marginRight: 10,
+          top: "100%",
+          opacity: phase === "in" ? 1 : 0,
+          transform: arrowTransform,
+          transition: "opacity 500ms ease, transform 600ms cubic-bezier(0.4, 0, 0.2, 1)",
+        }}
+      >
+        <svg width="16" height="16" viewBox="462 5 22 22" xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M462.6,14.1c0-.8.8-1.3,1.5-1.5l17.4-6.1c1-.5,2.2.6,1.8,1.8l-6.1,17.4c-.3.7-.7,1.5-1.5,1.5s-1.5-.7-1.5-1.5v-10h-10c-.8,0-1.5-.7-1.5-1.5Z"
+            fill={c.accent}
+          />
+        </svg>
+      </span>
       <span className="text-[0.72rem] uppercase tracking-[0.22em] shrink-0" style={{ fontFamily: "'Syne', sans-serif", color: c.accentText, fontWeight: c.sansWeight }}>{label}</span>
       <div className="flex-1 h-px" style={{ backgroundColor: c.rule }} />
       <span className="text-[0.72rem] uppercase tracking-[0.22em] shrink-0" style={{ fontFamily: "'Syne', sans-serif", color: c.muted, fontWeight: c.sansWeight }}>{number}</span>
@@ -421,7 +509,7 @@ export default function EditorialHomePage({ articles }: { articles: Article[] })
       {/* ── Hero ── */}
       <div className="flex flex-col md:flex-row md:h-screen md:-mt-[105px]">
         {/* Left panel — full viewport on mobile, 40% on desktop */}
-        <div className="relative flex flex-col justify-end md:justify-center w-full md:w-[40%] px-6 md:px-12 py-12 md:py-0 z-10 shrink-0 min-h-[calc(100vh-89px)] md:min-h-0" style={{ backgroundColor: c.bg }}>
+        <div className="relative flex flex-col justify-end md:justify-center w-full md:w-[40%] px-6 md:px-12 py-12 md:py-0 z-10 shrink-0 min-h-[calc(100vh-89px)] md:min-h-0">
           <span className="hidden md:block text-[0.72rem] uppercase tracking-[0.22em] mb-8" style={{ ...sans, color: c.accentText, fontWeight: c.sansWeight }}>
             Pioneers in Travel Technology &middot; Est. 2008
           </span>
@@ -452,18 +540,9 @@ export default function EditorialHomePage({ articles }: { articles: Article[] })
                   className="absolute inset-0 transition-opacity duration-1000 ease-in-out"
                   style={{ opacity: i === activeSlide ? 1 : 0 }}
                 >
-                  {/* Blurred wallpaper backfill */}
+                  {/* Image always fills the panel — cover at 100% height */}
                   <div
-                    className="absolute inset-0 bg-cover bg-center"
-                    style={{
-                      backgroundImage: `url('${s.image}')`,
-                      filter: "blur(36px) saturate(0.85) brightness(0.55)",
-                      transform: "scale(1.15)",
-                    }}
-                  />
-                  {/* Crisp photo — mobile: cover; desktop: contained + centered */}
-                  <div
-                    className="absolute inset-0 bg-no-repeat bg-cover bg-center md:bg-contain"
+                    className="absolute inset-0 bg-no-repeat bg-cover bg-center"
                     style={{ backgroundImage: `url('${s.image}')` }}
                   />
                 </div>
@@ -555,7 +634,7 @@ export default function EditorialHomePage({ articles }: { articles: Article[] })
           <SectionHeader label="What Our Entrepreneurs Say" number="01" />
           <div className="grid md:grid-cols-3 gap-8 md:gap-12">
             {testimonials.map((t, i) => (
-              <div key={i} className="border p-8 md:p-10 flex flex-col transition-colors duration-500 hover:bg-[rgba(46,157,85,0.06)]" style={{ borderColor: c.rule }}>
+              <div key={i} className="border p-8 md:p-10 flex flex-col transition-colors duration-500 hover:bg-[rgba(46,157,85,0.06)]" style={{ borderColor: c.rule, backgroundColor: c.bg }}>
                 <span className="text-[2.5rem] leading-none mb-4" style={{ ...serif, color: c.accent }}>&ldquo;</span>
                 <p className="text-[1.15rem] leading-[1.7] font-light flex-1 mb-8" style={{ ...sans, color: c.bodyText, fontWeight: c.sansWeight }}>
                   {t.quote}
@@ -571,7 +650,7 @@ export default function EditorialHomePage({ articles }: { articles: Article[] })
       </section>
 
       {/* ── Our Philosophy (02) ── */}
-      <section className="px-6 md:px-12 py-24 md:py-32 transition-colors duration-500" style={{ backgroundColor: c.surface }}>
+      <section className="px-6 md:px-12 py-24 md:py-32 transition-colors duration-500">
         <div className="max-w-7xl mx-auto">
           <SectionHeader label="Our Philosophy" number="02" />
           <div className="grid md:grid-cols-[1fr_2fr] gap-12 md:gap-12">
