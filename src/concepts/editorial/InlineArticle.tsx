@@ -29,7 +29,7 @@ function Block({ block }: { block: ArticleBlock }) {
   }
   return (
     <blockquote className="border-l-2 pl-8 my-12" style={{ borderColor: c.accent }}>
-      <p className="text-[1.15rem] leading-[1.7] font-light italic" style={{ ...sans, color: c.bodyText, fontWeight: c.sansWeight }}>
+      <p className="text-[1.15rem] leading-[1.7] font-normal italic" style={{ ...sans, color: c.bodyText, fontWeight: c.sansWeight }}>
         &ldquo;<InlineText spans={block.spans} />&rdquo;
       </p>
       {block.attribution && (
@@ -100,7 +100,7 @@ export function InlineArticle({ article, linkHeadline = true }: { article: Artic
   const sans = { fontFamily: "'Syne', sans-serif" };
 
   const headline = (
-    <h2 className="text-[clamp(2rem,4.5vw,3.8rem)] leading-[1.1] font-light italic mb-6 transition-colors" style={{ ...serif, color: c.text }}>
+    <h2 className="text-[clamp(2.5rem,4.5vw,3.8rem)] leading-[1.1] font-normal italic mb-6 transition-colors" style={{ ...serif, color: c.text }}>
       {article.title}
     </h2>
   );

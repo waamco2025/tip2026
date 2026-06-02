@@ -202,7 +202,7 @@ export default function EditorialPortfolioPage({ articles }: { articles: Article
               {heroArrow}
               Portfolio
             </span>
-            <h1 className="text-[clamp(2rem,5vw,4.5rem)] leading-[1.08] font-light italic mb-8" style={{ ...serif, color: c.text }}>
+            <h1 className="text-[clamp(2.5rem,5vw,4.5rem)] leading-[1.08] font-normal italic mb-8" style={{ ...serif, color: c.text }}>
               Investing in companies shaping the future of global travel.
             </h1>
             <p className="text-[1.15rem] leading-[1.7]" style={{ ...sans, color: c.bodyText, fontWeight: c.sansWeight }}>
@@ -217,7 +217,7 @@ export default function EditorialPortfolioPage({ articles }: { articles: Article
               hero right-side composition reads the same across both pages. */}
           <div className="md:flex-1">
             <div
-              className="w-full md:w-[min(34rem,100%)] md:ml-auto border p-8 md:p-10 flex flex-col md:h-[34rem]"
+              className="w-full md:w-[min(34rem,100%)] md:ml-auto border p-8 md:p-10 flex flex-col h-[38rem] md:h-[34rem]"
               style={{
                 borderColor: c.rule,
                 backgroundColor: c.surface,
@@ -248,7 +248,7 @@ export default function EditorialPortfolioPage({ articles }: { articles: Article
             e.preventDefault();
             document.getElementById("active-investments")?.scrollIntoView({ behavior: "smooth", block: "start" });
           }}
-          className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2 group focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4"
+          className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 hidden md:flex flex-col items-center gap-2 group focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4"
           style={{
             opacity: anchorVisible ? 1 : 0,
             pointerEvents: anchorVisible ? "auto" : "none",
@@ -332,7 +332,7 @@ export default function EditorialPortfolioPage({ articles }: { articles: Article
                     </>
                   ) : (
                     <span
-                      className="relative z-10 text-center text-[1.05rem] md:text-[1.15rem] font-light italic leading-tight transition-colors duration-300 group-hover:text-[#2E9D55]"
+                      className="relative z-10 text-center text-[1.05rem] md:text-[1.15rem] font-normal italic leading-tight transition-colors duration-300 group-hover:text-[#2E9D55]"
                       style={{ ...serif, color: c.text }}
                     >
                       {co.name}

@@ -46,7 +46,7 @@ export function EditorialNav({ active = "home" }: { active?: string }) {
         borderColor: scrolled ? c.rule : "transparent",
       }}
     >
-      <div className="max-w-7xl mx-auto px-6 md:px-0 py-5 md:py-6 flex items-center justify-between">
+      <div className="max-w-7xl mx-auto pl-[max(1.5rem,env(safe-area-inset-left))] pr-[max(2rem,env(safe-area-inset-right))] md:px-0 py-5 md:py-6 flex items-center justify-between">
         <Link href="/">
           <img src={c.logo} alt="Thayer" className="h-12 md:h-14" />
         </Link>
@@ -332,7 +332,7 @@ export function NextPagePanel({ current }: { current: PageKey }) {
               <span className="text-[0.72rem] uppercase tracking-[0.22em] block mb-8 transition-colors group-hover:text-[#2E9D55]" style={{ ...sans, color: c.accentText, fontWeight: c.sansWeight }}>
                 {next.eyebrow}
               </span>
-              <h2 className="text-[clamp(2rem,5vw,4.5rem)] leading-[1.08] font-light italic mb-8 transition-colors group-hover:text-[#2E9D55]" style={{ ...serif, color: c.text }}>
+              <h2 className="text-[clamp(2.5rem,5vw,4.5rem)] leading-[1.08] font-normal italic mb-8 transition-colors group-hover:text-[#2E9D55]" style={{ ...serif, color: c.text }}>
                 {next.headline}
               </h2>
               <p className="text-[1.15rem] leading-[1.7]" style={{ ...sans, color: c.bodyText, fontWeight: c.sansWeight }}>
@@ -349,7 +349,7 @@ export function NextPagePanel({ current }: { current: PageKey }) {
             <span className="text-[0.72rem] uppercase tracking-[0.22em] block mb-8 transition-colors group-hover:text-[#2E9D55]" style={{ ...sans, color: c.accentText, fontWeight: c.sansWeight }}>
               {next.eyebrow}
             </span>
-            <h2 className="text-[clamp(2rem,5vw,4.5rem)] leading-[1.08] font-light italic mb-8 max-w-4xl transition-colors group-hover:text-[#2E9D55]" style={{ ...serif, color: c.text }}>
+            <h2 className="text-[clamp(2.5rem,5vw,4.5rem)] leading-[1.08] font-normal italic mb-8 max-w-4xl transition-colors group-hover:text-[#2E9D55]" style={{ ...serif, color: c.text }}>
               {next.headline}
             </h2>
             <p className="text-[1.15rem] leading-[1.7] max-w-2xl" style={{ ...sans, color: c.bodyText, fontWeight: c.sansWeight }}>
@@ -359,12 +359,24 @@ export function NextPagePanel({ current }: { current: PageKey }) {
         </div>
       )}
 
-      {/* Link wrapped in the same max-w-7xl container as the copy so its right
-          edge aligns with the content frame. Vertical position tracks the copy
-          block's measured center (not the section's center) so the link sits
-          aligned with the visual midpoint of the eyebrow + headline + body. */}
+      {/* Mobile continue link: in-flow, centered below the copy so it
+          doesn't overlap the body text. Hidden at md+ where the absolute
+          right-aligned version takes over. */}
+      <div className="md:hidden mt-12 flex justify-center w-full">
+        <div className="flex items-center gap-3">
+          <span className="text-[0.72rem] uppercase tracking-[0.22em] transition-colors group-hover:text-[#2E9D55]" style={{ ...sans, color: c.accentText, fontWeight: c.sansWeight }}>
+            Continue
+          </span>
+          <span className="text-[1.1rem] transition-transform duration-300 group-hover:translate-x-1.5" style={{ color: c.accentText }} aria-hidden>
+            &rarr;
+          </span>
+        </div>
+      </div>
+
+      {/* Desktop continue link: absolute, right-aligned with content frame,
+          vertically aligned with the measured copy block center. */}
       <div
-        className="absolute inset-x-0 -translate-y-1/2 px-6 md:px-12 pointer-events-none z-20"
+        className="hidden md:block absolute inset-x-0 -translate-y-1/2 px-6 md:px-12 pointer-events-none z-20"
         style={{ top: linkTopPx !== null ? `${linkTopPx}px` : "50%" }}
       >
         <div className="max-w-7xl mx-auto flex justify-end">
@@ -530,7 +542,7 @@ export function ArticleListItem({ article }: { article: Article }) {
         <span className="text-[0.65rem] uppercase tracking-[0.2em] block mb-3" style={{ ...sans, color: c.accentText, fontWeight: c.sansWeight }}>
           {formatDate(article.date)} &middot; {article.category}
         </span>
-        <h3 className="text-[1.4rem] md:text-[1.75rem] leading-[1.2] font-light italic mb-3 group-hover:text-[#2E9D55] transition-colors" style={{ ...serif, color: c.text, fontWeight: c.headingWeight }}>
+        <h3 className="text-[1.4rem] md:text-[1.75rem] leading-[1.2] font-normal italic mb-3 group-hover:text-[#2E9D55] transition-colors" style={{ ...serif, color: c.text, fontWeight: c.headingWeight }}>
           {article.title}
         </h3>
         <p className="hidden md:block text-[1.05rem] md:text-[1.15rem] leading-[1.7]" style={{ ...sans, color: c.bodyText, fontWeight: c.sansWeight }}>{article.subhead}</p>
@@ -734,12 +746,12 @@ export default function EditorialHomePage({ articles }: { articles: Article[] })
             About/Portfolio/Insights content frame's left edge at any
             viewport. Carousel on the right still bleeds to the viewport
             edge because the left panel itself remains full-bleed. */}
-        <div className="relative flex flex-col justify-end md:justify-center w-full md:w-[50%] pl-6 md:pl-[calc(3rem+max(0px,(100vw-86rem)/2))] pr-6 md:pr-24 py-12 md:py-0 z-10 shrink-0 min-h-[calc(100vh-89px)] md:min-h-0">
+        <div className="relative flex flex-col justify-center w-full md:w-[50%] pl-6 md:pl-[calc(3rem+max(0px,(100vw-86rem)/2))] pr-6 md:pr-24 py-12 md:py-0 z-10 shrink-0 min-h-[60vh] md:min-h-0">
           <span className="hidden md:block text-[0.72rem] uppercase tracking-[0.22em] mb-8" style={{ ...sans, color: c.accentText, fontWeight: c.sansWeight }}>
             Pioneers in Travel Technology &middot; Est. 2008
           </span>
           <h1
-            className="text-[clamp(2rem,5vw,4.5rem)] leading-[1.08] font-light italic mb-6"
+            className="text-[clamp(2.5rem,5vw,4.5rem)] leading-[1.08] font-normal italic mb-6"
             style={{ ...serif, color: c.text }}
           >
             Investing in the Entrepreneurs Shaping the Global Travel Industry.
@@ -777,6 +789,27 @@ export default function EditorialHomePage({ articles }: { articles: Article[] })
             ))}
             {/* Desktop bottom-up gradient for readability */}
             <div className="absolute inset-0 hidden md:block" style={{ background: "linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.2) 40%, rgba(0,0,0,0) 70%)" }} />
+
+            {/* Mobile swipe arrows — bottom corners of the image, white,
+                hint that the carousel is swipeable. */}
+            <button
+              type="button"
+              onClick={goPrev}
+              aria-label="Previous slide"
+              className="md:hidden absolute bottom-3 left-3 z-10 w-9 h-9 flex items-center justify-center"
+              style={{ color: "#fff", textShadow: "0 1px 3px rgba(0,0,0,0.4)" }}
+            >
+              <span className="text-[1.5rem] leading-none" aria-hidden>&larr;</span>
+            </button>
+            <button
+              type="button"
+              onClick={goNext}
+              aria-label="Next slide"
+              className="md:hidden absolute bottom-3 right-3 z-10 w-9 h-9 flex items-center justify-center"
+              style={{ color: "#fff", textShadow: "0 1px 3px rgba(0,0,0,0.4)" }}
+            >
+              <span className="text-[1.5rem] leading-none" aria-hidden>&rarr;</span>
+            </button>
           </div>
 
           {/* Desktop: logo, attribution, carousel, link — bottom right */}
@@ -794,7 +827,7 @@ export default function EditorialHomePage({ articles }: { articles: Article[] })
                 <div key={idx} className="absolute right-0 top-0 w-max flex flex-col items-end gap-4 transition-opacity duration-700 ease-in-out" style={{ opacity: idx === activeSlide ? 1 : 0, pointerEvents: idx === activeSlide ? "auto" : "none" }}>
                   {s.founders.map((f, i) => (
                     <div key={i} className="flex flex-col items-end">
-                      <span className="text-[1.75rem] leading-[1.15] font-light italic whitespace-nowrap" style={{ ...serif, color: "#fff" }}>{f.name}</span>
+                      <span className="text-[1.75rem] leading-[1.15] font-normal italic whitespace-nowrap" style={{ ...serif, color: "#fff" }}>{f.name}</span>
                       <span className="text-[0.68rem] uppercase tracking-[0.18em] whitespace-nowrap" style={{ ...sans, color: "rgba(255,255,255,0.7)", fontWeight: c.sansWeight }}>{f.title}</span>
                     </div>
                   ))}
@@ -842,7 +875,7 @@ export default function EditorialHomePage({ articles }: { articles: Article[] })
               <div className="flex flex-col items-start gap-3">
                 {slide.founders.map((f, i) => (
                   <div key={i} className="flex flex-col items-start">
-                    <span className="text-[1.5rem] font-light italic" style={{ ...serif, color: c.text }}>{f.name}</span>
+                    <span className="text-[1.5rem] font-normal italic" style={{ ...serif, color: c.text }}>{f.name}</span>
                     <span className="text-[0.78rem] uppercase tracking-[0.22em]" style={{ ...sans, color: c.muted, fontWeight: c.sansWeight }}>{f.title}</span>
                   </div>
                 ))}
@@ -879,7 +912,7 @@ export default function EditorialHomePage({ articles }: { articles: Article[] })
         <div className="max-w-7xl mx-auto">
           <SectionHeader label="Our Philosophy" number="02" />
           <div className="grid md:grid-cols-[1fr_2fr] gap-12 md:gap-12">
-            <h2 className="text-[clamp(1.8rem,3.5vw,3.2rem)] leading-[1.15] font-light italic" style={{ ...serif, color: c.text }}>
+            <h2 className="text-[clamp(2.25rem,3.5vw,3.2rem)] leading-[1.15] font-normal italic" style={{ ...serif, color: c.text }}>
               Invest in Travel.
             </h2>
             <div>

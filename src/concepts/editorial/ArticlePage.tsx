@@ -50,7 +50,7 @@ export default function EditorialArticlePage({ article, prev, next, related }: P
                 <span>&larr;</span>
                 <div>
                   <span className="text-[0.65rem] uppercase tracking-[0.18em] block mb-1" style={{ ...sans, fontWeight: c.sansWeight }}>Previous</span>
-                  <span className="text-[1rem] font-light italic" style={{ ...serif, fontWeight: c.headingWeight }}>{prev.title}</span>
+                  <span className="text-[1rem] font-normal italic" style={{ ...serif, fontWeight: c.headingWeight }}>{prev.title}</span>
                 </div>
               </Link>
             ) : <span />}
@@ -58,7 +58,7 @@ export default function EditorialArticlePage({ article, prev, next, related }: P
               <Link href={`/news/${next.slug}`} className="group flex items-center gap-4 hover:opacity-80 transition-colors text-right" style={{ color: c.muted }}>
                 <div>
                   <span className="text-[0.65rem] uppercase tracking-[0.18em] block mb-1" style={{ ...sans, fontWeight: c.sansWeight }}>Next</span>
-                  <span className="text-[1rem] font-light italic" style={{ ...serif, fontWeight: c.headingWeight }}>{next.title}</span>
+                  <span className="text-[1rem] font-normal italic" style={{ ...serif, fontWeight: c.headingWeight }}>{next.title}</span>
                 </div>
                 <span>&rarr;</span>
               </Link>

@@ -116,7 +116,7 @@ export default function EditorialAboutPage({ articles }: { articles: Article[] }
             section dimensions; vector-effect keeps the stroke a constant pixel width.
             The arrow div uses % left/top so its center stays aligned with the line
             endpoints regardless of viewport. Hidden below md. */}
-        <div ref={heroOverlayRef} className="absolute inset-0 pointer-events-none z-0 hidden md:block" aria-hidden="true">
+        <div ref={heroOverlayRef} className="absolute inset-0 pointer-events-none z-0" aria-hidden="true">
           <svg className="absolute inset-0 w-full h-full" preserveAspectRatio="none" viewBox="0 0 100 100">
             <defs>
               <linearGradient id="contrail-grad" gradientUnits="userSpaceOnUse" x1={startPos.x} y1={startPos.y} x2={endPos.x} y2={endPos.y}>
@@ -162,7 +162,7 @@ export default function EditorialAboutPage({ articles }: { articles: Article[] }
 
         <div className="relative w-full max-w-7xl mx-auto z-10 md:min-h-[36rem]" style={navOverlay?.dimStyle}>
           <span className="text-[0.72rem] uppercase tracking-[0.22em] block mb-8" style={{ ...sans, color: c.accentText, fontWeight: c.sansWeight }}>About the Firm</span>
-          <h1 ref={heroH1Ref} className="text-[clamp(2rem,5vw,4.5rem)] leading-[1.08] font-light italic mb-8 max-w-4xl" style={{ ...serif, color: c.text }}>
+          <h1 ref={heroH1Ref} className="text-[clamp(2.5rem,5vw,4.5rem)] leading-[1.08] font-normal italic mb-8 max-w-4xl" style={{ ...serif, color: c.text }}>
             A History of Innovation in Travel.
           </h1>
           <p className="text-[1.15rem] leading-[1.7] max-w-2xl" style={{ ...sans, color: c.bodyText, fontWeight: c.sansWeight }}>
@@ -210,7 +210,7 @@ export default function EditorialAboutPage({ articles }: { articles: Article[] }
         <div className="max-w-7xl mx-auto">
           <SectionHeader label="Our Process" number="01" />
           <div className="grid md:grid-cols-2 gap-12 md:gap-20">
-            <h2 className="text-[clamp(2.2rem,4.5vw,4rem)] leading-[1.1] font-light italic" style={{ ...serif, color: c.text }}>
+            <h2 className="text-[clamp(2.2rem,4.5vw,4rem)] leading-[1.1] font-normal italic" style={{ ...serif, color: c.text }}>
               Conviction, network, and partnership, refined over 15+ years.
             </h2>
             <p className="text-[1.15rem] leading-[1.7]" style={{ ...sans, color: c.bodyText, fontWeight: c.sansWeight }}>
@@ -237,7 +237,7 @@ export default function EditorialAboutPage({ articles }: { articles: Article[] }
                     style={{ color: c.text, outlineColor: c.accent }}
                   >
                     <div className="flex flex-col md:flex-row md:items-baseline gap-2 md:gap-6 flex-1 min-w-0">
-                      <h3 className="text-[1.6rem] md:text-[2rem] font-light italic leading-[1.15]" style={{ ...serif, fontWeight: c.headingWeight }}>{t.name}</h3>
+                      <h3 className="text-[1.6rem] md:text-[2rem] font-normal italic leading-[1.15]" style={{ ...serif, fontWeight: c.headingWeight }}>{t.name}</h3>
                       <span className="text-[0.7rem] uppercase tracking-[0.18em]" style={{ ...sans, color: c.accentText, fontWeight: c.sansWeight }}>{t.role}</span>
                     </div>
                     <ChevronDown
@@ -270,7 +270,7 @@ export default function EditorialAboutPage({ articles }: { articles: Article[] }
       <section className="px-6 md:px-12 py-24 md:py-32 transition-colors duration-500">
         <div className="max-w-7xl mx-auto">
           <SectionHeader label="Our Club" number="03" />
-          <h2 className="text-[clamp(1.6rem,3vw,2.8rem)] leading-[1.15] font-light italic mb-6" style={{ ...serif, color: c.text }}>
+          <h2 className="text-[clamp(2rem,3vw,2.8rem)] leading-[1.15] font-normal italic mb-6" style={{ ...serif, color: c.text }}>
             Decades of specialized investment and operating experience.
           </h2>
           <p className="text-[1.15rem] leading-[1.7] mb-12" style={{ ...sans, color: c.bodyText, fontWeight: c.sansWeight }}>

@@ -60,7 +60,7 @@ function ExpandableArticle({ article }: { article: Article }) {
               className="block hover:text-[#2E9D55] transition-colors"
               style={{ color: c.text }}
             >
-              <h3 className="text-[1.4rem] md:text-[1.75rem] leading-[1.2] font-light italic mb-3" style={{ ...serif, fontWeight: c.headingWeight }}>
+              <h3 className="text-[1.4rem] md:text-[1.75rem] leading-[1.2] font-normal italic mb-3" style={{ ...serif, fontWeight: c.headingWeight }}>
                 {article.title}
               </h3>
             </Link>
@@ -148,7 +148,7 @@ export default function EditorialInsightsPage({ articles }: { articles: Article[
               {heroArrow}
               Insights
             </span>
-            <h1 className="text-[clamp(2rem,5vw,4.5rem)] leading-[1.08] font-light italic mb-8" style={{ ...serif, color: c.text }}>
+            <h1 className="text-[clamp(2.5rem,5vw,4.5rem)] leading-[1.08] font-normal italic mb-8" style={{ ...serif, color: c.text }}>
               Perspectives on the future of travel &amp; technology.
             </h1>
             <p className="text-[1.15rem] leading-[1.7]" style={{ ...sans, color: c.bodyText, fontWeight: c.sansWeight }}>
@@ -191,7 +191,7 @@ export default function EditorialInsightsPage({ articles }: { articles: Article[
                   )}
                 </div>
                 <div className="mt-auto">
-                  <h2 className="text-[clamp(1.4rem,2.4vw,2rem)] leading-[1.2] font-light italic mb-4 group-hover:text-[#2E9D55] transition-colors" style={{ ...serif, color: c.text, fontWeight: c.headingWeight }}>
+                  <h2 className="text-[clamp(1.65rem,2.4vw,2rem)] leading-[1.2] font-normal italic mb-4 group-hover:text-[#2E9D55] transition-colors" style={{ ...serif, color: c.text, fontWeight: c.headingWeight }}>
                     {featured.title}
                   </h2>
                   <p className="text-[1.05rem] leading-[1.7] mb-5" style={{ ...sans, color: c.bodyText, fontWeight: c.sansWeight }}>
@@ -214,7 +214,7 @@ export default function EditorialInsightsPage({ articles }: { articles: Article[
               e.preventDefault();
               scrollToFeatured();
             }}
-            className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2 group focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4"
+            className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 hidden md:flex flex-col items-center gap-2 group focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4"
             style={{
               opacity: anchorVisible ? 1 : 0,
               pointerEvents: anchorVisible ? "auto" : "none",
@@ -268,7 +268,7 @@ export default function EditorialInsightsPage({ articles }: { articles: Article[
                       <CopyLinkIcon slug={a.slug} />
                     </span>
                     <Link href={`/news/${a.slug}`} className="block hover:text-[#2E9D55] transition-colors" style={{ color: c.text }}>
-                      <h3 className="text-[1.4rem] md:text-[1.75rem] leading-[1.2] font-light italic mb-3" style={{ ...serif, fontWeight: c.headingWeight }}>
+                      <h3 className="text-[1.4rem] md:text-[1.75rem] leading-[1.2] font-normal italic mb-3" style={{ ...serif, fontWeight: c.headingWeight }}>
                         {a.title}
                       </h3>
                     </Link>

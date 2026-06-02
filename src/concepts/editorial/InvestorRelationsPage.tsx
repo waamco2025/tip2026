@@ -33,7 +33,7 @@ export default function EditorialInvestorRelationsPage() {
         <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 md:gap-20">
           <div>
             <span className="text-[0.72rem] uppercase tracking-[0.22em] block mb-8" style={{ ...sans, color: c.accentText, fontWeight: c.sansWeight }}>Investor Relations</span>
-            <h1 className="text-[clamp(2rem,4.5vw,4rem)] leading-[1.08] font-light italic mb-6" style={{ ...serif, color: c.text }}>
+            <h1 className="text-[clamp(2.5rem,4.5vw,4rem)] leading-[1.08] font-normal italic mb-6" style={{ ...serif, color: c.text }}>
               Documents, filings, and market data.
             </h1>
             <p className="text-[1.15rem] leading-[1.7]" style={{ ...sans, color: c.bodyText, fontWeight: c.sansWeight }}>
@@ -71,7 +71,7 @@ export default function EditorialInvestorRelationsPage() {
                 >
                   {d.type}
                 </span>
-                <h3 className="text-[1.75rem] font-light italic mb-3 group-hover:text-[#2E9D55] transition-colors" style={{ ...serif, color: c.text, fontWeight: c.headingWeight }}>{d.title}</h3>
+                <h3 className="text-[1.75rem] font-normal italic mb-3 group-hover:text-[#2E9D55] transition-colors" style={{ ...serif, color: c.text, fontWeight: c.headingWeight }}>{d.title}</h3>
                 <p className="text-[1.15rem] leading-[1.7] flex-1 mb-5" style={{ ...sans, color: c.bodyText, fontWeight: c.sansWeight }}>{d.desc}</p>
                 <span className="text-[0.78rem] uppercase tracking-[0.18em] group-hover:text-[#2E9D55] transition-colors" style={{ ...sans, color: c.muted, fontWeight: c.sansWeight }}>
                   {d.link} &rarr;
@@ -88,7 +88,7 @@ export default function EditorialInvestorRelationsPage() {
           <SectionHeader label="Fund Performance" number="02" />
           <div className="grid md:grid-cols-2 gap-12 md:gap-20">
             <div>
-              <h2 className="text-[clamp(1.6rem,3vw,2.6rem)] leading-[1.15] font-light italic mb-6" style={{ ...serif, color: c.text }}>
+              <h2 className="text-[clamp(1.6rem,3vw,2.6rem)] leading-[1.15] font-normal italic mb-6" style={{ ...serif, color: c.text }}>
                 Three generations of travel-focused investing.
               </h2>
               <p className="text-[1.15rem] leading-[1.7]" style={{ ...sans, color: c.bodyText, fontWeight: c.sansWeight }}>
@@ -100,7 +100,7 @@ export default function EditorialInvestorRelationsPage() {
             <div className="flex flex-col gap-4">
               {funds.map((f, i) => (
                 <div key={i} className="border p-6 grid grid-cols-[1fr_auto_auto_auto] items-center gap-4 md:gap-8" style={{ borderColor: c.rule }}>
-                  <span className="text-[1.5rem] font-light italic" style={{ ...serif, color: c.text, fontWeight: c.headingWeight }}>{f.name}</span>
+                  <span className="text-[1.5rem] font-normal italic" style={{ ...serif, color: c.text, fontWeight: c.headingWeight }}>{f.name}</span>
                   <span className="text-[1rem] font-light" style={{ ...serif, color: c.accent, fontWeight: c.statWeight }}>{f.size}</span>
                   <span className="text-[0.65rem] uppercase tracking-[0.16em]" style={{ ...sans, color: c.muted, fontWeight: c.sansWeight }}>{f.vintage}</span>
                   <span
@@ -137,7 +137,7 @@ export default function EditorialInvestorRelationsPage() {
           <div className="grid md:grid-cols-2 gap-8 md:gap-12">
             <div className="border p-8 md:p-10" style={{ borderColor: c.rule }}>
               <span className="text-[0.78rem] uppercase tracking-[0.22em] block mb-5" style={{ ...sans, color: c.accentText, fontWeight: c.sansWeight }}>LP Inquiries</span>
-              <h3 className="text-[1.75rem] font-light italic mb-4" style={{ ...serif, color: c.text, fontWeight: c.headingWeight }}>Limited Partner Relations</h3>
+              <h3 className="text-[1.75rem] font-normal italic mb-4" style={{ ...serif, color: c.text, fontWeight: c.headingWeight }}>Limited Partner Relations</h3>
               <p className="text-[1.15rem] leading-[1.7] mb-6" style={{ ...sans, color: c.bodyText, fontWeight: c.sansWeight }}>
                 For existing limited partners with questions about fund performance, capital calls,
                 or distributions, please contact our investor relations team.
@@ -149,7 +149,7 @@ export default function EditorialInvestorRelationsPage() {
             </div>
             <div className="border p-8 md:p-10" style={{ borderColor: c.rule }}>
               <span className="text-[0.78rem] uppercase tracking-[0.22em] block mb-5" style={{ ...sans, color: c.accentText, fontWeight: c.sansWeight }}>Fund Administration</span>
-              <h3 className="text-[1.75rem] font-light italic mb-4" style={{ ...serif, color: c.text, fontWeight: c.headingWeight }}>Operations & Compliance</h3>
+              <h3 className="text-[1.75rem] font-normal italic mb-4" style={{ ...serif, color: c.text, fontWeight: c.headingWeight }}>Operations & Compliance</h3>
               <p className="text-[1.15rem] leading-[1.7] mb-6" style={{ ...sans, color: c.bodyText, fontWeight: c.sansWeight }}>
                 For questions related to fund administration, tax documents,
                 or compliance matters, please contact our operations team.
