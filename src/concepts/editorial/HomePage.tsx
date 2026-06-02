@@ -921,10 +921,6 @@ export default function EditorialHomePage({ articles }: { articles: Article[] })
                 We invest on behalf of the travel industry. From horizontal platforms—payments, cybersecurity, and workforce management—to vertical solutions across loyalty, distribution, and critical operating systems, we back both industry outsiders and seasoned operators.
                 We connect dots and open doors across the largest and most dynamic industry in the world: hotels, transportation, airlines, cruise, agencies, restaurants, events, sports, entertainment, and experiences.
               </p>
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-px" style={{ backgroundColor: c.accent }} />
-                <span className="text-[0.72rem] uppercase tracking-[0.22em]" style={{ ...sans, color: c.accentText, fontWeight: c.sansWeight }}>Since 2008</span>
-              </div>
             </div>
           </div>
         </div>
