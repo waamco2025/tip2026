@@ -327,13 +327,19 @@ export function NextPagePanel({ current }: { current: PageKey }) {
         </div>
       )}
 
-      <div className="absolute top-1/2 -translate-y-1/2 right-6 md:right-12 flex items-center gap-3 pointer-events-none">
-        <span className="text-[0.72rem] uppercase tracking-[0.22em] transition-colors group-hover:text-[#2E9D55]" style={{ ...sans, color: c.accentText, fontWeight: c.sansWeight }}>
-          Continue to {next.title}
-        </span>
-        <span className="text-[1.1rem] transition-transform duration-300 group-hover:translate-x-1.5" style={{ color: c.accentText }} aria-hidden>
-          &rarr;
-        </span>
+      {/* Link wrapped in the same max-w-7xl container as the copy so its right
+          edge aligns with the content frame, not the section's padding edge. */}
+      <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 px-6 md:px-12 pointer-events-none z-20">
+        <div className="max-w-7xl mx-auto flex justify-end">
+          <div className="flex items-center gap-3">
+            <span className="text-[0.72rem] uppercase tracking-[0.22em] transition-colors group-hover:text-[#2E9D55]" style={{ ...sans, color: c.accentText, fontWeight: c.sansWeight }}>
+              Continue to {next.title}
+            </span>
+            <span className="text-[1.1rem] transition-transform duration-300 group-hover:translate-x-1.5" style={{ color: c.accentText }} aria-hidden>
+              &rarr;
+            </span>
+          </div>
+        </div>
       </div>
     </section>
   );
