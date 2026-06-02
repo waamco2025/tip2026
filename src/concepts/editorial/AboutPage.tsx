@@ -25,6 +25,13 @@ export default function EditorialAboutPage({ articles }: { articles: Article[] }
   const [contrailLength, setContrailLength] = useState(0);
   const [startPos, setStartPos] = useState<{ x: number; y: number }>({ x: 21, y: 98 });
   const [endPos, setEndPos] = useState<{ x: number; y: number }>({ x: 60, y: 25 });
+  // The brand arrow glyph's natural orientation points up-right at ~45° from
+  // horizontal. The contrail's actual screen-pixel angle depends on viewport
+  // aspect (preserveAspectRatio="none" stretches viewBox non-uniformly). At
+  // mobile the overlay is much taller than wide, so the contrail looks
+  // steeper than the arrow's default 45°. Rotate the arrow glyph by the delta
+  // so it visually points along the contrail at any viewport.
+  const [arrowRotation, setArrowRotation] = useState(0);
   const [heroArrowFlown, setHeroArrowFlown] = useState(false);
   const [flightComplete, setFlightComplete] = useState(false);
   // Bottom-of-hero "Our Process" scroll anchor. Fades in once the arrow flight
@@ -75,6 +82,11 @@ export default function EditorialAboutPage({ articles }: { articles: Article[] }
       const dx = ((endX - startX) / 100) * overlayRect.width;
       const dy = ((BASE_START_Y - endY) / 100) * overlayRect.height;
       setContrailLength(Math.sqrt(dx * dx + dy * dy));
+      // Path angle in CSS coords (dy positive down): atan2(-dy, dx) gives the
+      // visual up-from-horizontal angle. Brand arrow is naturally up-right at
+      // 45°, so the rotation we need to apply is (pathAngleUp - 45°).
+      const pathAngleDeg = (Math.atan2(-dy, dx) * 180) / Math.PI;
+      setArrowRotation(-(pathAngleDeg - 45));
     };
     measure();
     let raf1: number | null = null;
@@ -144,7 +156,7 @@ export default function EditorialAboutPage({ articles }: { articles: Article[] }
             style={{
               left: heroArrowFlown ? `${endPos.x}%` : `${startPos.x}%`,
               top: heroArrowFlown ? `${endPos.y}%` : `${startPos.y}%`,
-              transform: "translate(-50%, -50%)",
+              transform: `translate(-50%, -50%) rotate(${arrowRotation}deg)`,
               opacity: heroArrowFlown ? 1 : 0,
               transition: flightComplete
                 ? "none"

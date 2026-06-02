@@ -355,7 +355,7 @@ export default function EditorialPortfolioPage({ articles }: { articles: Article
                   )}
                   {co.acquired && (
                     <span
-                      className="absolute bottom-3 left-0 right-0 mx-auto w-fit z-20 whitespace-nowrap rounded-full border px-2.5 py-1 text-[0.55rem] uppercase tracking-[0.12em] text-center transition-transform duration-500 ease-out group-hover:-translate-y-1.5"
+                      className="absolute bottom-3 left-0 right-0 mx-auto w-fit max-w-[calc(100%-1.5rem)] z-20 whitespace-nowrap rounded-full border px-2.5 py-1 text-[0.55rem] uppercase tracking-[0.12em] text-center overflow-hidden text-ellipsis transition-transform duration-500 ease-out group-hover:-translate-y-1.5"
                       style={{ ...sans, backgroundColor: c.bg, borderColor: c.rule, color: c.muted, fontWeight: c.sansWeight }}
                     >
                       Acquired by {co.acquired}

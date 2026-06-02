@@ -746,7 +746,7 @@ export default function EditorialHomePage({ articles }: { articles: Article[] })
             About/Portfolio/Insights content frame's left edge at any
             viewport. Carousel on the right still bleeds to the viewport
             edge because the left panel itself remains full-bleed. */}
-        <div className="relative flex flex-col justify-center w-full md:w-[50%] pl-6 md:pl-[calc(3rem+max(0px,(100vw-86rem)/2))] pr-6 md:pr-24 py-12 md:py-0 z-10 shrink-0 min-h-[60vh] md:min-h-0">
+        <div className="relative flex flex-col justify-center w-full md:w-[50%] pl-6 md:pl-[calc(3rem+max(0px,(100vw-86rem)/2))] pr-6 md:pr-24 py-12 md:py-0 z-10 shrink-0 min-h-[calc(100dvh-89px)] md:min-h-0">
           <span className="hidden md:block text-[0.72rem] uppercase tracking-[0.22em] mb-8" style={{ ...sans, color: c.accentText, fontWeight: c.sansWeight }}>
             Pioneers in Travel Technology &middot; Est. 2008
           </span>
@@ -764,7 +764,7 @@ export default function EditorialHomePage({ articles }: { articles: Article[] })
 
         {/* Right panel — flows below left on mobile, 60% on desktop */}
         <section
-          className="relative w-full h-[calc(100vh-89px)] md:h-auto md:flex-1 overflow-hidden flex flex-col md:block"
+          className="relative w-full h-[calc(100dvh-89px)] md:h-auto md:flex-1 overflow-hidden flex flex-col md:block"
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}
         >
