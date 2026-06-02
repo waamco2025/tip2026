@@ -5,10 +5,13 @@ html {
 }
 
 :root {
-  /* Mobile hero visible height: dynamic viewport minus the sticky nav and the
-     Safari translucent bottom bar's safe area. Used by the Home left panel so
-     content stays inside the actually-visible area. */
-  --hero-mobile-h: calc(100dvh - 89px - env(safe-area-inset-bottom, 0px));
+  /* Mobile hero visible height: small viewport unit minus the sticky nav.
+     svh is the smallest possible viewport height (when all browser UI bars
+     are visible), so the hero is guaranteed to fit when Safari's URL +
+     bottom control bars are showing. dvh proved too generous on iOS Safari
+     because the translucent bottom bar overlays the viewport rather than
+     being subtracted. */
+  --hero-mobile-h: calc(100svh - 89px);
 }
 
 @keyframes fade-in {

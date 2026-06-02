@@ -194,7 +194,7 @@ export default function EditorialAboutPage({ articles }: { articles: Article[] }
             e.preventDefault();
             document.getElementById("our-process")?.scrollIntoView({ behavior: "smooth", block: "start" });
           }}
-          className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2 group focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4"
+          className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 hidden md:flex flex-col items-center gap-2 group focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4"
           style={{
             opacity: anchorVisible ? 1 : 0,
             pointerEvents: anchorVisible ? "auto" : "none",

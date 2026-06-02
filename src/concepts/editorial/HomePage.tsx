@@ -46,7 +46,7 @@ export function EditorialNav({ active = "home" }: { active?: string }) {
         borderColor: scrolled ? c.rule : "transparent",
       }}
     >
-      <div className="max-w-7xl mx-auto pl-6 pr-12 md:px-0 py-5 md:py-6 flex items-center justify-between">
+      <div className="max-w-7xl mx-auto px-6 md:px-0 py-5 md:py-6 flex items-center justify-between">
         <Link href="/">
           <img src={c.logo} alt="Thayer" className="h-12 md:h-14" />
         </Link>
@@ -67,12 +67,13 @@ export function EditorialNav({ active = "home" }: { active?: string }) {
           ))}
         </div>
 
-        {/* Mobile hamburger / close — Lucide icons so the visual stays inside
-            a predictable 24x24 box regardless of WebKit's transform rendering. */}
+        {/* Mobile hamburger / close — icon size = button size so the right
+            edge of the icon sits flush with the wrapper's px-6 boundary,
+            mirroring the logo's left edge. */}
         <div className="flex md:hidden items-center">
           <button
             onClick={() => setOpen(!open)}
-            className="w-10 h-10 flex items-center justify-center"
+            className="w-6 h-6 flex items-center justify-center"
             aria-label={open ? "Close menu" : "Open menu"}
           >
             {open ? <X className="w-6 h-6" style={{ color: c.hamburger }} /> : <Menu className="w-6 h-6" style={{ color: c.hamburger }} />}
@@ -271,13 +272,15 @@ export function NextPagePanel({ current }: { current: PageKey }) {
       // same dimStyle so they also start at 50% on mount — the page swap is a
       // same-opacity content change instead of a flash.
       if (navOverlay) await navOverlay.dim();
-      // scroll: false suppresses Next's default scrollTo(0,0); the provider's
-      // useLayoutEffect handles the reset synchronously between React commit
-      // and the next browser paint, so the new page is never visible at the
-      // old scroll position.
+      // scroll: false suppresses Next's default scrollTo(0,0). The provider's
+      // useLayoutEffect normally resets scroll synchronously before paint, but
+      // we add an explicit scrollTo here too as a belt-and-suspenders — on iOS
+      // Safari the useLayoutEffect occasionally lands after the next page's
+      // first paint, leaving the user mid-page with the sticky nav scrolled
+      // out of view.
       router.push(next.href, { scroll: false });
-      // Brief hold so the new page mounts + paints at scroll=0, then fade back.
       await new Promise<void>((r) => setTimeout(r, 80));
+      window.scrollTo(0, 0);
       navOverlay?.undim();
     };
 
@@ -877,8 +880,10 @@ export default function EditorialHomePage({ articles }: { articles: Article[] })
                   <img key={idx} src={`/logos/portfolio/${s.slug}-${light ? "light" : "dark"}.svg`} alt={s.company} className="absolute left-0 top-0 object-contain transition-opacity duration-700 ease-in-out" style={{ height: 36, opacity: idx === activeSlide ? 1 : 0 }} />
                 ))}
               </div>
-              {/* Names + titles */}
-              <div className="flex flex-col items-start gap-3">
+              {/* Names + titles — fixed min-h so slides with 1 founder don't
+                  shrink the section and shift the page below up/down as the
+                  carousel cycles between 1- and 2-founder slides. */}
+              <div className="flex flex-col items-start gap-3 min-h-[8rem]">
                 {slide.founders.map((f, i) => (
                   <div key={i} className="flex flex-col items-start">
                     <span className="text-[1.5rem] font-normal italic" style={{ ...serif, color: c.text }}>{f.name}</span>
