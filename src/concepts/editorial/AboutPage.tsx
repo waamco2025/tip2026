@@ -82,11 +82,14 @@ export default function EditorialAboutPage({ articles }: { articles: Article[] }
       const dx = ((endX - startX) / 100) * overlayRect.width;
       const dy = ((BASE_START_Y - endY) / 100) * overlayRect.height;
       setContrailLength(Math.sqrt(dx * dx + dy * dy));
-      // Path angle in CSS coords (dy positive down): atan2(-dy, dx) gives the
-      // visual up-from-horizontal angle. Brand arrow is naturally up-right at
-      // 45°, so the rotation we need to apply is (pathAngleUp - 45°).
-      const pathAngleDeg = (Math.atan2(-dy, dx) * 180) / Math.PI;
-      setArrowRotation(-(pathAngleDeg - 45));
+      // In CSS coords (y positive down): the path's actual screen angle is
+      // atan2(-dy_up, dx) where dy_up is "amount going up" (positive). For an
+      // up-right path that gives a NEGATIVE CSS angle (e.g., -45° desktop,
+      // -57° tall mobile). The brand arrow's natural CSS angle is -45°, so
+      // the rotation we apply is pathAngleCSS - (-45°) = pathAngleCSS + 45°.
+      // Negative dy here is "going down" in CSS terms.
+      const pathAngleCSS = (Math.atan2(-dy, dx) * 180) / Math.PI;
+      setArrowRotation(pathAngleCSS + 45);
     };
     measure();
     let raf1: number | null = null;

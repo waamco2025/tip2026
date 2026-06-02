@@ -46,7 +46,7 @@ export function EditorialNav({ active = "home" }: { active?: string }) {
         borderColor: scrolled ? c.rule : "transparent",
       }}
     >
-      <div className="max-w-7xl mx-auto pl-6 pr-10 md:px-0 py-5 md:py-6 flex items-center justify-between">
+      <div className="max-w-7xl mx-auto pl-6 pr-12 md:px-0 py-5 md:py-6 flex items-center justify-between">
         <Link href="/">
           <img src={c.logo} alt="Thayer" className="h-12 md:h-14" />
         </Link>
@@ -647,41 +647,6 @@ const carouselSlides = [
 /* ─── Home Page ─── */
 export default function EditorialHomePage({ articles }: { articles: Article[] }) {
   const carouselImageRef = useRef<HTMLDivElement>(null);
-  // Light-touch scroll-lock on mobile: when the user stops scrolling and the
-  // carousel image is partially visible (>30% but not fully snapped), nudge it
-  // up so its top lands at the nav bottom. Lets the user park between the left
-  // panel and the carousel without leaving the image awkwardly half on-screen.
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    if (!window.matchMedia("(hover: none)").matches) return;
-    let scrollTimer: ReturnType<typeof setTimeout> | null = null;
-    let snapping = false;
-    const onScroll = () => {
-      if (snapping) return;
-      if (scrollTimer) clearTimeout(scrollTimer);
-      scrollTimer = setTimeout(() => {
-        if (!carouselImageRef.current) return;
-        const rect = carouselImageRef.current.getBoundingClientRect();
-        const navHeight = 89;
-        const vh = window.innerHeight;
-        const visible = Math.max(0, Math.min(rect.bottom, vh) - Math.max(rect.top, navHeight));
-        const ratio = rect.height > 0 ? visible / rect.height : 0;
-        // Only snap when partially in view (between 30% and 95%) and the top
-        // edge is below the nav (user has scrolled down into the image but
-        // not yet past its top).
-        if (ratio > 0.3 && ratio < 0.95 && rect.top > 0) {
-          snapping = true;
-          window.scrollTo({ top: rect.top + window.scrollY - navHeight, behavior: "smooth" });
-          setTimeout(() => { snapping = false; }, 800);
-        }
-      }, 220);
-    };
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      if (scrollTimer) clearTimeout(scrollTimer);
-    };
-  }, []);
 
   const { light } = useEditorialMode();
   const c = ec(light);
@@ -783,7 +748,7 @@ export default function EditorialHomePage({ articles }: { articles: Article[] })
             About/Portfolio/Insights content frame's left edge at any
             viewport. Carousel on the right still bleeds to the viewport
             edge because the left panel itself remains full-bleed. */}
-        <div className="relative flex flex-col justify-center w-full md:w-[50%] pl-6 md:pl-[calc(3rem+max(0px,(100vw-86rem)/2))] pr-6 md:pr-24 py-12 md:py-0 z-10 shrink-0 min-h-[calc(100dvh-89px-env(safe-area-inset-bottom))] md:min-h-0">
+        <div className="relative flex flex-col justify-center w-full md:w-[50%] pl-6 md:pl-[calc(3rem+max(0px,(100vw-86rem)/2))] pr-6 md:pr-24 py-12 md:py-0 z-10 shrink-0 min-h-[55dvh] md:min-h-0">
           <span className="hidden md:block text-[0.72rem] uppercase tracking-[0.22em] mb-8" style={{ ...sans, color: c.accentText, fontWeight: c.sansWeight }}>
             Pioneers in Travel Technology &middot; Est. 2008
           </span>
@@ -801,12 +766,14 @@ export default function EditorialHomePage({ articles }: { articles: Article[] })
 
         {/* Right panel — flows below left on mobile, 60% on desktop */}
         <section
-          className="relative w-full h-[calc(100dvh-89px-env(safe-area-inset-bottom))] md:h-auto md:flex-1 overflow-hidden flex flex-col md:block"
+          className="relative w-full md:h-auto md:flex-1 overflow-hidden flex flex-col md:block"
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}
         >
-          {/* Image carousel — top half on mobile, full panel on desktop */}
-          <div ref={carouselImageRef} className="relative h-[55vh] shrink-0 md:absolute md:inset-0 md:h-auto overflow-hidden">
+          {/* Image carousel — short on mobile (so left panel + image fit
+              in one viewport above the Safari control bar), full panel on
+              desktop. */}
+          <div ref={carouselImageRef} className="relative h-[35dvh] shrink-0 md:absolute md:inset-0 md:h-auto overflow-hidden">
             {carouselSlides.map((s, i) => (
               s.image ? (
                 <div
