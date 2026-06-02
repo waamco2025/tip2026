@@ -4,6 +4,13 @@ html {
   scroll-behavior: smooth;
 }
 
+:root {
+  /* Mobile hero visible height: dynamic viewport minus the sticky nav and the
+     Safari translucent bottom bar's safe area. Used by the Home left panel so
+     content stays inside the actually-visible area. */
+  --hero-mobile-h: calc(100dvh - 89px - env(safe-area-inset-bottom, 0px));
+}
+
 @keyframes fade-in {
   from { opacity: 0; }
   to { opacity: 1; }

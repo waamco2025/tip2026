@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useNavigationOverlay } from "./NavigationOverlay";
-import { Building2, UtensilsCrossed, Globe, CreditCard, Wallet, ShieldCheck, Pause, Play } from "lucide-react";
+import { Building2, UtensilsCrossed, Globe, CreditCard, Wallet, ShieldCheck, Pause, Play, Menu, X } from "lucide-react";
 import { useEditorialMode, ec } from "./EditorialModeContext";
 import type { Article } from "@/lib/article-types";
 import { formatDate } from "@/lib/article-types";
@@ -67,12 +67,15 @@ export function EditorialNav({ active = "home" }: { active?: string }) {
           ))}
         </div>
 
-        {/* Mobile hamburger */}
-        <div className="flex md:hidden items-center gap-4">
-          <button onClick={() => setOpen(!open)} className="flex flex-col gap-[5px] w-6" aria-label="Menu">
-            <span className="block h-px transition-all duration-300" style={{ backgroundColor: c.hamburger, transform: open ? "rotate(45deg) translateY(3px)" : "none", opacity: 1 }} />
-            <span className="block h-px transition-all duration-300" style={{ backgroundColor: c.hamburger, opacity: open ? 0 : 1 }} />
-            <span className="block h-px transition-all duration-300" style={{ backgroundColor: c.hamburger, transform: open ? "rotate(-45deg) translateY(-3px)" : "none", opacity: 1 }} />
+        {/* Mobile hamburger / close — Lucide icons so the visual stays inside
+            a predictable 24x24 box regardless of WebKit's transform rendering. */}
+        <div className="flex md:hidden items-center">
+          <button
+            onClick={() => setOpen(!open)}
+            className="w-10 h-10 flex items-center justify-center"
+            aria-label={open ? "Close menu" : "Open menu"}
+          >
+            {open ? <X className="w-6 h-6" style={{ color: c.hamburger }} /> : <Menu className="w-6 h-6" style={{ color: c.hamburger }} />}
           </button>
         </div>
       </div>
@@ -748,7 +751,7 @@ export default function EditorialHomePage({ articles }: { articles: Article[] })
             About/Portfolio/Insights content frame's left edge at any
             viewport. Carousel on the right still bleeds to the viewport
             edge because the left panel itself remains full-bleed. */}
-        <div className="relative flex flex-col justify-center w-full md:w-[50%] pl-6 md:pl-[calc(3rem+max(0px,(100vw-86rem)/2))] pr-6 md:pr-24 py-12 md:py-0 z-10 shrink-0 min-h-[55dvh] md:min-h-0">
+        <div className="relative flex flex-col justify-center w-full md:w-[50%] pl-6 md:pl-[calc(3rem+max(0px,(100vw-86rem)/2))] pr-6 md:pr-24 py-12 md:py-0 z-10 shrink-0 min-h-[var(--hero-mobile-h)] md:min-h-0">
           <span className="hidden md:block text-[0.72rem] uppercase tracking-[0.22em] mb-8" style={{ ...sans, color: c.accentText, fontWeight: c.sansWeight }}>
             Pioneers in Travel Technology &middot; Est. 2008
           </span>
@@ -770,10 +773,9 @@ export default function EditorialHomePage({ articles }: { articles: Article[] })
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}
         >
-          {/* Image carousel — short on mobile (so left panel + image fit
-              in one viewport above the Safari control bar), full panel on
-              desktop. */}
-          <div ref={carouselImageRef} className="relative h-[35dvh] shrink-0 md:absolute md:inset-0 md:h-auto overflow-hidden">
+          {/* Image carousel — mobile uses static vh so the image doesn't
+              reflow as Safari's bottom bar shows/hides. Full panel on desktop. */}
+          <div ref={carouselImageRef} className="relative h-[35vh] shrink-0 md:absolute md:inset-0 md:h-auto overflow-hidden">
             {carouselSlides.map((s, i) => (
               s.image ? (
                 <div
@@ -783,7 +785,7 @@ export default function EditorialHomePage({ articles }: { articles: Article[] })
                 >
                   {/* Image always fills the panel — cover at 100% height */}
                   <div
-                    className="absolute inset-0 bg-no-repeat bg-cover bg-center"
+                    className="absolute inset-0 bg-no-repeat bg-cover bg-top md:bg-center"
                     style={{ backgroundImage: `url('${s.image}')` }}
                   />
                 </div>
