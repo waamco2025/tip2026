@@ -165,6 +165,17 @@ export function CloudBackground() {
 // effect is "I scrolled into the next page." On the destination, the left
 // column is already in place; only the right column (cards/grid/carousel/arrow
 // flight) animates in, which the existing hero entry animations handle.
+// Shared founder testimonials — used by the Home "What Our Entrepreneurs Say"
+// cards and by the Portfolio hero's typewriter display. Empty quotes are
+// filtered out at the consumer (e.g., Nuitée pending client copy).
+export const TESTIMONIALS: { quote: string; author: string; role: string }[] = [
+  { quote: "Working with Thayer is like having an experienced strategic operator on our side, not just another tech investor.", author: "Richard Valtr", role: "Founder, Mews" },
+  { quote: "I never would have considered Rain a travel company, but Thayer has proven otherwise. Their team works in the background to drive exposure and partnership across a large and important category.", author: "Farooq Malik", role: "Co-Founder & CEO, Rain" },
+  { quote: "Every investor claims to be value-add, Thayer is at the top of the list of those who actually are! Their unique ability to drive high-value partnerships in the travel industry is unparalleled.", author: "Pierre-Olivier Lepage", role: "CEO, Cruisebound" },
+  { quote: "The Thayer Annual Summit is a special event. The kind where every conversation counted and turned into signed partnerships to help transform the travel & hospitality industry. I feel very grateful to be a part of the Thayer network and I'm looking forward to events to come.", author: "David Lord", role: "CEO, Guidesly" },
+  { quote: "", author: "Mohamed Benmansour", role: "CEO, Nuitée" },
+];
+
 type PageKey = "home" | "about" | "portfolio" | "insights";
 // Layout matches the destination hero's container shape so eyebrow/headline/body
 // sit at identical viewport coordinates on both sides of the navigation:
@@ -223,7 +234,12 @@ export function NextPagePanel({ current }: { current: PageKey }) {
   const router = useRouter();
   const navOverlay = useNavigationOverlay();
   const sectionRef = useRef<HTMLElement>(null);
+  const copyRef = useRef<HTMLDivElement>(null);
   const navigatingRef = useRef(false);
+  // Continue-link Y is computed from the copy block's measured vertical center
+  // so it visually aligns with the copy (which is top-aligned in the wrapper,
+  // not centered in the section). Falls back to 50% before measurement runs.
+  const [linkTopPx, setLinkTopPx] = useState<number | null>(null);
 
   // Prefetch destination on mount so router.push resolves instantly during
   // the overlay's opaque hold — minimizes the window where new page is still
@@ -231,6 +247,18 @@ export function NextPagePanel({ current }: { current: PageKey }) {
   useEffect(() => {
     router.prefetch(next.href);
   }, [router, next.href]);
+
+  useEffect(() => {
+    const measure = () => {
+      if (!copyRef.current || !sectionRef.current) return;
+      const copyRect = copyRef.current.getBoundingClientRect();
+      const sectionRect = sectionRef.current.getBoundingClientRect();
+      setLinkTopPx(copyRect.top - sectionRect.top + copyRect.height / 2);
+    };
+    measure();
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
+  }, []);
 
   const navigate = useCallback(async () => {
     if (navigatingRef.current) return;
@@ -294,46 +322,55 @@ export function NextPagePanel({ current }: { current: PageKey }) {
       role="link"
       tabIndex={0}
       aria-label={`Continue to ${next.title}`}
-      className="relative px-6 md:px-12 py-24 md:min-h-screen flex flex-col md:justify-center overflow-hidden cursor-pointer group focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-4px]"
+      className="relative px-6 md:px-12 py-24 md:min-h-[calc(100vh-105px)] flex flex-col md:justify-center overflow-hidden cursor-pointer group focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-4px]"
       style={{ outlineColor: c.accent }}
     >
       {next.layout === "two-col" ? (
         <div className="relative w-full max-w-7xl mx-auto z-10 flex flex-col md:flex-row gap-12 md:gap-16 md:min-h-[36rem]">
-          <div className="md:flex-1" style={navOverlay?.dimStyle}>
-            <span className="text-[0.72rem] uppercase tracking-[0.22em] block mb-8 transition-colors group-hover:text-[#2E9D55]" style={{ ...sans, color: c.accentText, fontWeight: c.sansWeight }}>
-              {next.eyebrow}
-            </span>
-            <h2 className="text-[clamp(2rem,5vw,4.5rem)] leading-[1.08] font-light italic mb-8 transition-colors group-hover:text-[#2E9D55]" style={{ ...serif, color: c.text }}>
-              {next.headline}
-            </h2>
-            <p className="text-[1.15rem] leading-[1.7]" style={{ ...sans, color: c.bodyText, fontWeight: c.sansWeight }}>
-              {next.body}
-            </p>
+          <div className="md:flex-1">
+            <div ref={copyRef} style={navOverlay?.dimStyle}>
+              <span className="text-[0.72rem] uppercase tracking-[0.22em] block mb-8 transition-colors group-hover:text-[#2E9D55]" style={{ ...sans, color: c.accentText, fontWeight: c.sansWeight }}>
+                {next.eyebrow}
+              </span>
+              <h2 className="text-[clamp(2rem,5vw,4.5rem)] leading-[1.08] font-light italic mb-8 transition-colors group-hover:text-[#2E9D55]" style={{ ...serif, color: c.text }}>
+                {next.headline}
+              </h2>
+              <p className="text-[1.15rem] leading-[1.7]" style={{ ...sans, color: c.bodyText, fontWeight: c.sansWeight }}>
+                {next.body}
+              </p>
+            </div>
           </div>
           {/* Empty right column — destination's logo grid / card animates in here on arrival. */}
           <div className="md:flex-1" aria-hidden />
         </div>
       ) : (
-        <div className="relative w-full max-w-7xl mx-auto z-10 md:min-h-[36rem]" style={navOverlay?.dimStyle}>
-          <span className="text-[0.72rem] uppercase tracking-[0.22em] block mb-8 transition-colors group-hover:text-[#2E9D55]" style={{ ...sans, color: c.accentText, fontWeight: c.sansWeight }}>
-            {next.eyebrow}
-          </span>
-          <h2 className="text-[clamp(2rem,5vw,4.5rem)] leading-[1.08] font-light italic mb-8 max-w-4xl transition-colors group-hover:text-[#2E9D55]" style={{ ...serif, color: c.text }}>
-            {next.headline}
-          </h2>
-          <p className="text-[1.15rem] leading-[1.7] max-w-2xl" style={{ ...sans, color: c.bodyText, fontWeight: c.sansWeight }}>
-            {next.body}
-          </p>
+        <div className="relative w-full max-w-7xl mx-auto z-10 md:min-h-[36rem]">
+          <div ref={copyRef} style={navOverlay?.dimStyle}>
+            <span className="text-[0.72rem] uppercase tracking-[0.22em] block mb-8 transition-colors group-hover:text-[#2E9D55]" style={{ ...sans, color: c.accentText, fontWeight: c.sansWeight }}>
+              {next.eyebrow}
+            </span>
+            <h2 className="text-[clamp(2rem,5vw,4.5rem)] leading-[1.08] font-light italic mb-8 max-w-4xl transition-colors group-hover:text-[#2E9D55]" style={{ ...serif, color: c.text }}>
+              {next.headline}
+            </h2>
+            <p className="text-[1.15rem] leading-[1.7] max-w-2xl" style={{ ...sans, color: c.bodyText, fontWeight: c.sansWeight }}>
+              {next.body}
+            </p>
+          </div>
         </div>
       )}
 
       {/* Link wrapped in the same max-w-7xl container as the copy so its right
-          edge aligns with the content frame, not the section's padding edge. */}
-      <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 px-6 md:px-12 pointer-events-none z-20">
+          edge aligns with the content frame. Vertical position tracks the copy
+          block's measured center (not the section's center) so the link sits
+          aligned with the visual midpoint of the eyebrow + headline + body. */}
+      <div
+        className="absolute inset-x-0 -translate-y-1/2 px-6 md:px-12 pointer-events-none z-20"
+        style={{ top: linkTopPx !== null ? `${linkTopPx}px` : "50%" }}
+      >
         <div className="max-w-7xl mx-auto flex justify-end">
           <div className="flex items-center gap-3">
             <span className="text-[0.72rem] uppercase tracking-[0.22em] transition-colors group-hover:text-[#2E9D55]" style={{ ...sans, color: c.accentText, fontWeight: c.sansWeight }}>
-              Continue to {next.title}
+              Continue
             </span>
             <span className="text-[1.1rem] transition-transform duration-300 group-hover:translate-x-1.5" style={{ color: c.accentText }} aria-hidden>
               &rarr;
@@ -681,13 +718,7 @@ export default function EditorialHomePage({ articles }: { articles: Article[] })
     { icon: ShieldCheck, name: "Cybersecurity & Privacy", desc: "AI governance, identity protection, and enterprise security infrastructure" },
   ];
 
-  const testimonials = [
-    { quote: "Working with Thayer is like having an experienced strategic operator on our side, not just another tech investor.", author: "Richard Valtr", role: "Founder, Mews" },
-    { quote: "I never would have considered Rain a travel company, but Thayer has proven otherwise. Their team works in the background to drive exposure and partnership across a large and important category.", author: "Farooq Malik", role: "Co-Founder & CEO, Rain" },
-    { quote: "Every investor claims to be value-add, Thayer is at the top of the list of those who actually are! Their unique ability to drive high-value partnerships in the travel industry is unparalleled.", author: "Pierre-Olivier Lepage", role: "CEO, Cruisebound" },
-    { quote: "The Thayer Annual Summit is a special event. The kind where every conversation counted and turned into signed partnerships to help transform the travel & hospitality industry. I feel very grateful to be a part of the Thayer network and I'm looking forward to events to come.", author: "David Lord", role: "CEO, Guidesly" },
-    { quote: "", author: "Mohamed Benmansour", role: "CEO, Nuitée" },
-  ];
+  const testimonials = TESTIMONIALS;
 
   return (
     <div className="relative isolate min-h-screen transition-colors duration-500" style={{ backgroundColor: c.bg, color: c.text }}>
@@ -697,8 +728,13 @@ export default function EditorialHomePage({ articles }: { articles: Article[] })
 
       {/* ── Hero ── */}
       <div className="flex flex-col md:flex-row md:h-screen md:-mt-[105px]">
-        {/* Left panel — full viewport on mobile, 40% on desktop */}
-        <div className="relative flex flex-col justify-end md:justify-center w-full md:w-[40%] px-6 md:px-12 py-12 md:py-0 z-10 shrink-0 min-h-[calc(100vh-89px)] md:min-h-0">
+        {/* Left panel — full viewport on mobile, 40% on desktop.
+            md:pl uses a calc that mirrors `max-w-7xl mx-auto` inside an
+            `md:px-12` section, so the copy's left edge lines up with the
+            About/Portfolio/Insights content frame's left edge at any
+            viewport. Carousel on the right still bleeds to the viewport
+            edge because the left panel itself remains full-bleed. */}
+        <div className="relative flex flex-col justify-end md:justify-center w-full md:w-[50%] pl-6 md:pl-[calc(3rem+max(0px,(100vw-86rem)/2))] pr-6 md:pr-24 py-12 md:py-0 z-10 shrink-0 min-h-[calc(100vh-89px)] md:min-h-0">
           <span className="hidden md:block text-[0.72rem] uppercase tracking-[0.22em] mb-8" style={{ ...sans, color: c.accentText, fontWeight: c.sansWeight }}>
             Pioneers in Travel Technology &middot; Est. 2008
           </span>

@@ -12,6 +12,14 @@ html {
   animation: fade-in 0.5s ease-out;
 }
 
+@keyframes caret-blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+.animate-caret-blink {
+  animation: caret-blink 1s steps(1) infinite;
+}
+
 @theme {
   --font-manrope: "Manrope", sans-serif;
   --font-playfair: "Playfair Display", serif;

@@ -23,25 +23,57 @@ export default function EditorialAboutPage({ articles }: { articles: Article[] }
   const heroOverlayRef = useRef<HTMLDivElement>(null);
   const heroH1Ref = useRef<HTMLHeadingElement>(null);
   const [contrailLength, setContrailLength] = useState(0);
+  const [startPos, setStartPos] = useState<{ x: number; y: number }>({ x: 21, y: 98 });
   const [endPos, setEndPos] = useState<{ x: number; y: number }>({ x: 60, y: 25 });
   const [heroArrowFlown, setHeroArrowFlown] = useState(false);
   const [flightComplete, setFlightComplete] = useState(false);
+  // Bottom-of-hero "Our Process" scroll anchor. Fades in once the arrow flight
+  // finishes; fades out (permanently for this page view) once the user scrolls
+  // far enough that the hero is mostly above the viewport.
+  const [anchorVisible, setAnchorVisible] = useState(false);
+  const [anchorDismissed, setAnchorDismissed] = useState(false);
   useEffect(() => {
-    const START_X = 16; // % of overlay
-    const START_Y = 86;
-    const END_OFFSET_X = 28; // px past h1's right edge
+    if (!flightComplete || anchorDismissed) return;
+    const t = setTimeout(() => setAnchorVisible(true), 1000);
+    return () => clearTimeout(t);
+  }, [flightComplete, anchorDismissed]);
+  useEffect(() => {
+    if (anchorDismissed) return;
+    const onScroll = () => {
+      if (!heroOverlayRef.current) return;
+      const rect = heroOverlayRef.current.getBoundingClientRect();
+      // Once the hero's bottom edge crosses the upper half of the viewport,
+      // the user has clearly scrolled past it — dismiss the anchor for good.
+      if (rect.bottom < window.innerHeight * 0.5) {
+        setAnchorVisible(false);
+        setAnchorDismissed(true);
+      }
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [anchorDismissed]);
+  useEffect(() => {
+    // Whole trajectory is shifted left by SHIFT_LEFT_PX (start and end). The
+    // start uses a base % then subtracts the px shift converted to a %; the
+    // end's px offset past h1.right already absorbs the shift directly.
+    const BASE_START_X = 26;
+    const BASE_START_Y = 98;
+    const SHIFT_LEFT_PX = 86;
+    const END_OFFSET_X = 28 - SHIFT_LEFT_PX; // px past h1's right edge (was 28; shifted left 86px)
     const END_OFFSET_Y = 12; // px above h1's top
     const measure = () => {
       if (!heroOverlayRef.current || !heroH1Ref.current) return;
       const overlayRect = heroOverlayRef.current.getBoundingClientRect();
       const h1Rect = heroH1Ref.current.getBoundingClientRect();
+      const startX = BASE_START_X - (SHIFT_LEFT_PX / overlayRect.width) * 100;
+      setStartPos({ x: startX, y: BASE_START_Y });
       const endXPx = h1Rect.right - overlayRect.left + END_OFFSET_X;
       const endYPx = h1Rect.top - overlayRect.top - END_OFFSET_Y;
       const endX = Math.min(96, Math.max(20, (endXPx / overlayRect.width) * 100));
       const endY = Math.min(96, Math.max(4, (endYPx / overlayRect.height) * 100));
       setEndPos({ x: endX, y: endY });
-      const dx = ((endX - START_X) / 100) * overlayRect.width;
-      const dy = ((START_Y - endY) / 100) * overlayRect.height;
+      const dx = ((endX - startX) / 100) * overlayRect.width;
+      const dy = ((BASE_START_Y - endY) / 100) * overlayRect.height;
       setContrailLength(Math.sqrt(dx * dx + dy * dy));
     };
     measure();
@@ -79,7 +111,7 @@ export default function EditorialAboutPage({ articles }: { articles: Article[] }
       <EditorialNav active="about" />
 
       {/* ── Hero ── */}
-      <section className="relative px-6 md:px-12 py-24 md:min-h-screen flex flex-col md:justify-center overflow-hidden">
+      <section className="relative px-6 md:px-12 py-24 md:min-h-[calc(100vh-105px)] flex flex-col md:justify-center overflow-hidden">
         {/* Flying arrow + contrail overlay. SVG line stretches non-uniformly with
             section dimensions; vector-effect keeps the stroke a constant pixel width.
             The arrow div uses % left/top so its center stays aligned with the line
@@ -87,7 +119,7 @@ export default function EditorialAboutPage({ articles }: { articles: Article[] }
         <div ref={heroOverlayRef} className="absolute inset-0 pointer-events-none z-0 hidden md:block" aria-hidden="true">
           <svg className="absolute inset-0 w-full h-full" preserveAspectRatio="none" viewBox="0 0 100 100">
             <defs>
-              <linearGradient id="contrail-grad" gradientUnits="userSpaceOnUse" x1="16" y1="86" x2={endPos.x} y2={endPos.y}>
+              <linearGradient id="contrail-grad" gradientUnits="userSpaceOnUse" x1={startPos.x} y1={startPos.y} x2={endPos.x} y2={endPos.y}>
                 <stop offset="0%" stopColor={c.accent} stopOpacity="0" />
                 <stop offset="20%" stopColor={c.accent} stopOpacity="1" />
                 <stop offset="80%" stopColor={c.accent} stopOpacity="1" />
@@ -96,7 +128,7 @@ export default function EditorialAboutPage({ articles }: { articles: Article[] }
             </defs>
             {contrailLength > 0 && (
               <line
-                x1="16" y1="86" x2={endPos.x} y2={endPos.y}
+                x1={startPos.x} y1={startPos.y} x2={endPos.x} y2={endPos.y}
                 stroke="url(#contrail-grad)"
                 strokeOpacity="0.5"
                 strokeWidth="2"
@@ -110,8 +142,8 @@ export default function EditorialAboutPage({ articles }: { articles: Article[] }
           <div
             className="absolute"
             style={{
-              left: heroArrowFlown ? `${endPos.x}%` : "16%",
-              top: heroArrowFlown ? `${endPos.y}%` : "86%",
+              left: heroArrowFlown ? `${endPos.x}%` : `${startPos.x}%`,
+              top: heroArrowFlown ? `${endPos.y}%` : `${startPos.y}%`,
               transform: "translate(-50%, -50%)",
               opacity: heroArrowFlown ? 1 : 0,
               transition: flightComplete
@@ -138,10 +170,43 @@ export default function EditorialAboutPage({ articles }: { articles: Article[] }
             partnering with visionary founders to build companies that reshape how the world moves, stays, and experiences new places.
           </p>
         </div>
+
+        {/* Scroll-to-next-section anchor: fades in after the arrow flight,
+            fades out once the user scrolls past the hero and stays gone. */}
+        <a
+          href="#our-process"
+          onClick={(e) => {
+            e.preventDefault();
+            document.getElementById("our-process")?.scrollIntoView({ behavior: "smooth", block: "start" });
+          }}
+          className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2 group focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4"
+          style={{
+            opacity: anchorVisible ? 1 : 0,
+            pointerEvents: anchorVisible ? "auto" : "none",
+            transition: "opacity 600ms ease-out",
+            outlineColor: c.accent,
+          }}
+          aria-label="Scroll to Our Process section"
+        >
+          <span className="text-[0.72rem] uppercase tracking-[0.22em] transition-colors group-hover:text-[#2E9D55]" style={{ ...sans, color: c.accentText, fontWeight: c.sansWeight }}>
+            Our Process
+          </span>
+          <span
+            className="text-[1.2rem] leading-none group-hover:text-[#2E9D55]"
+            style={{
+              color: c.accentText,
+              transform: anchorVisible ? "translateY(0)" : "translateY(-14px)",
+              transition: "transform 1200ms ease-out, color 200ms ease-out",
+            }}
+            aria-hidden
+          >
+            &darr;
+          </span>
+        </a>
       </section>
 
       {/* ── Philosophy (01) ── */}
-      <section className="px-6 md:px-12 py-24 md:py-32 transition-colors duration-500">
+      <section id="our-process" className="px-6 md:px-12 py-24 md:py-32 transition-colors duration-500 scroll-mt-[89px] md:scroll-mt-[105px]">
         <div className="max-w-7xl mx-auto">
           <SectionHeader label="Our Process" number="01" />
           <div className="grid md:grid-cols-2 gap-12 md:gap-20">

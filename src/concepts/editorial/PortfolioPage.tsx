@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useSearchParams } from "next/navigation";
-import { EditorialNav, EditorialFooter, EditorialHeadlines, CloudBackground, SectionHeader, useHeadlineArrow, NextPagePanel } from "./HomePage";
+import { EditorialNav, EditorialFooter, EditorialHeadlines, CloudBackground, SectionHeader, useHeadlineArrow, NextPagePanel, TESTIMONIALS } from "./HomePage";
 import { useNavigationOverlay } from "./NavigationOverlay";
 import { useEditorialMode, ec } from "./EditorialModeContext";
 import type { Article } from "@/lib/article-types";
@@ -98,63 +98,63 @@ export default function EditorialPortfolioPage({ articles }: { articles: Article
   const sans = { fontFamily: "'Syne', sans-serif" };
   const { ref: heroArrowRef, arrow: heroArrow } = useHeadlineArrow<HTMLSpanElement>({ playOnce: true });
   const navOverlay = useNavigationOverlay();
-
-  // Hero logo grid: 6 highlights stagger-fade in, then every 3s a random box
-  // cycles to a new logo (fade out → swap → fade in) drawn from the rest of the
-  // active investments pool with logo files.
-  const [boxLogos, setBoxLogos] = useState<Company[]>(() =>
-    companies.filter((co) => co.highlight && (co.logo || co.w)).slice(0, 6),
-  );
-  const [boxOpacity, setBoxOpacity] = useState<number[]>(() => Array(6).fill(0));
+  // Bottom-of-hero "Active Investments" scroll anchor. Fades in 3.5s after mount
+  // (giving the testimonial typewriter time to settle), fades out permanently
+  // once the user scrolls far enough past the hero.
+  const heroSectionRef = useRef<HTMLElement>(null);
+  const [anchorVisible, setAnchorVisible] = useState(false);
+  const [anchorDismissed, setAnchorDismissed] = useState(false);
   useEffect(() => {
-    const allLogos = companies.filter((co) => co.logo || co.w);
-    const liveLogos = allLogos.filter((co) => co.highlight).slice(0, 6);
-    const timeouts: ReturnType<typeof setTimeout>[] = [];
-    let cycleInterval: ReturnType<typeof setInterval> | null = null;
-
-    // Initial stagger fade-in
-    for (let i = 0; i < liveLogos.length; i++) {
-      timeouts.push(setTimeout(() => {
-        setBoxOpacity((prev) => {
-          const next = [...prev];
-          next[i] = 1;
-          return next;
-        });
-      }, 200 + i * 180));
-    }
-
-    // Cycle: after the initial stagger completes (~2s), pick a random box every
-    // 3s, fade it out, swap to a random unused logo, fade in.
-    timeouts.push(setTimeout(() => {
-      cycleInterval = setInterval(() => {
-        const currentSlugs = new Set(liveLogos.map((co) => co.slug));
-        const available = allLogos.filter((co) => !currentSlugs.has(co.slug));
-        if (available.length === 0) return;
-        const boxIdx = Math.floor(Math.random() * liveLogos.length);
-        const newLogo = available[Math.floor(Math.random() * available.length)];
-
-        setBoxOpacity((prev) => {
-          const next = [...prev];
-          next[boxIdx] = 0;
-          return next;
-        });
-        timeouts.push(setTimeout(() => {
-          liveLogos[boxIdx] = newLogo;
-          setBoxLogos([...liveLogos]);
-          setBoxOpacity((prev) => {
-            const next = [...prev];
-            next[boxIdx] = 1;
-            return next;
-          });
-        }, 700));
-      }, 3000);
-    }, 2200));
-
-    return () => {
-      timeouts.forEach(clearTimeout);
-      if (cycleInterval) clearInterval(cycleInterval);
+    if (anchorDismissed) return;
+    const t = setTimeout(() => setAnchorVisible(true), 3500);
+    return () => clearTimeout(t);
+  }, [anchorDismissed]);
+  useEffect(() => {
+    if (anchorDismissed) return;
+    const onScroll = () => {
+      if (!heroSectionRef.current) return;
+      const rect = heroSectionRef.current.getBoundingClientRect();
+      if (rect.bottom < window.innerHeight * 0.5) {
+        setAnchorVisible(false);
+        setAnchorDismissed(true);
+      }
     };
-  }, []);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [anchorDismissed]);
+
+  // Hero testimonial typewriter: cycle through valid Home testimonials with a
+  // character-by-character type-in, hold, fade, then advance.
+  const heroTestimonials = TESTIMONIALS.filter((t) => t.quote.length > 0);
+  const [tIdx, setTIdx] = useState(0);
+  const [charCount, setCharCount] = useState(0);
+  type TPhase = "typing" | "complete" | "fading";
+  const [tPhase, setTPhase] = useState<TPhase>("typing");
+  const current = heroTestimonials[tIdx];
+  const fullText = current.quote;
+  useEffect(() => {
+    if (tPhase === "typing") {
+      if (charCount < fullText.length) {
+        const id = setTimeout(() => setCharCount((n) => n + 1), 18);
+        return () => clearTimeout(id);
+      }
+      setTPhase("complete");
+      return;
+    }
+    if (tPhase === "complete") {
+      // Hold longer for longer quotes; clamp between 5s and 8s.
+      const hold = Math.min(8000, Math.max(5000, fullText.length * 35));
+      const id = setTimeout(() => setTPhase("fading"), hold);
+      return () => clearTimeout(id);
+    }
+    // fading
+    const id = setTimeout(() => {
+      setTIdx((i) => (i + 1) % heroTestimonials.length);
+      setCharCount(0);
+      setTPhase("typing");
+    }, 500);
+    return () => clearTimeout(id);
+  }, [tPhase, charCount, fullText, heroTestimonials.length]);
 
   const categoryList = [
     "Highlights",
@@ -195,7 +195,7 @@ export default function EditorialPortfolioPage({ articles }: { articles: Article
       <EditorialNav active="portfolio" />
 
       {/* ── Hero ── */}
-      <section className="px-6 md:px-12 py-24 md:min-h-screen flex flex-col md:justify-center overflow-hidden">
+      <section ref={heroSectionRef} className="relative px-6 md:px-12 py-24 md:min-h-[calc(100vh-105px)] flex flex-col md:justify-center overflow-hidden">
         <div className="w-full max-w-7xl mx-auto flex flex-col md:flex-row gap-12 md:gap-16 md:min-h-[36rem]">
           <div className="md:flex-1" style={navOverlay?.dimStyle}>
             <span ref={heroArrowRef} className="relative text-[0.72rem] uppercase tracking-[0.22em] block mb-8 w-fit" style={{ ...sans, color: c.accentText, fontWeight: c.sansWeight }}>
@@ -210,40 +210,68 @@ export default function EditorialPortfolioPage({ articles }: { articles: Article
             </p>
           </div>
 
-          {/* Logo grid — 2×3 square cells so the equal-pixel row/column gaps look
-              visually equal (4:3 cells made the row gap appear proportionally bigger).
-              Capped at max-w so a 3-row square grid still fits in the 36rem wrapper,
-              preserving the eyebrow alignment with About/Insights. Keyed by box index
-              so React keeps DOM nodes across cycles (img src updates in place). */}
-          <div className="md:flex-1 md:-mt-8 flex md:justify-end">
-            <div className="grid grid-cols-2 gap-3 md:gap-4 w-full max-w-[22rem]">
-              {boxLogos.map((co, i) => {
-                const stem = co.logo ?? co.slug;
-                const logoStyle: React.CSSProperties = co.w
-                  ? { width: Math.min(co.w, 140), maxWidth: "80%" }
-                  : { maxWidth: "80%", maxHeight: "55%" };
-                return (
-                  <div
-                    key={i}
-                    className="aspect-square border flex items-center justify-center px-3 md:px-4"
-                    style={{ backgroundColor: c.surface, borderColor: c.rule }}
-                  >
-                    <img
-                      src={`/logos/portfolio/${stem}-${light ? "light" : "dark"}.svg`}
-                      alt={`${co.name} logo`}
-                      className="object-contain"
-                      style={{
-                        ...logoStyle,
-                        opacity: boxOpacity[i],
-                        transition: "opacity 700ms ease-out",
-                      }}
-                    />
-                  </div>
-                );
-              })}
+          {/* Right column: founder testimonial cycling through the same quotes used
+              on Home, animated character-by-character inside a bordered card so it
+              reads as a distinct visual element rather than free-floating text.
+              Card dimensions match the Insights featured-article card exactly so the
+              hero right-side composition reads the same across both pages. */}
+          <div className="md:flex-1">
+            <div
+              className="w-full md:w-[min(34rem,100%)] md:ml-auto border p-8 md:p-10 flex flex-col md:h-[34rem]"
+              style={{
+                borderColor: c.rule,
+                backgroundColor: c.surface,
+                opacity: tPhase === "fading" ? 0 : 1,
+                transition: "opacity 500ms ease-in-out",
+              }}
+            >
+              <span className="text-[2.5rem] leading-none mb-4" style={{ ...serif, color: c.accent }} aria-hidden>&ldquo;</span>
+              <p className="text-[clamp(1.35rem,1.9vw,1.75rem)] leading-[1.45] font-light" style={{ ...sans, color: c.text }}>
+                {fullText.slice(0, charCount)}
+                {tPhase === "typing" && (
+                  <span className="inline-block ml-[2px] animate-caret-blink" style={{ color: c.accent }} aria-hidden>|</span>
+                )}
+              </p>
+              <div className="text-right mt-auto pt-8">
+                <span className="block text-[0.78rem] uppercase tracking-[0.18em]" style={{ ...sans, color: c.text, fontWeight: c.sansWeight }}>{current.author}</span>
+                <span className="block text-[0.72rem] uppercase tracking-[0.14em] mt-1" style={{ ...sans, color: c.muted, fontWeight: c.sansWeight }}>{current.role}</span>
+              </div>
             </div>
           </div>
         </div>
+
+        {/* Scroll-to-Active-Investments anchor: fades in 3.5s after mount,
+            fades out permanently once the user scrolls past the hero. */}
+        <a
+          href="#active-investments"
+          onClick={(e) => {
+            e.preventDefault();
+            document.getElementById("active-investments")?.scrollIntoView({ behavior: "smooth", block: "start" });
+          }}
+          className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2 group focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4"
+          style={{
+            opacity: anchorVisible ? 1 : 0,
+            pointerEvents: anchorVisible ? "auto" : "none",
+            transition: "opacity 600ms ease-out",
+            outlineColor: c.accent,
+          }}
+          aria-label="Scroll to Active Investments section"
+        >
+          <span className="text-[0.72rem] uppercase tracking-[0.22em] transition-colors group-hover:text-[#2E9D55]" style={{ ...sans, color: c.accentText, fontWeight: c.sansWeight }}>
+            Active Investments
+          </span>
+          <span
+            className="text-[1.2rem] leading-none group-hover:text-[#2E9D55]"
+            style={{
+              color: c.accentText,
+              transform: anchorVisible ? "translateY(0)" : "translateY(-14px)",
+              transition: "transform 1200ms ease-out, color 200ms ease-out",
+            }}
+            aria-hidden
+          >
+            &darr;
+          </span>
+        </a>
       </section>
 
       {/* ── Active Investments (01) ── */}
