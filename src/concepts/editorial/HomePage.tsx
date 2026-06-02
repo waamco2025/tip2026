@@ -113,7 +113,7 @@ export function CloudBackground() {
   return (
     <div
       aria-hidden="true"
-      className="pointer-events-none fixed inset-x-0 bottom-0 h-[30vh] -z-10"
+      className="pointer-events-none fixed inset-x-0 bottom-0 h-[21vh] md:h-[30vh] -z-10"
       style={{
         WebkitMaskImage:
           "linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 45%, rgba(0,0,0,0) 100%)",

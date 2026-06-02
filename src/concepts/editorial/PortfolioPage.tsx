@@ -179,6 +179,12 @@ export default function EditorialPortfolioPage({ articles }: { articles: Article
     }
   }, [searchParams]);
 
+  // Mobile-only intermediate tap state: tapping a logo first reveals a green
+  // overlay with the dark logo + "Visit →" CTA; the actual link only fires on
+  // the second tap. Adds friction to the long mobile scroll so users don't
+  // accidentally leave the page on every tap.
+  const [tappedSlug, setTappedSlug] = useState<string | null>(null);
+
   const matches =
     active === "Highlights"
       ? companies.filter((co) => co.highlight)
@@ -305,6 +311,7 @@ export default function EditorialPortfolioPage({ articles }: { articles: Article
               const logoStyle: React.CSSProperties = co.w
                 ? { width: co.w, maxWidth: "80%" }
                 : { maxWidth: "80%", maxHeight: "45%" };
+              const isTapped = tappedSlug === co.slug;
               return (
                 <a
                   key={co.slug}
@@ -312,7 +319,15 @@ export default function EditorialPortfolioPage({ articles }: { articles: Article
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={`Visit ${co.name}`}
-                  className="group aspect-[4/3] border flex items-center justify-center px-4 md:px-6 relative overflow-hidden focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+                  onClick={(e) => {
+                    // Mobile (touch / no-hover): first tap reveals the
+                    // green Visit-CTA overlay; second tap navigates.
+                    if (typeof window !== "undefined" && window.matchMedia("(hover: none)").matches && !isTapped) {
+                      e.preventDefault();
+                      setTappedSlug(co.slug);
+                    }
+                  }}
+                  className={`group aspect-[4/3] border flex items-center justify-center px-4 md:px-6 relative overflow-hidden focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 ${co.acquired ? "pb-9 md:pb-0" : ""}`}
                   style={{ backgroundColor: c.surface, borderColor: c.rule, outlineColor: c.accent }}
                 >
                   {showLogo ? (
@@ -340,11 +355,37 @@ export default function EditorialPortfolioPage({ articles }: { articles: Article
                   )}
                   {co.acquired && (
                     <span
-                      className="absolute bottom-3 left-0 right-0 mx-auto w-fit z-20 whitespace-nowrap rounded-full border px-2.5 py-1 text-[0.55rem] uppercase tracking-[0.12em] transition-transform duration-500 ease-out group-hover:-translate-y-1.5"
+                      className="absolute bottom-3 left-0 right-0 mx-auto w-fit z-20 whitespace-nowrap rounded-full border px-2.5 py-1 text-[0.55rem] uppercase tracking-[0.12em] text-center transition-transform duration-500 ease-out group-hover:-translate-y-1.5"
                       style={{ ...sans, backgroundColor: c.bg, borderColor: c.rule, color: c.muted, fontWeight: c.sansWeight }}
                     >
                       Acquired by {co.acquired}
                     </span>
+                  )}
+
+                  {/* Mobile-only tap state: green panel with dark logo + Visit
+                      CTA. Hidden at md+ where hover handles this UX. */}
+                  {isTapped && (
+                    <div
+                      className="absolute inset-0 z-30 md:hidden flex flex-col items-center justify-center gap-3 px-3"
+                      style={{ backgroundColor: c.accent }}
+                    >
+                      {showLogo && (
+                        <img
+                          src={`/logos/portfolio/${stem}-dark.svg`}
+                          alt={`${co.name} logo`}
+                          className="object-contain"
+                          style={{ ...logoStyle, maxHeight: "40%" }}
+                        />
+                      )}
+                      {!showLogo && (
+                        <span className="text-[1.05rem] font-normal italic leading-tight text-center text-white" style={{ ...serif }}>
+                          {co.name}
+                        </span>
+                      )}
+                      <span className="text-[0.65rem] uppercase tracking-[0.18em] text-white" style={{ ...sans, fontWeight: c.sansWeight }}>
+                        Visit &rarr;
+                      </span>
+                    </div>
                   )}
                 </a>
               );
