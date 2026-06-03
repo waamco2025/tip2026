@@ -135,7 +135,7 @@ export default function EditorialPortfolioPage({ articles }: { articles: Article
   useEffect(() => {
     if (tPhase === "typing") {
       if (charCount < fullText.length) {
-        const id = setTimeout(() => setCharCount((n) => n + 1), 18);
+        const id = setTimeout(() => setCharCount((n) => n + 1), 10);
         return () => clearTimeout(id);
       }
       setTPhase("complete");
@@ -223,7 +223,7 @@ export default function EditorialPortfolioPage({ articles }: { articles: Article
               hero right-side composition reads the same across both pages. */}
           <div className="md:flex-1">
             <div
-              className="w-full md:w-[min(34rem,100%)] md:ml-auto border p-8 md:p-10 flex flex-col h-[38rem] md:h-[34rem]"
+              className="w-full md:w-[min(34rem,100%)] md:ml-auto border p-8 md:p-10 flex flex-col h-[35rem] md:h-[34rem]"
               style={{
                 borderColor: c.rule,
                 backgroundColor: c.surface,
@@ -371,7 +371,7 @@ export default function EditorialPortfolioPage({ articles }: { articles: Article
                       CTA. Hidden at md+ where hover handles this UX. */}
                   {isTapped && (
                     <div
-                      className="absolute inset-0 z-30 md:hidden flex flex-col items-center justify-center gap-3 px-3"
+                      className="absolute inset-0 z-30 md:hidden flex items-center justify-center px-3 pb-8"
                       style={{ backgroundColor: c.accent }}
                     >
                       {showLogo && (
@@ -387,7 +387,9 @@ export default function EditorialPortfolioPage({ articles }: { articles: Article
                           {co.name}
                         </span>
                       )}
-                      <span className="text-[0.65rem] uppercase tracking-[0.18em] text-white" style={{ ...sans, fontWeight: c.sansWeight }}>
+                      {/* "Visit" pinned to the bottom of the box, mirroring the
+                          Acquired pill's placement, while the logo stays centered. */}
+                      <span className="absolute bottom-3 left-0 right-0 text-center text-[0.65rem] uppercase tracking-[0.18em] text-white" style={{ ...sans, fontWeight: c.sansWeight }}>
                         Visit &rarr;
                       </span>
                     </div>

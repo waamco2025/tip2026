@@ -508,6 +508,75 @@ export function useHeadlineArrow<T extends HTMLElement = HTMLDivElement>(opts: {
   return { ref, arrow };
 }
 
+/* ─── Scroll-triggered typewriter ─── */
+// Types `text` out character-by-character the first time the element scrolls into
+// view, then leaves it fully rendered (no looping). Layout is reflow-free: the
+// untyped remainder is rendered with visibility:hidden so it still occupies its
+// final space from the first frame — the card never grows while typing. The
+// caret is an inline-block of zero width so it doesn't nudge the hidden text and
+// change where it wraps. Respects prefers-reduced-motion by rendering instantly.
+export function ScrollTypewriter({
+  text,
+  speed = 12,
+  className,
+  style,
+}: {
+  text: string;
+  speed?: number;
+  className?: string;
+  style?: React.CSSProperties;
+}) {
+  const { light } = useEditorialMode();
+  const c = ec(light);
+  const ref = useRef<HTMLParagraphElement>(null);
+  const [started, setStarted] = useState(false);
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) {
+      setStarted(true);
+      setCount(text.length);
+      return;
+    }
+    if (!ref.current) return;
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          setStarted(true);
+          io.disconnect();
+        }
+      },
+      { threshold: 0.2 }
+    );
+    io.observe(ref.current);
+    return () => io.disconnect();
+  }, [text.length]);
+
+  useEffect(() => {
+    if (!started || count >= text.length) return;
+    const id = setTimeout(() => setCount((n) => n + 1), speed);
+    return () => clearTimeout(id);
+  }, [started, count, text.length, speed]);
+
+  const done = count >= text.length;
+  return (
+    <p ref={ref} className={className} style={{ ...style, textWrap: "wrap" }}>
+      <span>{text.slice(0, count)}</span>
+      {started && !done && (
+        <span
+          aria-hidden
+          className="animate-caret-blink"
+          style={{ display: "inline-block", width: 0, overflow: "visible", color: c.accent }}
+        >
+          |
+        </span>
+      )}
+      {/* Reserve the remaining space so the block is full-size from frame 1. */}
+      <span aria-hidden style={{ visibility: "hidden" }}>{text.slice(count)}</span>
+    </p>
+  );
+}
+
 export function SectionHeader({ label, number }: { label: string; number: string }) {
   const { light } = useEditorialMode();
   const c = ec(light);
@@ -702,31 +771,6 @@ export default function EditorialHomePage({ articles }: { articles: Article[] })
     }
   }, [navPaused, userPaused]);
 
-  // Mobile hero height: pin the left (headline+copy) panel to the EXACT visible
-  // viewport so the image carousel always lands just below the fold. CSS svh/dvh
-  // mis-measure on iOS Safari (its bars float translucently over the content, so
-  // the unit is shorter than the real visible area and the carousel peeks above
-  // the bottom bar). window.innerHeight is the ground truth — it reports the real
-  // visible layout viewport and updates as the bars show/hide. We track resize so
-  // the carousel stays below the fold as the bars collapse on scroll.
-  useEffect(() => {
-    const setHeroHeight = () => {
-      const nav = document.querySelector("nav");
-      const navH = nav ? nav.getBoundingClientRect().height : 89;
-      document.documentElement.style.setProperty(
-        "--hero-mobile-h",
-        `${window.innerHeight - navH}px`
-      );
-    };
-    setHeroHeight();
-    window.addEventListener("resize", setHeroHeight);
-    window.addEventListener("orientationchange", setHeroHeight);
-    return () => {
-      window.removeEventListener("resize", setHeroHeight);
-      window.removeEventListener("orientationchange", setHeroHeight);
-    };
-  }, []);
-
   useEffect(() => {
     if (paused) {
       if (autoAdvanceRef.current) clearInterval(autoAdvanceRef.current);
@@ -763,7 +807,9 @@ export default function EditorialHomePage({ articles }: { articles: Article[] })
     { icon: ShieldCheck, name: "Cybersecurity & Privacy", desc: "AI governance, identity protection, and enterprise security infrastructure" },
   ];
 
-  const testimonials = TESTIMONIALS;
+  // Drop testimonials without copy yet (e.g. Nuitée, pending client text) so we
+  // don't render an empty card.
+  const testimonials = TESTIMONIALS.filter((t) => t.quote.length > 0);
 
   return (
     <div className="relative isolate min-h-screen transition-colors duration-500" style={{ backgroundColor: c.bg, color: c.text }}>
@@ -934,9 +980,12 @@ export default function EditorialHomePage({ articles }: { articles: Article[] })
             {testimonials.map((t, i) => (
               <div key={i} className="border p-8 md:p-10 flex flex-col transition-colors duration-500 hover:bg-[rgba(0,0,0,0.035)]" style={{ borderColor: c.rule, backgroundColor: c.bg }}>
                 <span className="text-[2.5rem] leading-none mb-4" style={{ ...serif, color: c.accent }}>&ldquo;</span>
-                <p className="text-[1.15rem] leading-[1.7] font-light flex-1 mb-8" style={{ ...sans, color: c.bodyText, fontWeight: c.sansWeight }}>
-                  {t.quote}
-                </p>
+                <ScrollTypewriter
+                  text={t.quote}
+                  className="text-[1.15rem] leading-[1.7] font-light flex-1 mb-8"
+                  style={{ ...sans, color: c.bodyText, fontWeight: c.sansWeight }}
+                />
+
                 <div className="text-right">
                   <span className="text-[0.72rem] uppercase tracking-[0.18em] block" style={{ ...sans, color: c.text, fontWeight: c.sansWeight }}>{t.author}</span>
                   <span className="text-[0.78rem] uppercase tracking-[0.14em]" style={{ ...sans, color: c.muted, fontWeight: c.sansWeight }}>{t.role}</span>

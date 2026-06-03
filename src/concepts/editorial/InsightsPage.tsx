@@ -157,7 +157,10 @@ export default function EditorialInsightsPage({ articles }: { articles: Article[
           </div>
 
           {featured && (
-            <div className="md:flex-1">
+            // Hidden on mobile: the first article is inlined immediately below the
+            // hero, so on small screens the user scrolls straight into it without
+            // needing the featured-card shortcut.
+            <div className="hidden md:block md:flex-1">
               <div
                 role="button"
                 tabIndex={0}

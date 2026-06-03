@@ -5,15 +5,17 @@ html {
 }
 
 :root {
-  /* Mobile hero visible height = current visual viewport minus the sticky nav.
-     This CSS value is only the SSR/first-paint fallback; HomePage overrides it
-     at runtime with the exact measured `window.innerHeight - navHeight` (see the
-     hero-height effect). We use dvh (not svh) here because svh is the *smallest*
-     viewport — it reserves space for browser UI bars as if they were opaque, but
-     iOS Safari's bars float translucently over the content, so svh ends up
-     SHORTER than the real visible area and the carousel peeks above the bottom
-     bar. dvh tracks the live viewport and keeps the carousel below the fold. */
-  --hero-mobile-h: calc(100dvh - 89px);
+  /* Mobile hero left-panel height. lvh is the LARGEST viewport (toolbars
+     minimized). On initial load iOS Safari shows the toolbars expanded, so the
+     visible area equals the SMALLER svh — meaning a panel sized to lvh runs
+     taller than what's on screen and the image carousel below it sits off-screen
+     until the user scrolls. We deliberately avoid svh/dvh and any JS measurement
+     here: svh under-measures (iOS bars float translucently over the content, so
+     the carousel peeked above the bottom bar), and a JS value that tracks
+     `innerHeight` re-flows the hero every time the bars collapse on scroll —
+     which caused the carousel scroll jitter. lvh is a single static value, so
+     the layout never changes while scrolling. */
+  --hero-mobile-h: calc(100lvh - 89px);
 }
 
 @keyframes fade-in {
