@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { useSearchParams } from "next/navigation";
-import { EditorialNav, EditorialFooter, EditorialHeadlines, CloudBackground, SectionHeader, useHeadlineArrow, NextPagePanel, TESTIMONIALS } from "./HomePage";
+import { EditorialNav, EditorialFooter, EditorialHeadlines, CloudBackground, SectionHeader, useHeadlineArrow, NextPagePanel, TESTIMONIALS, Reveal } from "./HomePage";
 import { useNavigationOverlay } from "./NavigationOverlay";
 import { useEditorialMode, ec } from "./EditorialModeContext";
 import type { Article } from "@/lib/article-types";
@@ -308,7 +308,7 @@ export default function EditorialPortfolioPage({ articles }: { articles: Article
             ))}
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-6">
+          <Reveal className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-6">
             {filtered.map((co) => {
               const stem = co.logo ?? co.slug;
               const showLogo = Boolean(co.logo || co.w);
@@ -397,7 +397,7 @@ export default function EditorialPortfolioPage({ articles }: { articles: Article
                 </a>
               );
             })}
-          </div>
+          </Reveal>
         </div>
       </section>
 

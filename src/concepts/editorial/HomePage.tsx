@@ -4,10 +4,43 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useNavigationOverlay } from "./NavigationOverlay";
-import { Building2, UtensilsCrossed, Globe, CreditCard, Wallet, ShieldCheck, Pause, Play, Menu, X } from "lucide-react";
+import { Building2, UtensilsCrossed, Globe, CreditCard, Wallet, ShieldCheck, Pause, Play } from "lucide-react";
 import { useEditorialMode, ec } from "./EditorialModeContext";
 import type { Article } from "@/lib/article-types";
 import { formatDate } from "@/lib/article-types";
+
+/* ─── Mobile nav stagger timing ─── */
+// Each menu item fades in character-by-character, and rows are themselves
+// staggered, so the menu reads top-to-bottom, left-to-right. On close the same
+// per-character delays are mirrored (maxDelay − openDelay) so it plays in reverse.
+const NAV_CHAR_STEP = 22; // ms between characters within a row
+const NAV_ROW_STEP = 70; // ms between rows
+
+function NavStaggerLabel({ text, open, row, maxDelay }: { text: string; open: boolean; row: number; maxDelay: number }) {
+  return (
+    <>
+      {[...text].map((ch, ci) => {
+        const openDelay = row * NAV_ROW_STEP + ci * NAV_CHAR_STEP;
+        const delay = open ? openDelay : Math.max(0, maxDelay - openDelay);
+        return (
+          <span
+            key={ci}
+            aria-hidden
+            style={{
+              display: "inline-block",
+              whiteSpace: "pre",
+              opacity: open ? 1 : 0,
+              transform: open ? "none" : "translateY(5px)",
+              transition: `opacity 200ms ease-out ${delay}ms, transform 200ms ease-out ${delay}ms`,
+            }}
+          >
+            {ch}
+          </span>
+        );
+      })}
+    </>
+  );
+}
 
 /* ─── Shared Nav ─── */
 export function EditorialNav({ active = "home" }: { active?: string }) {
@@ -31,6 +64,11 @@ export function EditorialNav({ active = "home" }: { active?: string }) {
     { label: "Insights", href: "/news", key: "insights" },
     { label: "Investor Relations", href: "https://services.dataexchange.fiscloudservices.com/LogOn/2350903", key: "ir", external: true },
   ];
+  // Largest per-character open delay across all rows — used to mirror the
+  // stagger on close so the menu animates out in reverse.
+  const navMaxDelay =
+    (links.length - 1) * NAV_ROW_STEP +
+    (Math.max(...links.map((l) => l.label.length)) - 1) * NAV_CHAR_STEP;
   const linkCls = (k: string) =>
     `transition-colors duration-300 ${active === k ? "" : "hover:opacity-80"}`;
   const desktopLinkColor = (isActive: boolean) =>
@@ -67,41 +105,75 @@ export function EditorialNav({ active = "home" }: { active?: string }) {
           ))}
         </div>
 
-        {/* Mobile hamburger / close — icon size = button size so the right
-            edge of the icon sits flush with the wrapper's px-6 boundary,
-            mirroring the logo's left edge. */}
+        {/* Mobile hamburger / close — three bars that morph into an X. The
+            top/bottom bars rotate ±45° and converge to the centre while the
+            middle bar fades out, giving a smooth hamburger↔X transition. The
+            6×6 button keeps the right edge flush with the wrapper's px-6
+            boundary, mirroring the logo's left edge. */}
         <div className="flex md:hidden items-center">
           <button
             onClick={() => setOpen(!open)}
-            className="w-6 h-6 flex items-center justify-center"
+            className="w-6 h-6 relative flex items-center justify-center"
             aria-label={open ? "Close menu" : "Open menu"}
+            aria-expanded={open}
+            aria-controls="mobile-menu"
           >
-            {open ? <X className="w-6 h-6" style={{ color: c.hamburger }} /> : <Menu className="w-6 h-6" style={{ color: c.hamburger }} />}
+            {[-6, 0, 6].map((y, i) => (
+              <span
+                key={i}
+                className="absolute left-0 h-[2px] w-6 rounded-full"
+                style={{
+                  backgroundColor: c.hamburger,
+                  transition: "transform 300ms cubic-bezier(0.4,0,0.2,1), opacity 200ms ease-out",
+                  transform: open
+                    ? i === 1
+                      ? "scaleX(0)"
+                      : `rotate(${i === 0 ? 45 : -45}deg)`
+                    : `translateY(${y}px)`,
+                  opacity: open && i === 1 ? 0 : 1,
+                }}
+              />
+            ))}
           </button>
         </div>
       </div>
 
-      {/* Mobile menu */}
-      {open && (
-        <div
-          className="absolute top-full left-0 w-full border-b flex flex-col gap-6 px-6 py-8 md:hidden transition-colors duration-500"
-          style={{ backgroundColor: c.bg, borderColor: c.rule, fontFamily: "'Syne', sans-serif" }}
-        >
-          {links.map((l) => (
-            <Link
-              key={l.key}
-              href={l.href}
-              target={l.external ? "_blank" : undefined}
-              rel={l.external ? "noopener noreferrer" : undefined}
-              className={`text-[0.72rem] uppercase tracking-[0.14em] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 ${linkCls(l.key)}`}
-              style={{ color: active === l.key ? c.text : c.muted, fontWeight: c.sansWeight, outlineColor: c.accent }}
-              onClick={() => setOpen(false)}
-            >
-              {l.label}
-            </Link>
-          ))}
+      {/* Mobile menu — always mounted so the close animation can play (in
+          reverse). The box height animates via the grid 0fr↔1fr trick (smooth to
+          the exact content height), and each item's characters stagger in. */}
+      <div
+        id="mobile-menu"
+        className="absolute top-full left-0 w-full md:hidden grid"
+        style={{
+          gridTemplateRows: open ? "1fr" : "0fr",
+          opacity: open ? 1 : 0,
+          transition: "grid-template-rows 420ms cubic-bezier(0.4,0,0.2,1), opacity 280ms ease-out",
+        }}
+        aria-hidden={!open}
+      >
+        <div className="overflow-hidden">
+          <div
+            className="border-b flex flex-col gap-6 px-6 py-8 transition-colors duration-500"
+            style={{ backgroundColor: c.bg, borderColor: c.rule, fontFamily: "'Syne', sans-serif" }}
+          >
+            {links.map((l, r) => (
+              <Link
+                key={l.key}
+                href={l.href}
+                target={l.external ? "_blank" : undefined}
+                rel={l.external ? "noopener noreferrer" : undefined}
+                aria-label={l.label}
+                tabIndex={open ? 0 : -1}
+                className={`text-[0.72rem] uppercase tracking-[0.14em] w-fit focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 ${linkCls(l.key)}`}
+                style={{ color: active === l.key ? c.text : c.muted, fontWeight: c.sansWeight, outlineColor: c.accent }}
+                onClick={() => setOpen(false)}
+              >
+                <NavStaggerLabel text={l.label} open={open} row={r} maxDelay={navMaxDelay} />
+              </Link>
+            ))}
+          </div>
         </div>
-      )}
+      </div>
     </nav>
   );
 }
@@ -520,11 +592,15 @@ export function ScrollTypewriter({
   speed = 12,
   className,
   style,
+  trigger,
 }: {
   text: string;
   speed?: number;
   className?: string;
   style?: React.CSSProperties;
+  // When provided, typing is driven by this boolean instead of the component's
+  // own IntersectionObserver (lets a parent sequence several typewriters).
+  trigger?: boolean;
 }) {
   const { light } = useEditorialMode();
   const c = ec(light);
@@ -536,6 +612,10 @@ export function ScrollTypewriter({
     if (typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) {
       setStarted(true);
       setCount(text.length);
+      return;
+    }
+    if (trigger !== undefined) {
+      if (trigger) setStarted(true);
       return;
     }
     if (!ref.current) return;
@@ -550,7 +630,7 @@ export function ScrollTypewriter({
     );
     io.observe(ref.current);
     return () => io.disconnect();
-  }, [text.length]);
+  }, [text.length, trigger]);
 
   useEffect(() => {
     if (!started || count >= text.length) return;
@@ -577,17 +657,127 @@ export function ScrollTypewriter({
   );
 }
 
+/* ─── Reveal-on-scroll wrapper ─── */
+// Subtle, swift fade + rise the first time the element scrolls into view (once).
+// Use it to wrap a section's body content so it eases in on arrival. Honors
+// prefers-reduced-motion by rendering immediately.
+export function Reveal({
+  children,
+  className,
+  delay = 0,
+  y = 18,
+  style,
+}: {
+  children: React.ReactNode;
+  className?: string;
+  delay?: number;
+  y?: number;
+  style?: React.CSSProperties;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [shown, setShown] = useState(false);
+  useEffect(() => {
+    const reduce = typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    if (reduce) {
+      setShown(true);
+      return;
+    }
+    const el = ref.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          setShown(true);
+          io.disconnect();
+        }
+      },
+      { threshold: 0.12 }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+  return (
+    <div
+      ref={ref}
+      className={className}
+      style={{
+        ...style,
+        opacity: shown ? 1 : 0,
+        transform: shown ? "none" : `translateY(${y}px)`,
+        transition: `opacity 650ms ease-out ${delay}ms, transform 650ms ease-out ${delay}ms`,
+      }}
+    >
+      {children}
+    </div>
+  );
+}
+
 export function SectionHeader({ label, number }: { label: string; number: string }) {
   const { light } = useEditorialMode();
   const c = ec(light);
   const { ref, arrow } = useHeadlineArrow();
+  const sans = { fontFamily: "'Syne', sans-serif" };
+
+  // On first scroll-into-view: type the eyebrow, then draw the divider, then
+  // type the number. Plays once per page view (the observer disconnects).
+  const [started, setStarted] = useState(false);
+  const [numberStart, setNumberStart] = useState(false);
+  const charSpeed = 26;
+  const lineDelay = label.length * charSpeed + 140;
+
+  useEffect(() => {
+    const reduce = typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    if (reduce) {
+      setStarted(true);
+      setNumberStart(true);
+      return;
+    }
+    const el = ref.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          setStarted(true);
+          io.disconnect();
+        }
+      },
+      { threshold: 0.4 }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, [ref]);
+
+  useEffect(() => {
+    if (!started) return;
+    const t = setTimeout(() => setNumberStart(true), lineDelay + 240);
+    return () => clearTimeout(t);
+  }, [started, lineDelay]);
 
   return (
     <div ref={ref} data-section-header className="flex items-center gap-6 mb-16 md:mb-20 relative">
       {arrow}
-      <span className="text-[0.72rem] uppercase tracking-[0.22em] shrink-0" style={{ fontFamily: "'Syne', sans-serif", color: c.accentText, fontWeight: c.sansWeight }}>{label}</span>
-      <div className="flex-1 h-px" style={{ backgroundColor: c.rule }} />
-      <span className="text-[0.72rem] uppercase tracking-[0.22em] shrink-0" style={{ fontFamily: "'Syne', sans-serif", color: c.muted, fontWeight: c.sansWeight }}>{number}</span>
+      <ScrollTypewriter
+        text={label}
+        trigger={started}
+        speed={charSpeed}
+        className="text-[0.72rem] uppercase tracking-[0.22em] shrink-0"
+        style={{ ...sans, color: c.accentText, fontWeight: c.sansWeight }}
+      />
+      <div
+        className="flex-1 h-px origin-left"
+        style={{
+          backgroundColor: c.rule,
+          transform: started ? "scaleX(1)" : "scaleX(0)",
+          transition: `transform 500ms ease-out ${lineDelay}ms`,
+        }}
+      />
+      <ScrollTypewriter
+        text={number}
+        trigger={numberStart}
+        speed={charSpeed}
+        className="text-[0.72rem] uppercase tracking-[0.22em] shrink-0"
+        style={{ ...sans, color: c.muted, fontWeight: c.sansWeight }}
+      />
     </div>
   );
 }
@@ -632,11 +822,11 @@ export function EditorialHeadlines({ number, articles }: { number: string; artic
     <section className="px-6 md:px-12 py-24 md:py-32 snap-start">
       <div className="max-w-7xl mx-auto">
         <SectionHeader label="Recent Articles" number={number} />
-        <div className="flex flex-col">
+        <Reveal className="flex flex-col">
           {articles.slice(0, 3).map((a) => (
             <ArticleListItem key={a.slug} article={a} />
           ))}
-        </div>
+        </Reveal>
       </div>
     </section>
   );
@@ -976,7 +1166,7 @@ export default function EditorialHomePage({ articles }: { articles: Article[] })
       <section className="px-6 md:px-12 py-24 md:py-32">
         <div className="max-w-7xl mx-auto">
           <SectionHeader label="What Our Entrepreneurs Say" number="01" />
-          <div className="grid md:grid-cols-3 gap-8 md:gap-12">
+          <Reveal className="grid md:grid-cols-3 gap-8 md:gap-12">
             {testimonials.map((t, i) => (
               <div key={i} className="border p-8 md:p-10 flex flex-col transition-colors duration-500 hover:bg-[rgba(0,0,0,0.035)]" style={{ borderColor: c.rule, backgroundColor: c.bg }}>
                 <span className="text-[2.5rem] leading-none mb-4" style={{ ...serif, color: c.accent }}>&ldquo;</span>
@@ -992,7 +1182,7 @@ export default function EditorialHomePage({ articles }: { articles: Article[] })
                 </div>
               </div>
             ))}
-          </div>
+          </Reveal>
         </div>
       </section>
 
@@ -1000,7 +1190,7 @@ export default function EditorialHomePage({ articles }: { articles: Article[] })
       <section className="px-6 md:px-12 py-24 md:py-32 transition-colors duration-500">
         <div className="max-w-7xl mx-auto">
           <SectionHeader label="Our Philosophy" number="02" />
-          <div className="grid md:grid-cols-[1fr_2fr] gap-12 md:gap-12">
+          <Reveal className="grid md:grid-cols-[1fr_2fr] gap-12 md:gap-12">
             <h2 className="text-[clamp(2.25rem,3.5vw,3.2rem)] leading-[1.15] font-normal italic" style={{ ...serif, color: c.text }}>
               Invest in Travel.
             </h2>
@@ -1011,7 +1201,7 @@ export default function EditorialHomePage({ articles }: { articles: Article[] })
                 We connect dots and open doors across the largest and most dynamic industry in the world: hotels, transportation, airlines, cruise, agencies, restaurants, events, sports, entertainment, and experiences.
               </p>
             </div>
-          </div>
+          </Reveal>
         </div>
       </section>
 

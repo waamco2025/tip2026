@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { ChevronDown } from "lucide-react";
-import { EditorialNav, EditorialFooter, EditorialHeadlines, CloudBackground, SectionHeader, NextPagePanel } from "./HomePage";
+import { EditorialNav, EditorialFooter, EditorialHeadlines, CloudBackground, SectionHeader, NextPagePanel, Reveal } from "./HomePage";
 import { useNavigationOverlay } from "./NavigationOverlay";
 import { useEditorialMode, ec } from "./EditorialModeContext";
 import type { Article } from "@/lib/article-types";
@@ -34,6 +34,19 @@ export default function EditorialAboutPage({ articles }: { articles: Article[] }
   const [arrowRotation, setArrowRotation] = useState(0);
   const [heroArrowFlown, setHeroArrowFlown] = useState(false);
   const [flightComplete, setFlightComplete] = useState(false);
+  // On mobile the contrail line runs through the headline copy, so once the
+  // flight finishes we fade it back to a faint 15% so it reads as a trace rather
+  // than a line cutting through the text. On desktop it sits clear of the copy,
+  // so it stays at full strength.
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 767px)");
+    const update = () => setIsMobile(mq.matches);
+    update();
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
+  }, []);
+  const contrailFaded = flightComplete && isMobile;
   // Bottom-of-hero "Our Process" scroll anchor. Fades in once the arrow flight
   // finishes; fades out (permanently for this page view) once the user scrolls
   // far enough that the hero is mostly above the viewport.
@@ -145,12 +158,12 @@ export default function EditorialAboutPage({ articles }: { articles: Article[] }
               <line
                 x1={startPos.x} y1={startPos.y} x2={endPos.x} y2={endPos.y}
                 stroke="url(#contrail-grad)"
-                strokeOpacity="0.5"
+                strokeOpacity={contrailFaded ? 0.15 : 0.5}
                 strokeWidth="2"
                 vectorEffect="non-scaling-stroke"
                 strokeDasharray={contrailLength}
                 strokeDashoffset={heroArrowFlown ? 0 : contrailLength}
-                style={{ transition: "stroke-dashoffset 2500ms cubic-bezier(0.4, 0, 0.4, 1)" }}
+                style={{ transition: "stroke-dashoffset 2500ms cubic-bezier(0.4, 0, 0.4, 1), stroke-opacity 700ms ease-out" }}
               />
             )}
           </svg>
@@ -232,14 +245,14 @@ export default function EditorialAboutPage({ articles }: { articles: Article[] }
       <section id="our-process" className="px-6 md:px-12 py-24 md:py-32 transition-colors duration-500 scroll-mt-[89px] md:scroll-mt-[105px]">
         <div className="max-w-7xl mx-auto">
           <SectionHeader label="Our Process" number="01" />
-          <div className="grid md:grid-cols-2 gap-12 md:gap-20">
+          <Reveal className="grid md:grid-cols-2 gap-12 md:gap-20">
             <h2 className="text-[clamp(2.2rem,4.5vw,4rem)] leading-[1.1] font-normal italic" style={{ ...serif, color: c.text }}>
               Conviction, network, and partnership, refined over 15+ years.
             </h2>
             <p className="text-[1.15rem] leading-[1.7]" style={{ ...sans, color: c.bodyText, fontWeight: c.sansWeight }}>
               While Travel and Tourism is one of the largest industries on earth contributing roughly 10% of global GDP, it has historically underinvested in modern technology compared to other sectors of similar size. Founded in 2008, Thayer was created to spur innovation in travel and help entrepreneurs navigate its complex web of stakeholders. Over the past 15+ years, we have invested in over 100 companies that have had a huge impact in advancing the travel industry. Today we are focused on being the bridge between silicon valley and the global travel industry. We help all companies unlock the travel industry and drive sales, strategy and partnership for our portfolio. All businesses will sell to, partner with or consume travel and Thayer is the strategic co-pilot.
             </p>
-          </div>
+          </Reveal>
         </div>
       </section>
 
@@ -247,7 +260,7 @@ export default function EditorialAboutPage({ articles }: { articles: Article[] }
       <section className="px-6 md:px-12 py-24 md:py-32">
         <div className="max-w-7xl mx-auto">
           <SectionHeader label="The Team" number="02" />
-          <div className="flex flex-col border-t" style={{ borderColor: c.rule }}>
+          <Reveal className="flex flex-col border-t" style={{ borderColor: c.rule }}>
             {team.map((t, i) => {
               const expanded = expandedMember === i;
               return (
@@ -285,7 +298,7 @@ export default function EditorialAboutPage({ articles }: { articles: Article[] }
                 </div>
               );
             })}
-          </div>
+          </Reveal>
         </div>
       </section>
 
@@ -293,6 +306,7 @@ export default function EditorialAboutPage({ articles }: { articles: Article[] }
       <section className="px-6 md:px-12 py-24 md:py-32 transition-colors duration-500">
         <div className="max-w-7xl mx-auto">
           <SectionHeader label="Our Club" number="03" />
+          <Reveal>
           <h2 className="text-[clamp(2rem,3vw,2.8rem)] leading-[1.15] font-normal italic mb-6" style={{ ...serif, color: c.text }}>
             Decades of specialized investment and operating experience.
           </h2>
@@ -318,6 +332,7 @@ export default function EditorialAboutPage({ articles }: { articles: Article[] }
               </div>
             ))}
           </div>
+          </Reveal>
         </div>
       </section>
 

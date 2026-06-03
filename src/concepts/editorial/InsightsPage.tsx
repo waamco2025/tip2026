@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { EditorialNav, EditorialFooter, CloudBackground, SectionHeader, useHeadlineArrow } from "./HomePage";
+import { EditorialNav, EditorialFooter, CloudBackground, SectionHeader, useHeadlineArrow, Reveal } from "./HomePage";
 import { InlineArticle, CopyLinkIcon } from "./InlineArticle";
 import { useNavigationOverlay } from "./NavigationOverlay";
 import { useEditorialMode, ec } from "./EditorialModeContext";
@@ -20,7 +20,7 @@ function ExpandableArticle({ article }: { article: Article }) {
   const [expanded, setExpanded] = useState(false);
 
   if (expanded) {
-    return <InlineArticle article={article} />;
+    return <InlineArticle article={article} animateIn />;
   }
 
   return (
@@ -246,7 +246,9 @@ export default function EditorialInsightsPage({ articles }: { articles: Article[
 
       {/* ── Inlined articles ── */}
       {inlineArticles.map((a) => (
-        <InlineArticle key={a.slug} article={a} />
+        <Reveal key={a.slug}>
+          <InlineArticle article={a} />
+        </Reveal>
       ))}
 
       {/* ── Expandable 4th article ── */}
@@ -257,7 +259,7 @@ export default function EditorialInsightsPage({ articles }: { articles: Article[
         <section className="px-6 md:px-12 py-24 md:py-32">
           <div className="max-w-7xl mx-auto">
             <SectionHeader label="More Articles" number="02" />
-            <div className="flex flex-col">
+            <Reveal className="flex flex-col">
               {rest.map((a) => (
                 <div key={a.slug} className="grid grid-cols-[120px_1fr] md:grid-cols-[200px_1fr] gap-5 md:gap-10 py-8 border-b items-start" style={{ borderColor: c.rule }}>
                   <Link href={`/news/${a.slug}`} className="aspect-[4/3] border overflow-hidden relative group" style={{ borderColor: c.rule, backgroundColor: c.surface }}>
@@ -279,7 +281,7 @@ export default function EditorialInsightsPage({ articles }: { articles: Article[
                   </div>
                 </div>
               ))}
-            </div>
+            </Reveal>
           </div>
         </section>
       )}

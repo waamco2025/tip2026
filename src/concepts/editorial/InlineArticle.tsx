@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { Link2 } from "lucide-react";
 import { useEditorialMode, ec } from "./EditorialModeContext";
@@ -93,11 +93,37 @@ export function CopyLinkIcon({ slug }: { slug: string }) {
 // page) and by InsightsPage (multiple stacked inline). Headline is wrapped in
 // a Link to the dedicated page so the URL stays shareable. The hero block has
 // no border-bottom — the image flows directly under it.
-export function InlineArticle({ article, linkHeadline = true }: { article: Article; linkHeadline?: boolean }) {
+export function InlineArticle({ article, linkHeadline = true, animateIn = false }: { article: Article; linkHeadline?: boolean; animateIn?: boolean }) {
   const { light } = useEditorialMode();
   const c = ec(light);
   const serif = { fontFamily: "'Cormorant Garamond', Georgia, serif" };
   const sans = { fontFamily: "'Syne', sans-serif" };
+
+  // When mounted via an "expand" interaction (animateIn), unfurl the article's
+  // parts in sequence: dateline → headline → summary → stats → image → body.
+  // Each part fades + rises with an increasing delay. When not animating (the
+  // dedicated article page and the always-visible stacked inline articles) it
+  // renders immediately so nothing is hidden.
+  const [shown, setShown] = useState(!animateIn);
+  useEffect(() => {
+    if (!animateIn) return;
+    let raf2 = 0;
+    const raf1 = requestAnimationFrame(() => {
+      raf2 = requestAnimationFrame(() => setShown(true));
+    });
+    return () => {
+      cancelAnimationFrame(raf1);
+      cancelAnimationFrame(raf2);
+    };
+  }, [animateIn]);
+  const reveal = (i: number): React.CSSProperties =>
+    animateIn
+      ? {
+          opacity: shown ? 1 : 0,
+          transform: shown ? "none" : "translateY(16px)",
+          transition: `opacity 600ms ease-out ${i * 110}ms, transform 600ms ease-out ${i * 110}ms`,
+        }
+      : {};
 
   const headline = (
     <h2 className="text-[clamp(2.5rem,4.5vw,3.8rem)] leading-[1.1] font-normal italic mb-6 transition-colors" style={{ ...serif, color: c.text }}>
@@ -110,25 +136,27 @@ export function InlineArticle({ article, linkHeadline = true }: { article: Artic
       <section className="px-6 md:px-12 pt-24 md:pt-40 pb-12 md:pb-20">
         <div className="max-w-7xl mx-auto grid md:grid-cols-[1fr_280px] gap-12 md:gap-20">
           <div>
-            <div className="flex items-center gap-4 mb-8">
+            <div className="flex items-center gap-4 mb-8" style={reveal(0)}>
               <span className="text-[0.65rem] uppercase tracking-[0.2em]" style={{ ...sans, color: c.accentText, fontWeight: c.sansWeight }}>{article.category}</span>
               <div className="w-8 h-px" style={{ backgroundColor: c.rule }} />
               <span className="text-[0.65rem] uppercase tracking-[0.18em]" style={{ ...sans, color: c.muted, fontWeight: c.sansWeight }}>{formatDate(article.date)}</span>
               <CopyLinkIcon slug={article.slug} />
             </div>
-            {linkHeadline ? (
-              <Link href={`/news/${article.slug}`} className="block group/headline hover:text-[#2E9D55] transition-colors" onClick={(e) => e.stopPropagation()} style={{ color: c.text }}>
-                {headline}
-              </Link>
-            ) : (
-              headline
-            )}
-            <p className="text-[1.15rem] leading-[1.7] max-w-2xl" style={{ ...sans, color: c.bodyText, fontWeight: c.sansWeight }}>
+            <div style={reveal(1)}>
+              {linkHeadline ? (
+                <Link href={`/news/${article.slug}`} className="block group/headline hover:text-[#2E9D55] transition-colors" onClick={(e) => e.stopPropagation()} style={{ color: c.text }}>
+                  {headline}
+                </Link>
+              ) : (
+                headline
+              )}
+            </div>
+            <p className="text-[1.15rem] leading-[1.7] max-w-2xl" style={{ ...sans, color: c.bodyText, fontWeight: c.sansWeight, ...reveal(2) }}>
               {article.subhead}
             </p>
           </div>
           {article.keyFigures.length > 0 && (
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-4" style={reveal(3)}>
               {article.keyFigures.map((s, i) => (
                 <div key={i} className="border p-5 flex items-center justify-between" style={{ borderColor: c.rule }}>
                   <span className="text-[1.6rem] font-light" style={{ ...serif, color: c.accent, fontWeight: c.statWeight }}>{s.value}</span>
@@ -142,14 +170,14 @@ export function InlineArticle({ article, linkHeadline = true }: { article: Artic
 
       {article.heroImage && (
         <section className="px-6 md:px-12 py-16 md:py-20" style={{ paddingTop: 0 }}>
-          <div className="max-w-5xl mx-auto">
+          <div className="max-w-5xl mx-auto" style={reveal(4)}>
             <img src={article.heroImage} alt={article.heroImageAlt} className="block w-full h-auto border" style={{ borderColor: c.rule }} />
           </div>
         </section>
       )}
 
       <section className="px-6 md:px-12 pb-16 md:pb-20" style={{ paddingTop: article.heroImage ? 0 : undefined }}>
-        <div className="max-w-3xl mx-auto">
+        <div className="max-w-3xl mx-auto" style={reveal(5)}>
           {article.blocks.map((b, i) => (
             <Block key={i} block={b} />
           ))}
