@@ -232,7 +232,12 @@ export default function EditorialPortfolioPage({ articles }: { articles: Article
               }}
             >
               <span className="text-[2.5rem] leading-none mb-4" style={{ ...serif, color: c.accent }} aria-hidden>&ldquo;</span>
-              <p className="text-[clamp(1.35rem,1.9vw,1.75rem)] leading-[1.45] font-light" style={{ ...sans, color: c.text }}>
+              {/* textWrap "wrap" overrides the global `p { text-wrap: pretty }`.
+                  pretty re-balances the last lines of a paragraph, so as the
+                  typewriter streams characters the break points keep changing and
+                  the lines jump up and down. Greedy wrapping leaves every settled
+                  line fixed — only the line currently being typed extends. */}
+              <p className="text-[clamp(1.35rem,1.9vw,1.75rem)] leading-[1.45] font-light" style={{ ...sans, color: c.text, textWrap: "wrap" }}>
                 {fullText.slice(0, charCount)}
                 {tPhase === "typing" && (
                   <span className="inline-block ml-[2px] animate-caret-blink" style={{ color: c.accent }} aria-hidden>|</span>

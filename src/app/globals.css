@@ -5,13 +5,15 @@ html {
 }
 
 :root {
-  /* Mobile hero visible height: small viewport unit minus the sticky nav.
-     svh is the smallest possible viewport height (when all browser UI bars
-     are visible), so the hero is guaranteed to fit when Safari's URL +
-     bottom control bars are showing. dvh proved too generous on iOS Safari
-     because the translucent bottom bar overlays the viewport rather than
-     being subtracted. */
-  --hero-mobile-h: calc(100svh - 89px);
+  /* Mobile hero visible height = current visual viewport minus the sticky nav.
+     This CSS value is only the SSR/first-paint fallback; HomePage overrides it
+     at runtime with the exact measured `window.innerHeight - navHeight` (see the
+     hero-height effect). We use dvh (not svh) here because svh is the *smallest*
+     viewport — it reserves space for browser UI bars as if they were opaque, but
+     iOS Safari's bars float translucently over the content, so svh ends up
+     SHORTER than the real visible area and the carousel peeks above the bottom
+     bar. dvh tracks the live viewport and keeps the carousel below the fold. */
+  --hero-mobile-h: calc(100dvh - 89px);
 }
 
 @keyframes fade-in {

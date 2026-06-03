@@ -702,6 +702,31 @@ export default function EditorialHomePage({ articles }: { articles: Article[] })
     }
   }, [navPaused, userPaused]);
 
+  // Mobile hero height: pin the left (headline+copy) panel to the EXACT visible
+  // viewport so the image carousel always lands just below the fold. CSS svh/dvh
+  // mis-measure on iOS Safari (its bars float translucently over the content, so
+  // the unit is shorter than the real visible area and the carousel peeks above
+  // the bottom bar). window.innerHeight is the ground truth — it reports the real
+  // visible layout viewport and updates as the bars show/hide. We track resize so
+  // the carousel stays below the fold as the bars collapse on scroll.
+  useEffect(() => {
+    const setHeroHeight = () => {
+      const nav = document.querySelector("nav");
+      const navH = nav ? nav.getBoundingClientRect().height : 89;
+      document.documentElement.style.setProperty(
+        "--hero-mobile-h",
+        `${window.innerHeight - navH}px`
+      );
+    };
+    setHeroHeight();
+    window.addEventListener("resize", setHeroHeight);
+    window.addEventListener("orientationchange", setHeroHeight);
+    return () => {
+      window.removeEventListener("resize", setHeroHeight);
+      window.removeEventListener("orientationchange", setHeroHeight);
+    };
+  }, []);
+
   useEffect(() => {
     if (paused) {
       if (autoAdvanceRef.current) clearInterval(autoAdvanceRef.current);
@@ -880,10 +905,14 @@ export default function EditorialHomePage({ articles }: { articles: Article[] })
                   <img key={idx} src={`/logos/portfolio/${s.slug}-${light ? "light" : "dark"}.svg`} alt={s.company} className="absolute left-0 top-0 object-contain transition-opacity duration-700 ease-in-out" style={{ height: 36, opacity: idx === activeSlide ? 1 : 0 }} />
                 ))}
               </div>
-              {/* Names + titles — fixed min-h so slides with 1 founder don't
-                  shrink the section and shift the page below up/down as the
-                  carousel cycles between 1- and 2-founder slides. */}
-              <div className="flex flex-col items-start gap-3 min-h-[8rem]">
+              {/* Names + titles — FIXED height (not min-h) so every slide
+                  reserves the same space. The tallest case is a 2-founder slide
+                  whose titles wrap to two lines (e.g. Canary's "Co-Founder &
+                  President, Canary Technologies"), which measures ~159px; 10.5rem
+                  (168px) covers it with headroom. A min-height let that slide grow
+                  past the others and shift the whole page below up/down as the
+                  carousel cycled. overflow-hidden guards against any overflow. */}
+              <div className="flex flex-col items-start gap-3 h-[10.5rem] overflow-hidden">
                 {slide.founders.map((f, i) => (
                   <div key={i} className="flex flex-col items-start">
                     <span className="text-[1.5rem] font-normal italic" style={{ ...serif, color: c.text }}>{f.name}</span>

@@ -161,9 +161,17 @@ export default function EditorialAboutPage({ articles }: { articles: Article[] }
               top: heroArrowFlown ? `${endPos.y}%` : `${startPos.y}%`,
               transform: `translate(-50%, -50%) rotate(${arrowRotation}deg)`,
               opacity: heroArrowFlown ? 1 : 0,
-              transition: flightComplete
-                ? "none"
-                : "left 2500ms cubic-bezier(0.4, 0, 0.4, 1), top 2500ms cubic-bezier(0.4, 0, 0.4, 1), opacity 1800ms ease-out",
+              // Only transition DURING the flight. Before lift-off the transition
+              // must be "none" so the arrow snaps to its measured start position.
+              // Otherwise measure()'s start-position update (which lands one render
+              // before lift-off) is itself still mid-transition when the flight
+              // begins, so the arrow launches from a stale x and follows a line
+              // offset from the contrail — converging only at the end. The error
+              // is tiny on desktop (start x barely moves) but large on mobile
+              // (start x shifts ~17%), which is why it only looked broken there.
+              transition: heroArrowFlown && !flightComplete
+                ? "left 2500ms cubic-bezier(0.4, 0, 0.4, 1), top 2500ms cubic-bezier(0.4, 0, 0.4, 1), opacity 1800ms ease-out"
+                : "none",
             }}
           >
             <svg width="36" height="36" viewBox="462 5 22 22" xmlns="http://www.w3.org/2000/svg">
