@@ -88,6 +88,7 @@ const companies: Company[] = [
   { name: "Social Tables", slug: "social-tables", logo: "socialtables", acquired: "Cvent", url: "https://www.socialtables.com", categories: ["Travel", "Hospitality"] },
   { name: "Id90", slug: "id90", logo: "id90", url: "https://www.id90travel.com", categories: ["Travel", "Distribution"] },
   { name: "Upgrade", slug: "upgrade", logo: "upgrade", url: "https://www.upgrade.com", categories: ["Travel", "Horizontal"] },
+  { name: "Travel Curious", slug: "travel-curious", logo: "travel-curious", url: "https://travelcurious.com/", categories: ["Travel", "Distribution", "Experience", "Hospitality"] },
   { name: "Duetto", slug: "duetto", w: 180, acquired: "GrowthCurve", url: "https://www.duettocloud.com", categories: ["Travel", "Hospitality"] },
 ];
 

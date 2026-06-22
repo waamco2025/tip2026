@@ -5,7 +5,7 @@ import type { NextRequest } from "next/server";
 // deploys served from *.netlify.app). The real domain has no such header, so
 // only it gets indexed — this plus the canonical tags keeps the preview from
 // competing with the production site in search results.
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const res = NextResponse.next();
   const host = request.headers.get("host") ?? "";
   if (host.endsWith(".netlify.app")) {

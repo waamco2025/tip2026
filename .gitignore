@@ -45,3 +45,6 @@ next-env.d.ts
 
 # Local reference material (design refs, screenshots, source assets)
 reference/
+
+# Claude Code local state
+.claude/
