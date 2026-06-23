@@ -186,8 +186,66 @@ export function EditorialNav({ active = "home" }: { active?: string }) {
 export function CloudBackground() {
   const { light } = useEditorialMode();
   const c = ec(light);
+
+  // PROTOTYPE (opt-in via ?cloudanim=1): a one-shot 5s intro that animates the
+  // feTurbulence generator so the clouds build in, billow, and morph, then
+  // FREEZES to the exact static look — so the expensive turbulence recompute is
+  // bounded to those 5 seconds with zero ongoing cost. Off by default; the live
+  // site is unchanged unless the flag is present. Honors prefers-reduced-motion.
+  const wrapRef = useRef<HTMLDivElement>(null);
+  const softTurbRef = useRef<SVGFETurbulenceElement>(null);
+  const softMatRef = useRef<SVGFEColorMatrixElement>(null);
+  const detTurbRef = useRef<SVGFETurbulenceElement>(null);
+  const detMatRef = useRef<SVGFEColorMatrixElement>(null);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (!new URLSearchParams(window.location.search).has("cloudanim")) return;
+    if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
+    const wrap = wrapRef.current;
+    const sT = softTurbRef.current, sM = softMatRef.current;
+    const dT = detTurbRef.current, dM = detMatRef.current;
+    if (!wrap || !sT || !sM || !dT || !dM) return;
+
+    const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
+    const mat = (mult: number, off: number) =>
+      `0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 ${mult} 0 0 0 ${off.toFixed(3)}`;
+    const DUR = 5000;
+    let startT: number | null = null;
+    let raf = 0;
+    const step = (now: number) => {
+      if (startT === null) startT = now;
+      const t = Math.min((now - startT) / DUR, 1);
+      const e = 1 - Math.pow(1 - t, 3); // easeOutCubic — settles into the final state
+      const decay = 1 - t; // morph wobble fades out as it settles
+      // Cloud bodies: start finer + sparser, expand/soften into the target.
+      sT.setAttribute("baseFrequency",
+        `${(lerp(0.009, 0.005, e) + Math.sin(t * Math.PI * 4) * 0.0012 * decay).toFixed(5)} ${(lerp(0.020, 0.012, e) + Math.sin(t * Math.PI * 4 + 1) * 0.0020 * decay).toFixed(5)}`);
+      sM.setAttribute("values", mat(4, lerp(-3.0, -1.6, e)));
+      // Wisps: faster morph for a livelier edge.
+      dT.setAttribute("baseFrequency",
+        `${(lerp(0.030, 0.018, e) + Math.sin(t * Math.PI * 5) * 0.0030 * decay).toFixed(5)} ${(lerp(0.055, 0.035, e) + Math.sin(t * Math.PI * 5 + 1) * 0.0040 * decay).toFixed(5)}`);
+      dM.setAttribute("values", mat(5, lerp(-3.8, -2.2, e)));
+      wrap.style.opacity = String(Math.min(t / 0.4, 1)); // build in over first ~2s
+      if (t < 1) {
+        raf = requestAnimationFrame(step);
+      } else {
+        // Freeze to the canonical static values (identical to the default look).
+        sT.setAttribute("baseFrequency", "0.005 0.012");
+        sM.setAttribute("values", mat(4, -1.6));
+        dT.setAttribute("baseFrequency", "0.018 0.035");
+        dM.setAttribute("values", mat(5, -2.2));
+        wrap.style.opacity = "1";
+      }
+    };
+    wrap.style.opacity = "0";
+    raf = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(raf);
+  }, []);
+
   return (
     <div
+      ref={wrapRef}
       aria-hidden="true"
       className="pointer-events-none fixed inset-x-0 bottom-0 h-[21vh] md:h-[30vh] -z-10"
       style={{
@@ -202,13 +260,13 @@ export function CloudBackground() {
           {/* Cloud bodies — broad lobes, hard-edged via steep alpha threshold so the dots
               form readable cloud silhouettes rather than a diffuse haze. */}
           <filter id="cloud-soft" x="0" y="0" width="100%" height="100%">
-            <feTurbulence type="fractalNoise" baseFrequency="0.005 0.012" numOctaves="3" seed="2" />
-            <feColorMatrix values="0 0 0 0 1   0 0 0 0 1   0 0 0 0 1   4 0 0 0 -1.6" />
+            <feTurbulence ref={softTurbRef} type="fractalNoise" baseFrequency="0.005 0.012" numOctaves="3" seed="2" />
+            <feColorMatrix ref={softMatRef} values="0 0 0 0 1   0 0 0 0 1   0 0 0 0 1   4 0 0 0 -1.6" />
           </filter>
           {/* Wisps along the edges — finer turbulence at an even sharper threshold */}
           <filter id="cloud-detail" x="0" y="0" width="100%" height="100%">
-            <feTurbulence type="fractalNoise" baseFrequency="0.018 0.035" numOctaves="2" seed="7" />
-            <feColorMatrix values="0 0 0 0 1   0 0 0 0 1   0 0 0 0 1   5 0 0 0 -2.2" />
+            <feTurbulence ref={detTurbRef} type="fractalNoise" baseFrequency="0.018 0.035" numOctaves="2" seed="7" />
+            <feColorMatrix ref={detMatRef} values="0 0 0 0 1   0 0 0 0 1   0 0 0 0 1   5 0 0 0 -2.2" />
           </filter>
           <mask id="cloud-mask-soft" maskUnits="userSpaceOnUse">
             <rect width="100%" height="100%" filter="url(#cloud-soft)" />
@@ -782,6 +840,247 @@ export function SectionHeader({ label, number }: { label: string; number: string
   );
 }
 
+/* ─── Testimonial Stage: scroll-scrubbed founder quotes ─── */
+// Replaces the old 3-col card grid, which laid 4 quotes into 6 cells and left
+// two awkward empty boxes. Here the section becomes a tall scroll *track* with a
+// single quote pinned to the viewport at a time: as the reader scrolls, each
+// founder quote takes the stage and types itself out swiftly on arrival, then
+// cross-fades to the next. Scroll position IS the control — the active progress
+// dash fills to mark how far through the current quote's scroll band you are.
+// Honors prefers-reduced-motion with a plain stacked list (no pin, no typing).
+// All quotes always live in the DOM (sr-only) for screen readers + SEO,
+// independent of typing state.
+
+// Types `text` whenever `active` flips true and clears when it flips false, so a
+// quote re-types every time the reader scrolls onto it. Duration is held roughly
+// constant (~1.4s) regardless of length by stepping multiple chars per tick on
+// long quotes — every quote feels equally "swift." Reflow-free: the untyped
+// remainder is rendered visibility:hidden so the block is full-size from frame 1
+// and the layer never grows mid-type (keeps it vertically centered while typing).
+function StageQuoteText({ text, active, c, sizeClamp, weight }: { text: string; active: boolean; c: ReturnType<typeof ec>; sizeClamp: string; weight: number }) {
+  const serif = { fontFamily: "'Cormorant Garamond', Georgia, serif" };
+  const [count, setCount] = useState(0);
+  useEffect(() => {
+    if (!active) {
+      setCount(0);
+      return;
+    }
+    const DURATION = 1400;
+    const TICK = 18;
+    const steps = Math.max(1, Math.ceil(DURATION / TICK));
+    const perTick = Math.max(1, Math.ceil(text.length / steps));
+    let n = 0;
+    setCount(0);
+    const id = setInterval(() => {
+      n += perTick;
+      if (n >= text.length) {
+        setCount(text.length);
+        clearInterval(id);
+      } else {
+        setCount(n);
+      }
+    }, TICK);
+    return () => clearInterval(id);
+  }, [active, text]);
+
+  const done = count >= text.length;
+  return (
+    <p
+      className="leading-[1.35] italic"
+      style={{ ...serif, color: c.text, textWrap: "pretty", fontSize: sizeClamp, fontWeight: weight }}
+    >
+      <span>{text.slice(0, count)}</span>
+      {active && !done && (
+        <span
+          aria-hidden
+          className="animate-caret-blink"
+          style={{ display: "inline-block", width: 0, overflow: "visible", color: c.accent }}
+        >
+          |
+        </span>
+      )}
+      <span aria-hidden style={{ visibility: "hidden" }}>{text.slice(count)}</span>
+    </p>
+  );
+}
+
+export function TestimonialStage({ testimonials }: { testimonials: { quote: string; author: string; role: string }[] }) {
+  const { light } = useEditorialMode();
+  const c = ec(light);
+  const serif = { fontFamily: "'Cormorant Garamond', Georgia, serif" };
+  const sans = { fontFamily: "'Syne', sans-serif" };
+  // The opening quote mark gets its own face: Playfair Display Black is far
+  // more substantial, bolder and rounder (ball-terminal commas) than thin
+  // Cormorant — it reads as a deliberate graphic element, not punctuation.
+  const quoteGlyph = { fontFamily: "'Playfair Display', Georgia, serif", fontWeight: 900 };
+  // One quote fills the whole stage, so size it to its length: short quotes get
+  // to be big and declarative; longer ones step down just enough to stay on a
+  // single screen. Each bucket scales across viewports too (not just the cap),
+  // so the longest quote also shrinks on small phones instead of clipping.
+  // Verified to fit every quote down to ~768px-tall laptops and ~667px phones.
+  const quoteSize = (len: number) =>
+    len < 130
+      ? "clamp(2rem, 1rem + 4vw, 4rem)"
+      : len < 215
+        ? "clamp(1.7rem, 0.9rem + 3.1vw, 3.2rem)"
+        : "clamp(1.45rem, 0.7rem + 2.6vw, 2.7rem)";
+  // Per-quote weight (Cormorant is now a variable font, so any 300–700 works).
+  // Default 600; trialing 550 on the Valtr quote.
+  const quoteWeight = (author: string) => (author === "Richard Valtr" ? 550 : 600);
+  const N = testimonials.length;
+
+  const trackRef = useRef<HTMLDivElement>(null);
+  const stageRef = useRef<HTMLDivElement>(null);
+  const [index, setIndex] = useState(0);
+  const [intra, setIntra] = useState(0); // 0..1 scroll progress within the active quote's band
+  const [inView, setInView] = useState(false);
+  const [reduced, setReduced] = useState(false);
+
+  useEffect(() => {
+    setReduced(typeof window !== "undefined" && !!window.matchMedia?.("(prefers-reduced-motion: reduce)").matches);
+  }, []);
+
+  // Map page scroll → active quote index + intra-band progress. rAF-throttled;
+  // a single getBoundingClientRect per frame, and we early-out once the track is
+  // off-screen so it costs nothing elsewhere on the page.
+  useEffect(() => {
+    if (reduced) return;
+    let ticking = false;
+    const update = () => {
+      ticking = false;
+      const track = trackRef.current;
+      const stage = stageRef.current;
+      if (!track || !stage) return;
+      const rect = track.getBoundingClientRect();
+      const total = track.offsetHeight - stage.offsetHeight; // pinned scroll distance
+      if (total <= 0) return;
+      const scrolled = Math.min(Math.max(-rect.top, 0), total);
+      const raw = Math.min((scrolled / total) * N, N - 0.0001);
+      const idx = Math.max(0, Math.floor(raw));
+      setIndex((prev) => (prev !== idx ? idx : prev));
+      setIntra(raw - idx);
+    };
+    const onScroll = () => {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(update);
+      }
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    update();
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+  }, [reduced, N]);
+
+  // Gate typing to when the stage is actually on screen, so the first quote
+  // types on arrival rather than silently during initial page load.
+  useEffect(() => {
+    if (reduced) return;
+    const stage = stageRef.current;
+    if (!stage) return;
+    const io = new IntersectionObserver((entries) => setInView(entries[0].isIntersecting), { threshold: 0 });
+    io.observe(stage);
+    return () => io.disconnect();
+  }, [reduced]);
+
+  const jumpTo = useCallback(
+    (i: number) => {
+      const track = trackRef.current;
+      const stage = stageRef.current;
+      if (!track || !stage) return;
+      const total = track.offsetHeight - stage.offsetHeight;
+      const top = track.getBoundingClientRect().top + window.scrollY + ((i + 0.5) / N) * total;
+      window.scrollTo({ top, behavior: "smooth" });
+    },
+    [N]
+  );
+
+  // Reduced motion / no-scrubbing fallback: a calm stacked list, fully rendered.
+  if (reduced) {
+    return (
+      <div className="max-w-3xl mx-auto px-6 md:px-12 mt-2">
+        {testimonials.map((t, i) => (
+          <div key={i} className="py-10" style={{ borderTop: i ? `1px solid ${c.rule}` : undefined }}>
+            <span className="text-[3.4rem] leading-[0.7] block mb-2" style={{ ...quoteGlyph, color: c.accent }}>&ldquo;</span>
+            <p className="text-[clamp(1.4rem,1rem+1.5vw,2.2rem)] leading-[1.4] font-semibold italic mb-6" style={{ ...serif, color: c.text }}>{t.quote}</p>
+            <div className="flex items-center gap-4">
+              <span className="h-px w-8 shrink-0" style={{ backgroundColor: c.accent }} />
+              <span>
+                <span className="text-[0.78rem] uppercase tracking-[0.18em] block" style={{ ...sans, color: c.text, fontWeight: c.sansWeight }}>{t.author}</span>
+                <span className="text-[0.78rem] uppercase tracking-[0.14em]" style={{ ...sans, color: c.muted, fontWeight: c.sansWeight }}>{t.role}</span>
+              </span>
+            </div>
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  return (
+    <div ref={trackRef} className="relative" style={{ height: `calc(100svh + ${N * 62}svh)` }}>
+      {/* Full quotes for screen readers + crawlers, independent of typing state. */}
+      <ul className="sr-only">
+        {testimonials.map((t, i) => (
+          <li key={i}>&ldquo;{t.quote}&rdquo; — {t.author}, {t.role}</li>
+        ))}
+      </ul>
+
+      <div
+        ref={stageRef}
+        className="sticky top-0 h-[100svh] box-border overflow-hidden"
+      >
+        {/* Cross-fading quote layers. Decorative — the sr-only list above carries
+            the real content — so the visual stack is aria-hidden. */}
+        <div aria-hidden>
+          {testimonials.map((t, i) => (
+            <div
+              key={i}
+              className="absolute inset-0 flex items-center px-6 md:px-12 pt-[89px] md:pt-[105px] pb-24 transition-opacity duration-[600ms] ease-in-out"
+              style={{ opacity: i === index ? 1 : 0, pointerEvents: i === index ? "auto" : "none" }}
+            >
+              <div className="max-w-5xl mx-auto w-full">
+                <span className="text-[clamp(3.4rem,6.4vw,6.75rem)] leading-[0.7] block mb-2 md:mb-3" style={{ ...quoteGlyph, color: c.accent, opacity: 0.9 }}>&ldquo;</span>
+                <StageQuoteText text={t.quote} active={inView && i === index} c={c} sizeClamp={quoteSize(t.quote.length)} weight={quoteWeight(t.author)} />
+                <div className="flex items-center gap-4 mt-8 md:mt-10">
+                  <span className="h-px w-8 shrink-0" style={{ backgroundColor: c.accent }} />
+                  <span>
+                    <span className="text-[0.8rem] uppercase tracking-[0.18em] block" style={{ ...sans, color: c.text, fontWeight: c.sansWeight }}>{t.author}</span>
+                    <span className="text-[0.8rem] uppercase tracking-[0.14em]" style={{ ...sans, color: c.muted, fontWeight: c.sansWeight }}>{t.role}</span>
+                  </span>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Progress dashes — discrete position + a live fill that tracks scroll
+            through the current quote's band. Click to jump. */}
+        <div className="absolute bottom-8 inset-x-0 flex justify-center gap-2">
+          {testimonials.map((t, i) => (
+            <button
+              key={i}
+              type="button"
+              onClick={() => jumpTo(i)}
+              aria-label={`Quote ${i + 1} of ${N} — ${t.author}`}
+              aria-current={i === index ? "true" : undefined}
+              className="relative h-[3px] w-[34px] shrink-0 cursor-pointer overflow-hidden focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4"
+              style={{ backgroundColor: i === index ? "rgba(46,157,85,0.25)" : c.rule, outlineColor: c.accent }}
+            >
+              <span
+                className="absolute inset-y-0 left-0"
+                style={{ backgroundColor: c.accent, width: i < index ? "100%" : i === index ? `${intra * 100}%` : "0%" }}
+              />
+            </button>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 /* ─── Shared Article List Item ─── */
 export function ArticleListItem({ article }: { article: Article }) {
   const { light } = useEditorialMode();
@@ -817,6 +1116,9 @@ export function ArticleListItem({ article }: { article: Article }) {
 }
 
 export function EditorialHeadlines({ number, articles }: { number: string; articles: Article[] }) {
+  const { light } = useEditorialMode();
+  const c = ec(light);
+  const sans = { fontFamily: "'Syne', sans-serif" };
   if (articles.length === 0) return null;
   return (
     <section className="px-6 md:px-12 py-24 md:py-32 snap-start">
@@ -826,6 +1128,15 @@ export function EditorialHeadlines({ number, articles }: { number: string; artic
           {articles.slice(0, 3).map((a) => (
             <ArticleListItem key={a.slug} article={a} />
           ))}
+          <div className="mt-10 text-right">
+            <Link
+              href="/news"
+              className="text-[0.72rem] uppercase tracking-[0.18em] hover:text-[#2E9D55] transition-colors"
+              style={{ ...sans, color: c.accentText, fontWeight: c.sansWeight }}
+            >
+              All Insights &rarr;
+            </Link>
+          </div>
         </Reveal>
       </div>
     </section>
@@ -1163,27 +1474,11 @@ export default function EditorialHomePage({ articles }: { articles: Article[] })
       </div>
 
       {/* ── What Our Entrepreneurs Say (01) ── */}
-      <section className="px-6 md:px-12 py-24 md:py-32">
-        <div className="max-w-7xl mx-auto">
+      <section className="pt-24 md:pt-32 pb-24 md:pb-32">
+        <div className="max-w-7xl mx-auto px-6 md:px-12">
           <SectionHeader label="What Our Entrepreneurs Say" number="01" />
-          <Reveal className="grid md:grid-cols-3 gap-8 md:gap-12">
-            {testimonials.map((t, i) => (
-              <div key={i} className="border p-8 md:p-10 flex flex-col transition-colors duration-500 hover:bg-[rgba(0,0,0,0.035)]" style={{ borderColor: c.rule, backgroundColor: c.bg }}>
-                <span className="text-[2.5rem] leading-none mb-4" style={{ ...serif, color: c.accent }}>&ldquo;</span>
-                <ScrollTypewriter
-                  text={t.quote}
-                  className="text-[1.15rem] leading-[1.7] font-light flex-1 mb-8"
-                  style={{ ...sans, color: c.bodyText, fontWeight: c.sansWeight }}
-                />
-
-                <div className="text-right">
-                  <span className="text-[0.72rem] uppercase tracking-[0.18em] block" style={{ ...sans, color: c.text, fontWeight: c.sansWeight }}>{t.author}</span>
-                  <span className="text-[0.78rem] uppercase tracking-[0.14em]" style={{ ...sans, color: c.muted, fontWeight: c.sansWeight }}>{t.role}</span>
-                </div>
-              </div>
-            ))}
-          </Reveal>
         </div>
+        <TestimonialStage testimonials={testimonials} />
       </section>
 
       {/* ── Our Philosophy (02) ── */}

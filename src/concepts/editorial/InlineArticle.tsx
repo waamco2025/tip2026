@@ -93,7 +93,7 @@ export function CopyLinkIcon({ slug }: { slug: string }) {
 // page) and by InsightsPage (multiple stacked inline). Headline is wrapped in
 // a Link to the dedicated page so the URL stays shareable. The hero block has
 // no border-bottom — the image flows directly under it.
-export function InlineArticle({ article, linkHeadline = true, animateIn = false }: { article: Article; linkHeadline?: boolean; animateIn?: boolean }) {
+export function InlineArticle({ article, linkHeadline = true, animateIn = false, showAllInsightsLink = false }: { article: Article; linkHeadline?: boolean; animateIn?: boolean; showAllInsightsLink?: boolean }) {
   const { light } = useEditorialMode();
   const c = ec(light);
   const serif = { fontFamily: "'Cormorant Garamond', Georgia, serif" };
@@ -181,13 +181,25 @@ export function InlineArticle({ article, linkHeadline = true, animateIn = false 
           {article.blocks.map((b, i) => (
             <Block key={i} block={b} />
           ))}
-          {article.sourceUrl && (
-            <p className="mt-12 pt-6 border-t text-[0.7rem] uppercase tracking-[0.16em]" style={{ borderColor: c.rule, ...sans, color: c.muted, fontWeight: c.sansWeight }}>
-              Source &middot;{" "}
-              <a href={article.sourceUrl} target="_blank" rel="noopener noreferrer" className="hover:text-[#2E9D55] transition-colors" style={{ color: c.accentText }}>
-                {new URL(article.sourceUrl).hostname.replace(/^www\./, "")}
-              </a>
-            </p>
+          {(article.sourceUrl || showAllInsightsLink) && (
+            <div
+              className="mt-12 pt-6 border-t flex items-baseline justify-between gap-6 text-[0.7rem] uppercase tracking-[0.16em]"
+              style={{ borderColor: c.rule, ...sans, color: c.muted, fontWeight: c.sansWeight }}
+            >
+              {article.sourceUrl ? (
+                <p>
+                  Source &middot;{" "}
+                  <a href={article.sourceUrl} target="_blank" rel="noopener noreferrer" className="hover:text-[#2E9D55] transition-colors" style={{ color: c.accentText }}>
+                    {new URL(article.sourceUrl).hostname.replace(/^www\./, "")}
+                  </a>
+                </p>
+              ) : <span />}
+              {showAllInsightsLink && (
+                <Link href="/news" className="hover:text-[#2E9D55] transition-colors" style={{ color: c.accentText }}>
+                  All Insights &rarr;
+                </Link>
+              )}
+            </div>
           )}
         </div>
       </section>

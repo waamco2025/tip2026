@@ -25,7 +25,7 @@ export default function EditorialArticlePage({ article, prev, next, related }: P
       <CloudBackground />
       <EditorialNav active="insights" />
 
-      <InlineArticle article={article} linkHeadline={false} />
+      <InlineArticle article={article} linkHeadline={false} showAllInsightsLink />
 
       {/* ── Related Articles ── */}
       {related.length > 0 && (
