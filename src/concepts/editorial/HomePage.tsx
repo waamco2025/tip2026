@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useNavigationOverlay } from "./NavigationOverlay";
-import { Building2, UtensilsCrossed, Globe, CreditCard, Wallet, ShieldCheck, Pause, Play } from "lucide-react";
+import { Building2, UtensilsCrossed, Globe, CreditCard, Wallet, ShieldCheck, Pause, Play, ChevronLeft, ChevronRight } from "lucide-react";
 import { useEditorialMode, ec } from "./EditorialModeContext";
 import type { Article } from "@/lib/article-types";
 import { formatDate } from "@/lib/article-types";
@@ -840,29 +840,33 @@ export function SectionHeader({ label, number }: { label: string; number: string
   );
 }
 
-/* ─── Testimonial Stage: scroll-scrubbed founder quotes ─── */
-// Replaces the old 3-col card grid, which laid 4 quotes into 6 cells and left
-// two awkward empty boxes. Here the section becomes a tall scroll *track* with a
-// single quote pinned to the viewport at a time: as the reader scrolls, each
-// founder quote takes the stage and types itself out swiftly on arrival, then
-// cross-fades to the next. Scroll position IS the control — the active progress
-// dash fills to mark how far through the current quote's scroll band you are.
-// Honors prefers-reduced-motion with a plain stacked list (no pin, no typing).
-// All quotes always live in the DOM (sr-only) for screen readers + SEO,
-// independent of typing state.
+/* ─── Testimonial Carousel: founder quotes ─── */
+// Replaces the old 3-col card grid (4 quotes in 6 cells → two empty boxes) and
+// the earlier scroll-scrubbed pinned stage. Per the client this is now a
+// click-driven HORIZONTAL carousel: one founder quote on stage at a time, the
+// reader steps through with the left/right arrows (or the bottom-centre dashes),
+// and each quote types itself out swiftly when it lands. Honors
+// prefers-reduced-motion with a plain stacked list (no slide, no typing). All
+// quotes always live in the DOM (sr-only) for screen readers + SEO.
+//
+// KNOWN TRADE-OFF (flagged to the client): with no autoplay and no scroll cue,
+// quotes 2–N are only reachable by clicking, so most visitors will only ever see
+// the first. Cheap mitigations if they reconsider: autoplay, swipe, or a peek of
+// the next card. Built as requested for now.
 
-// Types `text` whenever `active` flips true and clears when it flips false, so a
-// quote re-types every time the reader scrolls onto it. Duration is held roughly
-// constant (~1.4s) regardless of length by stepping multiple chars per tick on
-// long quotes — every quote feels equally "swift." Reflow-free: the untyped
-// remainder is rendered visibility:hidden so the block is full-size from frame 1
-// and the layer never grows mid-type (keeps it vertically centered while typing).
+// Types `text` from empty whenever `active` flips true, so a quote re-types every
+// time the reader lands on it. While inactive it shows its FULL text — so a slide
+// leaving the stage, or one skipped past on a dash-jump, never flashes empty.
+// Duration is held roughly constant (~1.4s) regardless of length by stepping
+// multiple chars per tick on long quotes — every quote feels equally "swift."
+// Reflow-free: the untyped remainder is rendered visibility:hidden so the block
+// is full-size from frame 1 and never grows mid-type (keeps it vertically centred).
 function StageQuoteText({ text, active, c, sizeClamp, weight }: { text: string; active: boolean; c: ReturnType<typeof ec>; sizeClamp: string; weight: number }) {
   const serif = { fontFamily: "'Cormorant Garamond', Georgia, serif" };
   const [count, setCount] = useState(0);
   useEffect(() => {
     if (!active) {
-      setCount(0);
+      setCount(text.length);
       return;
     }
     const DURATION = 1400;
@@ -929,10 +933,9 @@ export function TestimonialStage({ testimonials }: { testimonials: { quote: stri
   const quoteWeight = (author: string) => (author === "Richard Valtr" ? 550 : 600);
   const N = testimonials.length;
 
-  const trackRef = useRef<HTMLDivElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
   const [index, setIndex] = useState(0);
-  const [intra, setIntra] = useState(0); // 0..1 scroll progress within the active quote's band
+  const [animate, setAnimate] = useState(true); // false for one frame to snap a wrap-around
   const [inView, setInView] = useState(false);
   const [reduced, setReduced] = useState(false);
 
@@ -940,63 +943,44 @@ export function TestimonialStage({ testimonials }: { testimonials: { quote: stri
     setReduced(typeof window !== "undefined" && !!window.matchMedia?.("(prefers-reduced-motion: reduce)").matches);
   }, []);
 
-  // Map page scroll → active quote index + intra-band progress. rAF-throttled;
-  // a single getBoundingClientRect per frame, and we early-out once the track is
-  // off-screen so it costs nothing elsewhere on the page.
-  useEffect(() => {
-    if (reduced) return;
-    let ticking = false;
-    const update = () => {
-      ticking = false;
-      const track = trackRef.current;
-      const stage = stageRef.current;
-      if (!track || !stage) return;
-      const rect = track.getBoundingClientRect();
-      const total = track.offsetHeight - stage.offsetHeight; // pinned scroll distance
-      if (total <= 0) return;
-      const scrolled = Math.min(Math.max(-rect.top, 0), total);
-      const raw = Math.min((scrolled / total) * N, N - 0.0001);
-      const idx = Math.max(0, Math.floor(raw));
-      setIndex((prev) => (prev !== idx ? idx : prev));
-      setIntra(raw - idx);
-    };
-    const onScroll = () => {
-      if (!ticking) {
-        ticking = true;
-        requestAnimationFrame(update);
-      }
-    };
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
-    update();
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
-    };
-  }, [reduced, N]);
-
-  // Gate typing to when the stage is actually on screen, so the first quote
-  // types on arrival rather than silently during initial page load.
+  // Gate the type-out to when the carousel is actually on screen, so the first
+  // quote types on arrival rather than silently during initial page load.
   useEffect(() => {
     if (reduced) return;
     const stage = stageRef.current;
     if (!stage) return;
-    const io = new IntersectionObserver((entries) => setInView(entries[0].isIntersecting), { threshold: 0 });
+    const io = new IntersectionObserver((entries) => setInView(entries[0].isIntersecting), { threshold: 0.4 });
     io.observe(stage);
     return () => io.disconnect();
   }, [reduced]);
 
-  const jumpTo = useCallback(
-    (i: number) => {
-      const track = trackRef.current;
-      const stage = stageRef.current;
-      if (!track || !stage) return;
-      const total = track.offsetHeight - stage.offsetHeight;
-      const top = track.getBoundingClientRect().top + window.scrollY + ((i + 0.5) / N) * total;
-      window.scrollTo({ top, behavior: "smooth" });
-    },
-    [N]
-  );
+  // After a wrap snap (transition disabled), re-enable the slide on the next
+  // frame so subsequent adjacent steps animate again.
+  useEffect(() => {
+    if (animate) return;
+    const id = requestAnimationFrame(() => setAnimate(true));
+    return () => cancelAnimationFrame(id);
+  }, [animate]);
+
+  // Wrapping navigation — the arrows never dead-end: stepping past the last quote
+  // resets to the first (and vice-versa). The wrap snaps (transition off) so the
+  // row doesn't visibly rewind through every quote; adjacent steps still slide.
+  const goTo = (i: number) => {
+    setAnimate(true);
+    setIndex(Math.max(0, Math.min(N - 1, i)));
+  };
+  const step = (delta: 1 | -1) => {
+    const target = index + delta;
+    if (target < 0 || target >= N) {
+      setAnimate(false);
+      setIndex(target < 0 ? N - 1 : 0);
+    } else {
+      setAnimate(true);
+      setIndex(target);
+    }
+  };
+  const prev = () => step(-1);
+  const next = () => step(1);
 
   // Reduced motion / no-scrubbing fallback: a calm stacked list, fully rendered.
   if (reduced) {
@@ -1019,29 +1003,43 @@ export function TestimonialStage({ testimonials }: { testimonials: { quote: stri
     );
   }
 
+  const arrowBase =
+    "w-11 h-11 rounded-full border border-black/15 items-center justify-center shrink-0 transition-colors text-[#4A4338] hover:text-[#2E9D55] hover:border-[#2E9D55] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#2E9D55]";
+  const renderArrow = (dir: "prev" | "next", cls: string) => (
+    <button
+      type="button"
+      onClick={dir === "prev" ? prev : next}
+      aria-label={dir === "prev" ? "Previous quote" : "Next quote"}
+      className={`${cls} ${arrowBase}`}
+    >
+      {dir === "prev" ? <ChevronLeft size={20} aria-hidden /> : <ChevronRight size={20} aria-hidden />}
+    </button>
+  );
+
   return (
-    <div ref={trackRef} className="relative" style={{ height: `calc(100svh + ${N * 62}svh)` }}>
-      {/* Full quotes for screen readers + crawlers, independent of typing state. */}
+    <div className="mt-2">
+      {/* Full quotes for screen readers + crawlers, independent of carousel state. */}
       <ul className="sr-only">
         {testimonials.map((t, i) => (
           <li key={i}>&ldquo;{t.quote}&rdquo; — {t.author}, {t.role}</li>
         ))}
       </ul>
 
-      <div
-        ref={stageRef}
-        className="sticky top-0 h-[100svh] box-border overflow-hidden"
-      >
-        {/* Cross-fading quote layers. Decorative — the sr-only list above carries
-            the real content — so the visual stack is aria-hidden. */}
-        <div aria-hidden>
+      <div ref={stageRef} className="relative overflow-hidden">
+        {/* Sliding quote row — decorative; the sr-only list above carries the
+            real text — so the visual track is aria-hidden. Each slide is locked to
+            the same min-height so the row never jolts vertically between quotes. */}
+        <div
+          aria-hidden
+          className="flex"
+          style={{ transform: `translateX(-${index * 100}%)`, transition: animate ? "transform 500ms ease-out" : "none" }}
+        >
           {testimonials.map((t, i) => (
             <div
               key={i}
-              className="absolute inset-0 flex items-center px-6 md:px-12 pt-[89px] md:pt-[105px] pb-24 transition-opacity duration-[600ms] ease-in-out"
-              style={{ opacity: i === index ? 1 : 0, pointerEvents: i === index ? "auto" : "none" }}
+              className="w-full shrink-0 flex items-center justify-center min-h-[36rem] md:min-h-[42rem] px-6 md:px-12 pt-8 pb-24"
             >
-              <div className="max-w-5xl mx-auto w-full">
+              <div className="max-w-5xl w-full">
                 <span className="text-[clamp(3.4rem,6.4vw,6.75rem)] leading-[0.7] block mb-2 md:mb-3" style={{ ...quoteGlyph, color: c.accent, opacity: 0.9 }}>&ldquo;</span>
                 <StageQuoteText text={t.quote} active={inView && i === index} c={c} sizeClamp={quoteSize(t.quote.length)} weight={quoteWeight(t.author)} />
                 <div className="flex items-center gap-4 mt-8 md:mt-10">
@@ -1056,25 +1054,28 @@ export function TestimonialStage({ testimonials }: { testimonials: { quote: stri
           ))}
         </div>
 
-        {/* Progress dashes — discrete position + a live fill that tracks scroll
-            through the current quote's band. Click to jump. */}
-        <div className="absolute bottom-8 inset-x-0 flex justify-center gap-2">
-          {testimonials.map((t, i) => (
-            <button
-              key={i}
-              type="button"
-              onClick={() => jumpTo(i)}
-              aria-label={`Quote ${i + 1} of ${N} — ${t.author}`}
-              aria-current={i === index ? "true" : undefined}
-              className="relative h-[3px] w-[34px] shrink-0 cursor-pointer overflow-hidden focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4"
-              style={{ backgroundColor: i === index ? "rgba(46,157,85,0.25)" : c.rule, outlineColor: c.accent }}
-            >
-              <span
-                className="absolute inset-y-0 left-0"
-                style={{ backgroundColor: c.accent, width: i < index ? "100%" : i === index ? `${intra * 100}%` : "0%" }}
+        {/* Side arrows on wide screens (room in the gutter beside the quote). */}
+        {renderArrow("prev", "hidden xl:flex absolute left-12 2xl:left-24 top-1/2 -translate-y-1/2")}
+        {renderArrow("next", "hidden xl:flex absolute right-12 2xl:right-24 top-1/2 -translate-y-1/2")}
+
+        {/* Bottom-centre controls: position dashes, flanked by the arrows below xl
+            (where the quote uses the full width and side arrows would overlap). */}
+        <div className="absolute bottom-8 inset-x-0 flex items-center justify-center gap-5">
+          {renderArrow("prev", "flex xl:hidden")}
+          <div className="flex items-center gap-2">
+            {testimonials.map((t, i) => (
+              <button
+                key={i}
+                type="button"
+                onClick={() => goTo(i)}
+                aria-label={`Quote ${i + 1} of ${N} — ${t.author}`}
+                aria-current={i === index ? "true" : undefined}
+                className="h-[3px] w-[34px] shrink-0 cursor-pointer transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4"
+                style={{ backgroundColor: i === index ? c.accent : c.rule, outlineColor: c.accent }}
               />
-            </button>
-          ))}
+            ))}
+          </div>
+          {renderArrow("next", "flex xl:hidden")}
         </div>
       </div>
     </div>
