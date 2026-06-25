@@ -54,8 +54,10 @@ export function EditorialNav({ active = "home" }: { active?: string }) {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
-  // White link treatment only at md+ on the Home hero (where links overlay the dark carousel).
-  // Desktop links are `hidden md:flex`, so this color never reaches mobile.
+  // White treatment on the Home hero where nav elements overlay the dark carousel
+  // image. The hero is split at md+, so the right half — where the desktop links
+  // (xl+) and the hamburger (md–xl) sit — is image. Below md the hero is stacked
+  // and the nav is over cream, so elements stay dark there.
   const overlayMode = active === "home" && !scrolled;
   const links = [
     { label: "Home", href: "/", key: "home" },
@@ -80,17 +82,22 @@ export function EditorialNav({ active = "home" }: { active?: string }) {
     <nav
       className="sticky top-0 z-50 border-b transition-colors duration-300"
       style={{
-        backgroundColor: scrolled ? c.bg : "transparent",
-        borderColor: scrolled ? c.rule : "transparent",
+        backgroundColor: scrolled || open ? c.bg : "transparent",
+        borderColor: scrolled || open ? c.rule : "transparent",
       }}
     >
-      <div className="max-w-7xl mx-auto px-6 md:px-0 py-5 md:py-6 flex items-center justify-between">
+      {/* px-12 from md gives the logo a left margin aligned with the content frame
+          (it was px-0 → flush to the edge at tablet widths). xl:pr-0 keeps the
+          desktop links pinned to the frame's right edge so they stay over the
+          hero image rather than sliding onto the cream half. */}
+      <div className="max-w-7xl mx-auto px-6 md:px-12 xl:pr-0 py-5 md:py-6 flex items-center justify-between">
         <Link href="/">
           <img src={c.logo} alt="Thayer" className="h-12 md:h-14" />
         </Link>
 
-        {/* Desktop */}
-        <div className="hidden md:flex items-center gap-8" style={{ fontFamily: "'Syne', sans-serif" }}>
+        {/* Desktop links — only at xl+, where the frame is wide enough that the
+            right-aligned links sit cleanly over the hero image (not the cream). */}
+        <div className="hidden xl:flex items-center gap-8" style={{ fontFamily: "'Syne', sans-serif" }}>
           {links.map((l) => (
             <Link
               key={l.key}
@@ -105,15 +112,17 @@ export function EditorialNav({ active = "home" }: { active?: string }) {
           ))}
         </div>
 
-        {/* Mobile hamburger / close — three bars that morph into an X. The
-            top/bottom bars rotate ±45° and converge to the centre while the
-            middle bar fades out, giving a smooth hamburger↔X transition. The
-            6×6 button keeps the right edge flush with the wrapper's px-6
-            boundary, mirroring the logo's left edge. */}
-        <div className="flex md:hidden items-center">
+        {/* Hamburger / close — three bars that morph into an X. Shown below xl so
+            narrow tablets (e.g. iPad mini) get the menu instead of the desktop
+            links crammed over the hero. Bars use currentColor: dark by default,
+            white at md+ on the Home hero (where they sit over the image) — unless
+            scrolled or open, when the nav has a solid bg and they go dark again. */}
+        <div className="flex xl:hidden items-center">
           <button
             onClick={() => setOpen(!open)}
-            className="w-6 h-6 relative flex items-center justify-center"
+            className={`w-6 h-6 relative flex items-center justify-center transition-colors duration-300 ${
+              active === "home" && !scrolled && !open ? "text-[#1A1917] md:text-white" : "text-[#1A1917]"
+            }`}
             aria-label={open ? "Close menu" : "Open menu"}
             aria-expanded={open}
             aria-controls="mobile-menu"
@@ -123,8 +132,8 @@ export function EditorialNav({ active = "home" }: { active?: string }) {
                 key={i}
                 className="absolute left-0 h-[2px] w-6 rounded-full"
                 style={{
-                  backgroundColor: c.hamburger,
-                  transition: "transform 300ms cubic-bezier(0.4,0,0.2,1), opacity 200ms ease-out",
+                  backgroundColor: "currentColor",
+                  transition: "transform 300ms cubic-bezier(0.4,0,0.2,1), opacity 200ms ease-out, background-color 300ms ease-out",
                   transform: open
                     ? i === 1
                       ? "scaleX(0)"
@@ -143,7 +152,7 @@ export function EditorialNav({ active = "home" }: { active?: string }) {
           the exact content height), and each item's characters stagger in. */}
       <div
         id="mobile-menu"
-        className="absolute top-full left-0 w-full md:hidden grid"
+        className="absolute top-full left-0 w-full xl:hidden grid"
         style={{
           gridTemplateRows: open ? "1fr" : "0fr",
           opacity: open ? 1 : 0,
@@ -153,7 +162,7 @@ export function EditorialNav({ active = "home" }: { active?: string }) {
       >
         <div className="overflow-hidden">
           <div
-            className="border-b flex flex-col gap-6 px-6 py-8 transition-colors duration-500"
+            className="border-b flex flex-col gap-6 px-6 md:px-12 py-8 transition-colors duration-500"
             style={{ backgroundColor: c.bg, borderColor: c.rule, fontFamily: "'Syne', sans-serif" }}
           >
             {links.map((l, r) => (
