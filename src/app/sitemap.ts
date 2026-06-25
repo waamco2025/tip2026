@@ -3,7 +3,9 @@ import { getAllArticles } from "@/lib/articles";
 import { SITE_URL } from "@/lib/site";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const staticRoutes = ["", "/about", "/portfolio", "/news", "/investor-relations"].map(
+  // Note: /investor-relations is intentionally omitted — it's de-listed (noindex)
+  // because the live nav/footer point investors to the external portal instead.
+  const staticRoutes = ["", "/about", "/portfolio", "/news"].map(
     (path) => ({
       url: `${SITE_URL}${path}`,
       changeFrequency: "monthly" as const,
