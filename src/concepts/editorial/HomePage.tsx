@@ -924,10 +924,10 @@ export function TestimonialStage({ testimonials }: { testimonials: { quote: stri
   // Verified to fit every quote down to ~768px-tall laptops and ~667px phones.
   const quoteSize = (len: number) =>
     len < 130
-      ? "clamp(2rem, 1rem + 4vw, 4rem)"
+      ? "clamp(2rem, 1rem + 4vw, 3rem)"
       : len < 215
-        ? "clamp(1.7rem, 0.9rem + 3.1vw, 3.2rem)"
-        : "clamp(1.45rem, 0.7rem + 2.6vw, 2.7rem)";
+        ? "clamp(1.7rem, 0.9rem + 3.1vw, 2.6rem)"
+        : "clamp(1.45rem, 0.7rem + 2.6vw, 2.25rem)";
   // Per-quote weight (Cormorant is now a variable font, so any 300–700 works).
   // Default 600; trialing 550 on the Valtr quote.
   const quoteWeight = (author: string) => (author === "Richard Valtr" ? 550 : 600);
@@ -1025,7 +1025,7 @@ export function TestimonialStage({ testimonials }: { testimonials: { quote: stri
         ))}
       </ul>
 
-      <div ref={stageRef} className="relative overflow-hidden">
+      <div ref={stageRef} className="relative overflow-hidden max-w-7xl mx-auto">
         {/* Sliding quote row — decorative; the sr-only list above carries the
             real text — so the visual track is aria-hidden. Each slide is locked to
             the same min-height so the row never jolts vertically between quotes. */}
@@ -1037,7 +1037,7 @@ export function TestimonialStage({ testimonials }: { testimonials: { quote: stri
           {testimonials.map((t, i) => (
             <div
               key={i}
-              className="w-full shrink-0 flex items-center justify-center min-h-[36rem] md:min-h-[42rem] px-6 md:px-12 pt-8 pb-24"
+              className="w-full shrink-0 flex items-center justify-center min-h-[32rem] md:min-h-[34rem] px-6 md:px-12 pt-8 pb-24"
             >
               <div className="max-w-5xl w-full">
                 <span className="text-[clamp(3.4rem,6.4vw,6.75rem)] leading-[0.7] block mb-2 md:mb-3" style={{ ...quoteGlyph, color: c.accent, opacity: 0.9 }}>&ldquo;</span>
@@ -1054,9 +1054,11 @@ export function TestimonialStage({ testimonials }: { testimonials: { quote: stri
           ))}
         </div>
 
-        {/* Side arrows on wide screens (room in the gutter beside the quote). */}
-        {renderArrow("prev", "hidden xl:flex absolute left-12 2xl:left-24 top-1/2 -translate-y-1/2")}
-        {renderArrow("next", "hidden xl:flex absolute right-12 2xl:right-24 top-1/2 -translate-y-1/2")}
+        {/* Side arrows pinned to the content-frame edges (the stage is now capped
+            at max-w-7xl), so on large screens they sit beside the quote rather than
+            way out at the viewport margins. */}
+        {renderArrow("prev", "hidden xl:flex absolute left-12 top-1/2 -translate-y-1/2 z-10")}
+        {renderArrow("next", "hidden xl:flex absolute right-12 top-1/2 -translate-y-1/2 z-10")}
 
         {/* Bottom-centre controls: position dashes, flanked by the arrows below xl
             (where the quote uses the full width and side arrows would overlap). */}
@@ -1320,14 +1322,16 @@ export default function EditorialHomePage({ articles }: { articles: Article[] })
       <EditorialNav active="home" />
 
       {/* ── Hero ── */}
-      <div className="flex flex-col md:flex-row md:h-screen md:-mt-[105px]">
+      {/* min-h-screen (not h-screen): on short viewports the hero grows to fit its
+          content instead of forcing the centred copy up behind the sticky nav. */}
+      <div className="flex flex-col md:flex-row md:min-h-screen md:-mt-[105px]">
         {/* Left panel — full viewport on mobile, 40% on desktop.
             md:pl uses a calc that mirrors `max-w-7xl mx-auto` inside an
             `md:px-12` section, so the copy's left edge lines up with the
             About/Portfolio/Insights content frame's left edge at any
             viewport. Carousel on the right still bleeds to the viewport
             edge because the left panel itself remains full-bleed. */}
-        <div className="relative flex flex-col justify-center w-full md:w-[50%] pl-6 md:pl-[calc(3rem+max(0px,(100vw-86rem)/2))] pr-6 md:pr-24 py-12 md:py-0 z-10 shrink-0 min-h-[var(--hero-mobile-h)] md:min-h-0">
+        <div className="relative flex flex-col justify-center w-full md:w-[50%] pl-6 md:pl-[calc(3rem+max(0px,(100vw-86rem)/2))] pr-6 md:pr-24 py-12 md:pt-32 md:pb-0 z-10 shrink-0 min-h-[var(--hero-mobile-h)] md:min-h-0">
           <span className="hidden md:block text-[0.72rem] uppercase tracking-[0.22em] mb-8" style={{ ...sans, color: c.accentText, fontWeight: c.sansWeight }}>
             Pioneers in Travel Technology &middot; Est. 2008
           </span>
