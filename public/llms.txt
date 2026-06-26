@@ -1,0 +1,23 @@
+# Thayer Investment Partners
+
+> A strategic venture capital firm investing in the entrepreneurs shaping the global travel industry. Pioneers in travel technology since 2008.
+
+Thayer Investment Partners backs the founders building companies that reshape how the world moves, stays, and experiences new places. The firm invests on behalf of the travel industry — across horizontal platforms (payments, cybersecurity, workforce) and vertical solutions (loyalty, distribution, operating systems) — to make travel operations and consumption safer, easier, and more intelligent. Its investors include global corporations, executives, operators, and accomplished entrepreneurs. PhocusWire has named Thayer the #1 travel-tech investor three years running.
+
+## Core pages
+- [Home](https://thayerinvestmentpartners.com/): Firm overview and thesis — investing in the entrepreneurs shaping the global travel industry.
+- [About](https://thayerinvestmentpartners.com/about): A history of innovation in travel; the firm and its approach since 2008.
+- [Portfolio](https://thayerinvestmentpartners.com/portfolio): Companies shaping the future of global travel — every business that sells to, partners with, or consumes travel.
+- [Insights](https://thayerinvestmentpartners.com/news): News, research, and commentary from Thayer and its portfolio companies.
+
+## Insights (recent)
+- [Thayer Named #1 Travel Tech Investor by PhocusWire — Three Years Running](https://thayerinvestmentpartners.com/news/phocuswire-top-investors-2026)
+- [JetStream Launches with $34M Seed to Bring Governance to Enterprise AI](https://thayerinvestmentpartners.com/news/jetstream-34m-seed)
+- [Thayer Backs Slang AI in $36M Series B](https://thayerinvestmentpartners.com/news/slang-ai-36m-series-b)
+- [Mews Closes $300M Series D at $2.5B Valuation](https://thayerinvestmentpartners.com/news/mews-300m-series-d)
+- [ResortPass and the Rise of the Staycation Economy](https://thayerinvestmentpartners.com/news/resortpass-staycation-economy)
+
+## Notes
+- Sitemap: https://thayerinvestmentpartners.com/sitemap.xml
+- Established 2008; focus is travel technology and the global travel industry.
+- Investor Relations is handled on a separate external portal and is not part of this site.
