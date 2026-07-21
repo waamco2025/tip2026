@@ -90,6 +90,10 @@ const companies: Company[] = [
   { name: "Upgrade", slug: "upgrade", logo: "upgrade", url: "https://www.upgrade.com", categories: ["Travel", "Horizontal"] },
   { name: "Travel Curious", slug: "travel-curious", logo: "travel-curious", url: "https://travelcurious.com/", categories: ["Travel", "Distribution", "Experience", "Hospitality"] },
   { name: "Duetto", slug: "duetto", w: 180, acquired: "GrowthCurve", url: "https://www.duettocloud.com", categories: ["Travel", "Hospitality"] },
+  { name: "Olive AI", slug: "olive-ai", logo: "oliveai", url: "https://www.tryolive.com", categories: ["Travel", "Hospitality", "Distribution"], highlight: true },
+  { name: "TravelX", slug: "travelx", logo: "travelx", url: "https://www.travelx.io", categories: ["Travel", "Distribution"], highlight: true },
+  { name: "Variant", slug: "variant", logo: "variant", url: "https://www.variantnow.com", categories: ["Travel", "Horizontal"], highlight: true },
+  { name: "Shackleton AI", slug: "shackleton-ai", logo: "shackletonai", url: "https://www.shackleton.ai", categories: ["Travel", "Prop Tech"], highlight: true },
 ];
 
 export default function EditorialPortfolioPage({ articles }: { articles: Article[] }) {
