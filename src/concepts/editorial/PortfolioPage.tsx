@@ -84,7 +84,7 @@ const companies: Company[] = [
   { name: "Jetstream", slug: "jetstream", w: 180, url: "https://jetstream.security", categories: ["Travel", "Horizontal"] },
   { name: "Slang", slug: "slang", logo: "slang", url: "https://www.slang.ai", categories: ["Travel", "Food Service"] },
   { name: "Cloaked", slug: "cloaked", w: 160, url: "https://cloaked.com", categories: ["Travel", "Horizontal"], highlight: true },
-  { name: "Rove", slug: "rove", logo: "rove", url: "https://www.rove.com", categories: ["Travel", "Distribution"] },
+  { name: "Rove", slug: "rove", logo: "rove", url: "https://www.rove.com", categories: ["Travel", "Distribution"], highlight: true },
   { name: "Social Tables", slug: "social-tables", logo: "socialtables", acquired: "Cvent", url: "https://www.socialtables.com", categories: ["Travel", "Hospitality"] },
   { name: "Id90", slug: "id90", logo: "id90", url: "https://www.id90travel.com", categories: ["Travel", "Distribution"] },
   { name: "Upgrade", slug: "upgrade", logo: "upgrade", url: "https://www.upgrade.com", categories: ["Travel", "Horizontal"] },
