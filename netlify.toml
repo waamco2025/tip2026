@@ -2,5 +2,20 @@
   command = "npm run build"
   publish = ".next"
 
+# Old domain -> thayer.vc (the primary). Netlify serves domain aliases (200)
+# rather than redirecting them, so force a path-preserving 301 for the whole
+# thayerinvestmentpartners.com family. Needed for GSC's Change of Address.
+[[redirects]]
+  from = "https://thayerinvestmentpartners.com/*"
+  to = "https://thayer.vc/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "https://www.thayerinvestmentpartners.com/*"
+  to = "https://thayer.vc/:splat"
+  status = 301
+  force = true
+
 [[plugins]]
   package = "@netlify/plugin-nextjs"
