@@ -8,9 +8,27 @@ import type { Article, ArticleBlock, InlineSpan } from "@/lib/article-types";
 import { formatDate } from "@/lib/article-types";
 
 function InlineText({ spans }: { spans: InlineSpan[] }) {
+  const { light } = useEditorialMode();
+  const c = ec(light);
   return (
     <>
-      {spans.map((s, i) => (s.italic ? <em key={i}>{s.text}</em> : <React.Fragment key={i}>{s.text}</React.Fragment>))}
+      {spans.map((s, i) => {
+        if (s.href) {
+          return (
+            <a
+              key={i}
+              href={s.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline underline-offset-2 hover:text-[#2E9D55] transition-colors"
+              style={{ color: c.accentText }}
+            >
+              {s.text}
+            </a>
+          );
+        }
+        return s.italic ? <em key={i}>{s.text}</em> : <React.Fragment key={i}>{s.text}</React.Fragment>;
+      })}
     </>
   );
 }

@@ -8,12 +8,16 @@ const INSIGHTS_DIR = path.join(process.cwd(), "src", "content", "insights");
 
 function parseInline(text: string): InlineSpan[] {
   const spans: InlineSpan[] = [];
-  const re = /\*([^*]+)\*/g;
+  const re = /\*([^*]+)\*|\[([^\]]+)\]\(([^)]+)\)/g;
   let last = 0;
   let m: RegExpExecArray | null;
   while ((m = re.exec(text)) !== null) {
     if (m.index > last) spans.push({ text: text.slice(last, m.index) });
-    spans.push({ text: m[1], italic: true });
+    if (m[1] !== undefined) {
+      spans.push({ text: m[1], italic: true });
+    } else {
+      spans.push({ text: m[2], href: m[3] });
+    }
     last = m.index + m[0].length;
   }
   if (last < text.length) spans.push({ text: text.slice(last) });

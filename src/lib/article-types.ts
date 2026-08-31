@@ -1,6 +1,6 @@
 export type KeyFigure = { value: string; label: string };
 
-export type InlineSpan = { text: string; italic?: boolean };
+export type InlineSpan = { text: string; italic?: boolean; href?: string };
 
 export type ArticleBlock =
   | { type: "paragraph"; spans: InlineSpan[] }
