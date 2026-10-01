@@ -49,7 +49,7 @@ const companies: Company[] = [
   { name: "Nuit\u00e9e", slug: "nuitee", w: 160, url: "https://nuitee.com", categories: ["Travel", "Distribution"], highlight: true },
   { name: "Rain", slug: "rain", w: 160, url: "https://www.rain.xyz", categories: ["Travel", "Horizontal"], highlight: true },
   { name: "Jose Andres Group", slug: "jose-andres-group", logo: "jose-andres-group", url: "https://www.joseandres.com", categories: ["Travel", "OpCo"] },
-  { name: "BoomPop", slug: "boompop", logo: "boompop", url: "https://boompop.com", categories: ["Travel", "Experience", "Hospitality", "Corporate"] },
+  { name: "BoomPop", slug: "boompop", logo: "boompop", acquired: "Navan", url: "https://boompop.com", categories: ["Travel", "Experience", "Hospitality", "Corporate"] },
   { name: "Ballers", slug: "ballers", logo: "ballers", url: "https://www.ballers-us.com", categories: ["Travel", "OpCo", "Experience"] },
   { name: "Paradero", slug: "paradero", w: 180, url: "https://www.paraderohotels.com", categories: ["Travel", "OpCo", "Hospitality"] },
   { name: "Tixr", slug: "tixr", logo: "tixr", url: "https://www.tixr.com", categories: ["Travel", "Experience"], highlight: true },
